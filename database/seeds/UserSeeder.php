@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
 
         $user = new User();
         $user->name = 'Admin';
-        $user->email = 'admin@admin.com';
+        $user->email = 'admin@gmail.com';
         $user->position = 'Owner';
         $user->biography = '<p>Admin&nbsp;Biography</p>';
         $user->dateOfBirth = '2003-04-30';
@@ -24,8 +24,8 @@ class UserSeeder extends Seeder
         $user->assignRole('admin');
 
         $user = new User();
-        $user->name = 'Management';
-        $user->email = 'author@management.com';
+        $user->name = 'Management Member';
+        $user->email = 'management@gmail.com';
         $user->position = 'Manager';
         $user->biography = '<p>Management&nbsp;Biography</p>';
         $user->dateOfBirth = '2003-04-30';
@@ -34,8 +34,8 @@ class UserSeeder extends Seeder
         $user->assignRole('management');
 
         $user = new User();
-        $user->name = 'Normal Staff';
-        $user->email = 'staff@staff.com';
+        $user->name = 'Staff Member';
+        $user->email = 'staff@gmail.com';
         $user->position = 'Staff';
         $user->biography = '<p>Staff&nbsp;Biography</p>';
         $user->dateOfBirth = '2003-04-30';
@@ -44,8 +44,8 @@ class UserSeeder extends Seeder
         $user->assignRole('staff');
 
         $user = new User();
-        $user->name = 'Normal Accountant';
-        $user->email = 'accountant@accountant.com';
+        $user->name = 'Accountant Member';
+        $user->email = 'accounting@gmail.com';
         $user->position = 'Accountant';
         $user->biography = '<p>accounting&nbsp;Biography</p>';
         $user->dateOfBirth = '2003-04-30';

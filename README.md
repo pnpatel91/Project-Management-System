@@ -30,15 +30,19 @@ The site will run localhost:8000
 
 ```cmd
 // Admin User
-username - admin@admin.com
+username - admin@gmail.com
 password - password
 
-// Author User
-username - author@author.com
+// Management User
+username - management@gmail.com
 password - password
 
-// Normal User
-username - user@user.com
+// Staff User
+username - staff@gmail.com
+password - password
+
+// Accounting User
+username - accounting@gmail.com
 password - password
 ```
 
