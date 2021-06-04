@@ -354,6 +354,11 @@ ol li {
   border-color: #ff2f44;
 }
 
-.active {
-    color: #007bff !important;
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: #ff5c6c;
+    color: #343a40;
+}
+
+.nav-item .active {
+    color: #ffffff !important;
 }

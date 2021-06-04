@@ -44,6 +44,12 @@
                 </li> -->
                 <li class="nav-item has-treeview menu-open">
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin') }}" class="nav-link {{ Route::is('admin.') || Route::is('admin.')  ? 'active' : '' }}">
+                                <i class="fas fa-home nav-icon"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
                         @can('view user')
                         <li class="nav-item">
                             <a href="{{ url('admin/user') }}" class="nav-link {{ Route::is('admin.user.*') || Route::is('admin.user.*')  ? 'active' : '' }}">
