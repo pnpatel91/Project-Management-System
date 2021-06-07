@@ -52,7 +52,7 @@
                         </li>
                         @can('view user')
                         <li class="nav-item">
-                            <a href="{{ url('admin/user') }}" class="nav-link {{ Route::is('admin.user.*') || Route::is('admin.user.*')  ? 'active' : '' }}">
+                            <a href="{{ url('admin/user') }}" class="nav-link {{ Route::is('admin.user.*') || Route::is('admin.user.*') || Route::is('admin.profile.*') ? 'active' : '' }}">
                                 <i class="fas fa-users nav-icon"></i>
                                 <p>Team Members</p>
                             </a>

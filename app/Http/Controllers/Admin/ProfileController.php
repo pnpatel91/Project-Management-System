@@ -21,11 +21,12 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:200',
             'email' => 'required|string|email|unique:users,email,'.$id.',id',
+            'position' => 'required|string|max:200',
             'biography' => 'required|string|max:2000',
             'dateOfBirth' => 'required|date|before:-18 years'
         ]);
 
-        auth()->user()->update($request->only('name', 'email', 'biography' , 'dateOfBirth'));
+        auth()->user()->update($request->only('name', 'email', 'position', 'biography' , 'dateOfBirth'));
         return redirect()->route('admin.profile.index');
     }
 

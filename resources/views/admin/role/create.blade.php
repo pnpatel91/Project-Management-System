@@ -19,7 +19,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" name="name" class="form-control">
+                            <input type="text" name="name" class="form-control" required autocomplete="name" autofocus maxlength="200">
                         </div>
                         <div class="form-group">
                             <label>Permission: </label>
@@ -45,5 +45,15 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    // jQuery Validation
+    $(function(){
+        $('#popup-formUserRole').validate(
+        {
+            rules:{
+              
+            }
+        }); //valdate end
+    }); //function end
+</script>
 @endsection

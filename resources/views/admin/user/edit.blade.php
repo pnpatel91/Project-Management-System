@@ -20,11 +20,11 @@
                         @method('PUT')
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" name="name" value="{{ $user->name }}" class="form-control">
+                            <input type="text" name="name" value="{{ $user->name }}" class="form-control" required autocomplete="name" autofocus maxlength="200">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" name="email" value="{{ $user->email }}" class="form-control">
+                            <input type="email" name="email" value="{{ $user->email }}" class="form-control" required autocomplete="email">
                         </div>
                         <div class="form-group">
                             <label>Password: <i class="text-info">(Default: password)</i></label>
@@ -49,5 +49,15 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    // jQuery Validation
+    $(function(){
+        $('#popup-formUserRole').validate(
+        {
+            rules:{
+              
+            }
+        }); //valdate end
+    }); //function end
+</script>
 @endsection

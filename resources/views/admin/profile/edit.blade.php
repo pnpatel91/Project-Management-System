@@ -65,6 +65,22 @@
                                 </div>
                             </div>
                         </li>
+
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-2"> <b>Job Title</b> </div>
+                                <div class="col">
+                                    <input id="position" type="text" class="form-control @error('position') is-invalid @enderror" name="position" value="{{ auth()->user()->position }}" required autocomplete="position" autofocus maxlength="200">
+
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </li>
+
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-2"> <b>Date of birth</b> </div>

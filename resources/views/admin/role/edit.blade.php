@@ -20,7 +20,7 @@
                         @method('PUT')
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" name="name" value="{{ $role->name }}" {{ $role->isDisabled() }}
+                            <input type="text" name="name" value="{{ $role->name }}"  required autocomplete="name" autofocus maxlength="200" {{ $role->isDisabled() }}
                                 class="form-control">
                         </div>
                         <div class="form-group">
@@ -54,4 +54,15 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    // jQuery Validation
+    $(function(){
+        $('#popup-formUserRole').validate(
+        {
+            rules:{
+              
+            }
+        }); //valdate end
+    }); //function end
+</script>
 @endsection
