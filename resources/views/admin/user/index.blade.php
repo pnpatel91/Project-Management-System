@@ -54,7 +54,7 @@
                             <tbody>
                                 @forelse ($users as $user)
                                 <tr>
-                                    <td><img src="{{ \App\Http\Controllers\Admin\UserController::getImageUrlAttribute($user->id) }}" alt="Admin" class="profile-user-img-small img-circle"> {{ $user->name }}</td>
+                                    <td><img src="{{ $user->getImageUrlAttribute($user->id) }}" alt="Admin" class="profile-user-img-small img-circle"> {{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->getRoleNames()->first() }}</td>
                                     <td>{{ $user->date }}</td>
