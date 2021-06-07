@@ -50,6 +50,15 @@
                                 <p>Dashboard</p>
                             </a>
                         </li>
+                        @can('view company')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/company') }}" class="nav-link {{ Route::is('admin.company.*') || Route::is('admin.company.*')  ? 'active' : '' }}">
+                                <i class="fas fa-warehouse nav-icon"></i>
+                                <p>Company</p>
+                            </a>
+                        </li>
+                        @endcan 
+
                         @can('view user')
                         <li class="nav-item">
                             <a href="{{ url('admin/user') }}" class="nav-link {{ Route::is('admin.user.*') || Route::is('admin.user.*') || Route::is('admin.profile.*') ? 'active' : '' }}">
@@ -65,15 +74,7 @@
                                 <p>Role & Permission</p>
                             </a>
                         </li>
-                        @endcan 
-                        @can('view hobby')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/hobby') }}" class="nav-link">
-                                <i class="fas fa-file-alt nav-icon"></i>
-                                <p>Hobby</p>
-                            </a>
-                        </li>
-                        @endcan 
+                        @endcan
                     </ul>
                 </li>
                 

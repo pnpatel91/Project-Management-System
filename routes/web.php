@@ -14,16 +14,6 @@ Route::group([
 ], function () {
     Route::view('/', 'admin.layouts.master');
     
-    // Hobby Routes
-    Route::get('hobby', 'HobbyController@index');
-    Route::post('hobby', 'HobbyController@store');
-    Route::get('hobby/create', 'HobbyController@create');
-    Route::get('hobby/{hobby}', 'HobbyController@show');
-    Route::get('hobby/{id}/edit', 'HobbyController@edit');
-    Route::put('hobby/{id}/edit', 'HobbyController@update');
-    Route::get('hobby/{id}/delete', 'HobbyController@destroy');
-    Route::get('hobby/ajax/data', 'HobbyController@anyData'); // For Datatables
-    
     // Profile Routes
     Route::view('profile', 'admin.profile.index')->name('profile.index');;
     Route::view('profile/edit', 'admin.profile.edit')->name('profile.edit');
@@ -36,16 +26,12 @@ Route::group([
     Route::resource('/user', 'UserController');
 
     // Role Routes
-
     Route::put('role/{id}/update', 'RoleController@update');
     Route::resource('role', 'RoleController');
 
-    /*Route::get('role', 'RoleController@index');
-    Route::post('role', 'RoleController@store');
-    Route::post('role/create', 'RoleController@create');
-    Route::get('role/{role}', 'RoleController@show');
-    Route::get('role/{id}/edit', 'RoleController@edit');
-    Route::get('role/{id}/delete', 'RoleController@destroy');*/
-    //Route::get('role/ajax/data', 'RoleController@anyData'); // For Datatables
+    // Company Routes
+    Route::resource('company', 'CompanyController');
+    Route::get('company/ajax/data', 'CompanyController@datatables'); // For Datatables
+
 });
 

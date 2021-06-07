@@ -1,9 +1,9 @@
 <?php
 
-use App\Hobby;
+use App\Company;
 use Illuminate\Database\Seeder;
 
-class HobbySeeder extends Seeder
+class CompanySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class HobbySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Company::factory(1)->create();
     }
 }

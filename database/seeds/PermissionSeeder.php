@@ -31,7 +31,7 @@ class PermissionSeeder extends Seeder
 
         $roleAdmin->syncPermissions(Permission::all());
         $roleManagement->syncPermissions(Permission::all());
-        $roleStaff->syncPermissions(Permission::where('name', 'like', '%hobby%')->get());
+        $roleStaff->syncPermissions(Permission::where('name', 'like', '%company%')->get());
         $roleAccounting->syncPermissions(Permission::all());
 
     }

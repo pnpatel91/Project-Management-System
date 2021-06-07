@@ -14,7 +14,7 @@
                     <!--ADD NEW ITEM-->
                     @can('create role')
                     <a href="{{ route('admin.role.create') }}" class="btn btn-danger btn-add-circle edit-add-modal-button js-ajax-ux-request reset-target-modal-form" id="popup-modal-buttonUserRole">
-                        <span class="tooltips" tooltip="Create new role." tooltip-position="right"><i class="fas fa-plus"></i></span>
+                        <span tooltip="Create new role." flow="right"><i class="fas fa-plus"></i></span>
                     </a>
                     @endcan
                     <!--ADD NEW BUTTON (link)-->
@@ -59,7 +59,7 @@
                                     <td>
                                         @can('edit role')
                                         <a href="{{ route('admin.role.edit', ['role' => $role->id]) }}" class="btn btn-success btn-sm float-left mr-3" id="popup-modal-buttonUserRole">
-                                            <span class="tooltips" tooltip="Edit {{ $role->name }} role." tooltip-position="left"><i class="fas fa-edit"></i></span>
+                                            <span tooltip="Edit" flow="left"><i class="fas fa-edit"></i></span>
                                         </a>
                                         @endcan 
                                         @can('delete role')
@@ -70,7 +70,7 @@
                                             <button type="submit" class="btn btn-danger btn-sm" 
                                             {{ $role->isDisabled() }}
                                             >
-                                                <span class="tooltips" tooltip="Delete {{ $role->name }} role." tooltip-position="right"><i class="fas fa-trash-alt"></i></span>
+                                                <span tooltip="Delete" flow="right"><i class="fas fa-trash-alt"></i></span>
                                             </button>
                                         </form>
                                         @endcan

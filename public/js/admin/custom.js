@@ -26,15 +26,6 @@ function alert_message(message) {
     $('#message').html(messageHtml);
 }
 
-function datatables() {
-    var table = $('#datatable').DataTable({
-        dom: 'Bfrtip',
-        buttons: []
-    });
-}
-datatables();
-
-
 $(document).ready(function () {
     $(document).on('submit','#popup-form',function(e){
         e.preventDefault();
@@ -48,7 +39,6 @@ $(document).ready(function () {
             success: function(message){
                 $("#popup-modal").modal('hide');
                 alert_message(message);
-                $(".table-responsive").load(location.href + " #datatable");
                 setTimeout(function() {   //calls click event after a certain time
                     datatables();
                     $("#pageloader").hide();
@@ -72,7 +62,6 @@ $(document).ready(function () {
                 data: $(this).serialize(),
                 success: function(message){
                     alert_message(message);
-                    $(".table-responsive").load(location.href + " #datatable");
                     setTimeout(function() {   //calls click event after a certain time
                         datatables();
                         $("#pageloader").hide();
@@ -83,13 +72,3 @@ $(document).ready(function () {
         return confirm_delete;
     }); 
 });
-
-/*TOOLTIPS JS [START]*/
-$('.tooltips').append("<span></span>");
-$('.tooltips:not([tooltip-position])').attr('tooltip-position','bottom');
-
-
-$(".tooltips").mouseenter(function(){
- $(this).find('span').empty().append($(this).attr('tooltip'));
-});
-/*TOOLTIPS JS [END]*/

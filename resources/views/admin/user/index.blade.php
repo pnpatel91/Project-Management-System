@@ -14,7 +14,7 @@
                     <!--ADD NEW ITEM-->
                     @can('create user')
                     <a href="{{ route('admin.user.create') }}" class="btn btn-danger btn-add-circle edit-add-modal-button js-ajax-ux-request reset-target-modal-form" id="popup-modal-buttonUserRole">
-                        <span class="tooltips" tooltip="Create new team member." tooltip-position="right"><i class="fas fa-plus"></i></span>
+                        <span tooltip="Create new team member." flow="right"><i class="fas fa-plus"></i></span>
                     </a>
                     @endcan
                     <!--ADD NEW BUTTON (link)-->
@@ -62,7 +62,7 @@
                                         @can('edit user')
                                         <a href="{{ route('admin.user.edit', ['user' => $user->id]) }}" 
                                             class="btn btn-success btn-sm float-left mr-3"  id="popup-modal-buttonUserRole">
-                                            <span class="tooltips" tooltip="Edit" tooltip-position="top"><i class="fas fa-edit"></i></span>
+                                            <span tooltip="Edit" flow="left"><i class="fas fa-edit"></i></span>
                                         </a>
                                         @endcan 
                                         @can('delete user')
@@ -71,7 +71,7 @@
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash-alt"></i>
+                                                <span tooltip="Delete" flow="right"><i class="fas fa-trash-alt"></i></span>
                                             </button>
                                         </form>
                                         @endcan
@@ -89,9 +89,6 @@
                 <!-- /.card-body -->
             </div>
         </div>
-        <!-- <div class="col-md-12">
-            {{ $users->appends(['search' => request('search')])->links() }}
-        </div> -->
     </div>
 </div>
 

@@ -24,6 +24,11 @@ class Permission extends ModelsPermission
             'create hobby',
             'edit hobby',
             'delete hobby',
+
+            'view company',
+            'create company',
+            'edit company',
+            'delete company',
         ];
     }
 
