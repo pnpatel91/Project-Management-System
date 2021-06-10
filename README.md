@@ -2,8 +2,11 @@
 
 This is laravel admin project sample include below list
 
+- user
 - roles and permission
 - image uploading
+- company and branch
+- attendance (punch-in & punch-out)
 - Eloquent: Relationships
   - One To Many
   - Many To Many
@@ -13,6 +16,7 @@ This is laravel admin project sample include below list
 
 - [spatie/laravel-permission](https://github.com/spatie/laravel-permission)
 - [AdminLTE3](https://adminlte.io/themes/v3/)
+- [stevebauman/location](https://github.com/stevebauman/location)
 
 ## Installation
 
@@ -47,11 +51,13 @@ password - password
 ```
 ## Create New Module
 
-- $ php artisan make:model MODELNAME --all
+- ```cmd 
+  $ php artisan make:model Model_name --all
+  ```
 - Update database/migrations, database/seeds & database/factories files
 - Add this model seed in DatabaseSeeder
 - Add this model Permission in app/http/Permission.php
-- Creat validation in app/http/Requests folder
+- Creat Requests file in app/http/Requests folder for validation
 - Update model, view, controller 
 
 ## License
