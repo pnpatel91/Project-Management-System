@@ -77,4 +77,31 @@ class User extends Authenticatable
     {
         return $this->created_at->toFormattedDateString();
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    /**
+     * The branches that belong to the user.
+     */
+    public function branches()
+    {
+        return $this->belongsToMany(Branch::class, 'user_has_branches')->with('company');
+    }
+
+    /**
+     * Get the creator of this attendance with branch.
+     */
+    public function attendance_creator(){
+        return $this->belongsTo(Attendance::class,'created_by')->with('branch');
+    }
+
+    /**
+     * Get the last editor of this attendance with branch.
+     */
+    public function attendance_editor(){
+        return $this->belongsTo(Attendance::class,'updated_by')->with('branch');
+    }
 }

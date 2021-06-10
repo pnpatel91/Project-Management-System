@@ -118,9 +118,9 @@
                         <li role="separator" class="divider"></li>
                         <!--my profile-->
                         <li>
-                            <a href="{{ url('admin/profile/edit') }}" class="edit-add-modal-button js-ajax-ux-request reset-target-modal-form" >
+                            <a href="{{ url('admin/profile') }}" class="edit-add-modal-button js-ajax-ux-request reset-target-modal-form" >
                                 <i class="ti-user p-r-4"></i>
-                                Update My Profile</a>
+                                View Profile</a>
                         </li>
 
                         <!--update password-->

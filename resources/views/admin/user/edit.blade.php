@@ -40,6 +40,15 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Company-Branch</label>
+                            <select class="form-control select2" id="select2" name="branch_id[]" required autocomplete="branch_id" multiple>
+                                @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}" @if(in_array($branch->id, $userBranches)) selected="selected" @endif >{{ $branch->company->name .' - '. $branch->name}}</option>
+                                @endforeach
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>
@@ -59,5 +68,10 @@
             }
         }); //valdate end
     }); //function end
+
+    $("#select2").select2({
+      placeholder: "Select a company",
+      allowClear: true
+    });
 </script>
 @endsection

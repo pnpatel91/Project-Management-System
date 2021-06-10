@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompaniesTable extends Migration
+class CreateAttendancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,21 @@ class CreateCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('website');
-
+            $table->enum('status', ['punch_in', 'punch_out']);
+            $table->decimal('distance', 5, 2)->nullable()->comment('Distance between user and branch when any user punche in or punche out in metres'); 
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
+            $table->string('ip_address', 40)->nullable()->comment('User IP Address'); 
+            $table->unsignedBigInteger('branch_id')->index();
             $table->unsignedBigInteger('created_by')->index();
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();
 
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
@@ -36,10 +38,12 @@ class CreateCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::table('companies', function (Blueprint $table) {
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->dropForeign(['branch_id']);
             $table->dropForeign(['created_by']);
             $table->dropForeign(['updated_by']);
         });
-        Schema::dropIfExists('companies');
+
+        Schema::dropIfExists('attendances');
     }
 }

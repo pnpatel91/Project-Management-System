@@ -53,5 +53,15 @@ class UserSeeder extends Seeder
         $user->save();
         $user->assignRole('accounting');
 
+        $user = new User();
+        $user->name = 'Staff Member 2';
+        $user->email = 'staff2@gmail.com';
+        $user->position = 'Staff';
+        $user->biography = '<p>Staff&nbsp;Biography</p>';
+        $user->dateOfBirth = '2003-04-30';
+        $user->password = bcrypt('password'); // password
+        $user->save();
+        $user->assignRole('staff');
+
     }
 }

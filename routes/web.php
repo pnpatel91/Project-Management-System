@@ -33,5 +33,9 @@ Route::group([
     Route::resource('company', 'CompanyController');
     Route::get('company/ajax/data', 'CompanyController@datatables'); // For Datatables
 
+    // Branch Routes
+    Route::resource('branch', 'BranchController');
+    Route::get('branch/ajax/data', 'BranchController@datatables'); // For Datatables
+
 });
 

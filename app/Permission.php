@@ -20,15 +20,20 @@ class Permission extends ModelsPermission
             'edit user',
             'delete user',
 
-            'view hobby',
-            'create hobby',
-            'edit hobby',
-            'delete hobby',
-
             'view company',
             'create company',
             'edit company',
             'delete company',
+
+            'view branch',
+            'create branch',
+            'edit branch',
+            'delete branch',
+
+            'view attendance',
+            'create attendance',
+            'edit attendance',
+            'delete attendance',
         ];
     }
 

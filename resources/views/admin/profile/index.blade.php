@@ -40,6 +40,20 @@
                                 <div class="col"> {!!  auth()->user()->biography  !!} </div>
                             </div>
                         </li>
+
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col"> <b>Company Name - Branch Name</b> </div>
+                                <div class="col"> 
+                                    <ul>
+                                        @foreach(auth()->user()->branches as $branch)
+                                        <li>{{ $branch->company->name .' - '. $branch->name}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+
                     </ul>
 
                     <a href="{{ route('admin.profile.edit') }}" class="btn btn-primary"><b>Edit</b></a>

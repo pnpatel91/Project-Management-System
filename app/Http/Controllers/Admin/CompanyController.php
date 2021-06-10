@@ -15,9 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -38,8 +37,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('admin.company.index'); 
-        
+        return view('admin.company.index');  
     }
 
     /**
@@ -99,20 +97,19 @@ class CompanyController extends Controller
     {
         try {
 
-            $user = auth()->user()->id;
             $company = new Company();
             $company->name = $request->name;
             $company->email = $request->email;
             $company->website = $request->website;
-            $company->created_by = $user;
-            $company->updated_by = $user;
+            $company->created_by = auth()->user()->id;;
+            $company->updated_by = auth()->user()->id;;
             $company->save();
 
-            //Session::flash('success', 'Company was created successfully.');
+            //Session::flash('success', 'company was created successfully.');
             //return redirect()->route('company.index');
 
             return response()->json([
-                'success' => 'Company was created successfully.' // for status 200
+                'success' => 'company was created successfully.' // for status 200
             ]);
 
         } catch (\Exception $exception) {
@@ -157,30 +154,29 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyStoreRequest $request, Company $company)
     {
         try {
 
             if (empty($company)) {
-                //Session::flash('failed', 'Hobby Update Denied');
+                //Session::flash('failed', 'company Update Denied');
                 //return redirect()->back();
                 return response()->json([
-                    'error' => 'Company update denied.' // for status 200
+                    'error' => 'company update denied.' // for status 200
                 ]);   
             }
 
-            $user = auth()->user()->id;
             $company->name = $request->name;
             $company->email = $request->email;
             $company->website = $request->website;
-            $company->updated_by = $user;
+            $company->updated_by = auth()->user()->id;
             $company->save();
 
             //Session::flash('success', 'A company updated successfully.');
             //return redirect('admin/company');
 
             return response()->json([
-                'success' => 'Company update successfully.' // for status 200
+                'success' => 'company update successfully.' // for status 200
             ]);
 
         } catch (\Exception $exception) {
@@ -204,10 +200,15 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
+        // delete related branch   
+        $company->branchs()->delete();
+
+        // delete company
         $company->delete();
-        //return redirect('admin/company')->with('success', 'Company deleted successfully.');
+
+        //return redirect('admin/company')->with('success', 'company deleted successfully.');
         return response()->json([
-            'success' => 'Company deleted successfully.' // for status 200
+            'success' => 'company deleted successfully.' // for status 200
         ]);
     }
 }

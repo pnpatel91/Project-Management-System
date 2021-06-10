@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Image;
+use App\Branch;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -31,7 +32,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'id');
-        return view('admin.user.create', compact('roles'));
+        $branches = Branch::all();
+        return view('admin.user.create', compact('roles', 'branches'));
     }
 
     public function store(Request $request)
@@ -40,6 +42,7 @@ class UserController extends Controller
         $input['password'] = bcrypt($request->password);
         $user = User::create($input);
         $user->assignRole($request->role);
+        $user->branches()->attach($request->branch_id);
         //return redirect()->route('admin.user.index')->with('success', 'A user was created.');
         return response()->json([
             'success' => 'A team member was created successfully.' // for status 200
@@ -55,7 +58,9 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name', 'id');
         $userRole = $user->getRoleNames()->first();
-        return view('admin.user.edit', compact('user', 'roles', 'userRole'));
+        $branches = Branch::all();
+        $userBranches = $user->branches->pluck('id')->toArray();
+        return view('admin.user.edit', compact('user', 'roles', 'userRole', 'branches', 'userBranches'));
     }
 
     public function update(Request $request, User $user)
@@ -66,6 +71,7 @@ class UserController extends Controller
         }
         $user->update($input);
         $user->syncRoles($request->role);
+        $user->branches()->sync($request->branch_id);
         //return redirect()->route('admin.user.index')->with('success', 'A user was updated.');
         return response()->json([
             'success' => 'A team member was updated successfully.' // for status 200
@@ -80,6 +86,7 @@ class UserController extends Controller
                 'errors' => 'You cannot delete current logged in user.' // for status 200
             ]);
         }
+        $user->branches()->detach();
         $user->delete();
         //return redirect()->route('admin.user.index')->with('success', 'A user was deleted.');
         return response()->json([

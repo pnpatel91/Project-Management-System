@@ -50,14 +50,7 @@
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        @can('view company')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/company') }}" class="nav-link {{ Route::is('admin.company.*') || Route::is('admin.company.*')  ? 'active' : '' }}">
-                                <i class="fas fa-warehouse nav-icon"></i>
-                                <p>Company</p>
-                            </a>
-                        </li>
-                        @endcan 
+
 
                         @can('view user')
                         <li class="nav-item">
@@ -67,6 +60,7 @@
                             </a>
                         </li>
                         @endcan
+                        
                         @can('view role')
                         <li class="nav-item">
                             <a href="{{ route('admin.role.index') }}" class="nav-link {{ Route::is('admin.role.*') || Route::is('admin.role.*')  ? 'active' : '' }}">
@@ -75,6 +69,24 @@
                             </a>
                         </li>
                         @endcan
+
+                        @can('view company')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/company') }}" class="nav-link {{ Route::is('admin.company.*') || Route::is('admin.company.*')  ? 'active' : '' }}">
+                                <i class="fas fa-warehouse nav-icon"></i>
+                                <p>Company</p>
+                            </a>
+                        </li>
+                        @endcan 
+
+                        @can('view branch')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branch') }}" class="nav-link {{ Route::is('admin.branch.*') || Route::is('admin.branch.*')  ? 'active' : '' }}">
+                                <i class="fas fa-code-branch nav-icon"></i>
+                                <p>Branch</p>
+                            </a>
+                        </li>
+                        @endcan 
                     </ul>
                 </li>
                 

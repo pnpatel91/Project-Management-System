@@ -45,6 +45,14 @@ password - password
 username - accounting@gmail.com
 password - password
 ```
+## Create New Module
+
+- $ php artisan make:model MODELNAME --all
+- Update database/migrations, database/seeds & database/factories files
+- Add this model seed in DatabaseSeeder
+- Add this model Permission in app/http/Permission.php
+- Creat validation in app/http/Requests folder
+- Update model, view, controller 
 
 ## License
 

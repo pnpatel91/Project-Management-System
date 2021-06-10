@@ -20,10 +20,13 @@ $(document).ready(function () {
 function alert_message(message) {
     if(typeof(message.success) != "undefined" && message.success !== null) {
         var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        $('#error_message').html(messageHtml);
+        $('#message').html(messageHtml);
     } else if(typeof(message.error) != "undefined" && message.error !== null){
         var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        $('#message').html(messageHtml);
     }
-    $('#message').html(messageHtml);
+    
 }
 
 $(document).ready(function () {
@@ -37,12 +40,36 @@ $(document).ready(function () {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: $(this).serialize(),
             success: function(message){
-                $("#popup-modal").modal('hide');
-                alert_message(message);
-                setTimeout(function() {   //calls click event after a certain time
-                    datatables();
-                    $("#pageloader").hide();
-                }, 1000);
+                if(typeof(message.success) != "undefined" && message.success !== null) {
+                    $("#popup-modal").modal('hide');
+                    var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                    $('#message').html(messageHtml);
+                    setTimeout(function() {   //calls click event after a certain time
+                        datatables();
+                        $("#pageloader").hide();
+                    }, 1000);
+                } else if(typeof(message.error) != "undefined" && message.error !== null){
+                    var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                    $('#error_message').html(messageHtml);
+                    setTimeout(function() {   //calls click event after a certain time
+                        datatables();
+                        $("#pageloader").hide();
+                    }, 1000);
+                }
+            },
+            error: function(message){
+                if(typeof(message.responseJSON.errors) != "undefined" && message.responseJSON.errors !== null){
+                    var errors = message.responseJSON.errors;
+                    $.each(errors, function (key, val) {
+                        var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+val[0]+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                        $('#error_message').append(messageHtml);
+                    });
+                    
+                    setTimeout(function() {   //calls click event after a certain time
+                        datatables();
+                        $("#pageloader").hide();
+                    }, 1000);
+                }
             },
         });
     }); 
