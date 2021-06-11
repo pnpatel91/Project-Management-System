@@ -87,6 +87,15 @@
                             </a>
                         </li>
                         @endcan 
+
+                        @can('view attendance')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/attendance') }}" class="nav-link {{ Route::is('admin.attendance.*') || Route::is('admin.attendance.*')  ? 'active' : '' }}">
+                                <i class="fa fa-clock-o  nav-icon" aria-hidden="true"></i>
+                                <p>Attendance</p>
+                            </a>
+                        </li>
+                        @endcan 
                     </ul>
                 </li>
                 
