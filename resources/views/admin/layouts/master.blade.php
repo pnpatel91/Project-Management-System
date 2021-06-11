@@ -121,6 +121,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- Main content -->
             <div class="content">
+                @if(Route::current()->getName()=='admin.')
+                    <div class="col-md-12">
+                        @include('message.alert')
+                    </div>
+                @endif
                 @yield('content')
             </div>
             <!-- /.content -->

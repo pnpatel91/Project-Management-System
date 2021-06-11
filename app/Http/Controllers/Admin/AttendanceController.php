@@ -7,7 +7,7 @@ use App\Branch;
 use App\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BranchStoreRequest;
+use App\Http\Requests\AttendanceStoreRequest;
 use App\Traits\UploadTrait;
 
 use Illuminate\Support\Str;
@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
+use JeroenDesloovere\Distance\Distance;
 
 class AttendanceController extends Controller
 {
@@ -36,7 +37,52 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.attendance.index'); 
+    }
+
+    /**
+     * Datatables Ajax Data
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function datatables(Request $request)
+    {
+
+        if ($request->ajax() == true) {
+
+            $model = Attendance::with('branch','creator','editor');
+
+            return Datatables::eloquent($model)
+                    ->addColumn('action', function (Attendance $data) {
+                        $html='';
+                        if (auth()->user()->can('edit attendance')){
+                            $html.= '<a href="'.  route('admin.attendance.edit', ['attendance' => $data->id]) .'" class="btn btn-success btn-sm float-left mr-3"  id="popup-modal-button"><span tooltip="Edit" flow="left"><i class="fas fa-edit"></i></span></a>';
+                        }
+
+                        if (auth()->user()->can('delete attendance')){
+                            $html.= '<form method="post" class="float-left delete-form" action="'.  route('admin.attendance.destroy', ['attendance' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="delete"><button type="submit" class="btn btn-danger btn-sm"><span tooltip="Delete" flow="right"><i class="fas fa-trash"></i></span></button></form>';
+                        }
+
+                        return $html; 
+                    })
+
+                    ->addColumn('activity', function (Attendance $data) {
+                        if($data->status=='punch_in'){ $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; }else{ $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; }
+                        return $status .' '. date_format (date_create($data->time), "g:ia").' On '.date_format (date_create($data->time), "l jS F Y");
+                    })
+
+                    ->addColumn('username', function (Attendance $data) {
+                        return '<img src="'.$data->creator->getImageUrlAttribute($data->creator->id).'" alt="Admin" class="profile-user-img-small img-circle"> '. $data->creator->name;
+                    })
+                    ->addColumn('editor', function (Attendance $data) {
+                        return '<img src="'.$data->editor->getImageUrlAttribute($data->editor->id).'" alt="Admin" class="profile-user-img-small img-circle"> '. $data->editor->name;
+                    })
+                    
+                    ->rawColumns(['activity', 'username', 'editor', 'action'])
+
+                    ->make(true);
+        }
     }
 
     /**
@@ -58,26 +104,43 @@ class AttendanceController extends Controller
     public function store(AttendanceStoreRequest $request)
     {
         try {
+            $user = User::find(auth()->user()->id);
+            $branches = $user->branches;
+            foreach ($branches as $key => $branch) {
+                $branch_latitude = $branch->latitude;
+                $branch_longitude = $branch->longitude;
 
-            $branch = new Branch();
-            $branch->status = $request->status;
-            $branch->distance = $request->distance;
-            $branch->latitude = $request->latitude;
-            $branch->longitude = $request->longitude;
-            $branch->ip_address = $request->ip_address;
-            $branch->branch_id = $request->branch_id;
-            $branch->created_by = auth()->user()->id;
-            $branch->updated_by = auth()->user()->id;
-            $branch->save();
+                $distance = Distance::between(
+                    $branch_latitude,
+                    $branch_longitude,
+                    $request->latitude,
+                    $request->longitude
+                );
 
-            $branch->users()->attach($request->user_id);
+                $distance = $distance*1000; // distance convert into kilometers to meters
 
-            //Session::flash('success', 'branch was created successfully.');
-            //return redirect()->route('branch.index');
+                // dump data
+                //echo 'Distance between the two locations = ' . $distance . ' m';
+                if($branch->radius >= $distance){
 
-            return response()->json([
-                'success' => 'branch was created successfully.' // for status 200
-            ]);
+                    $attendance = new Attendance();
+                    $attendance->status = $request->status;
+                    $attendance->distance = $distance;
+                    $attendance->latitude = $request->latitude;
+                    $attendance->longitude = $request->longitude;
+                    $attendance->ip_address = $request->ip();
+                    $attendance->branch_id = $branch->id;
+                    $attendance->created_by = auth()->user()->id;
+                    $attendance->updated_by = auth()->user()->id;
+                    $attendance->save();
+
+                    Session::flash('success', 'Your attendance has been confirmed successfully.');
+                    return redirect()->back();
+                }else{
+                    Session::flash('failed', 'You are away from your branch.');
+                    return redirect()->back()->withErrors('You are away from your branch.');
+                }
+            }
 
         } catch (\Exception $exception) {
 

@@ -24,7 +24,7 @@ class CreateBranchesTable extends Migration
 
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
-            $table->decimal('radius', 5, 2)->nullable()->comment('Min Distance between user and branch when any user punche in or punche out in metres');
+            $table->decimal('radius', 18, 2)->nullable()->comment('Min Distance between user and branch when any user punche in or punche out in metres');
 
             $table->unsignedBigInteger('company_id')->index();
             $table->unsignedBigInteger('created_by')->index();

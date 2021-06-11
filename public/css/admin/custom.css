@@ -311,3 +311,23 @@ ol li {
 .nav-item .active {
     color: #ffffff !important;
 }
+
+.dropdown-user li .btn {
+    color: #ffffff;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.dropdown-user li .btn-danger:hover {
+    background: #e6294b !important;
+}
+
+.dropdown-user li .btn-success:hover {
+    background: #258e3d !important;
+}
+
+.dropdown-user li .btn:hover {
+    color: #ffffff !important;
+    padding: 5px 10px !important;
+    display: inline-block !important;
+}

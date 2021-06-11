@@ -115,6 +115,45 @@
                                 </div>
                             </div>
                         </li>
+
+                        <li role="separator" class="divider"></li>
+                        <!--PUNCH-IN & PUNCH-OUT-->
+                        @php($attendance = App\Attendance::where('created_by',auth()->user()->id)->latest('time')->take(1)->get())
+
+                        <li>
+                            <div class="card text-center">
+                              <div class="card-header">
+                                Current Status
+                              </div>
+                              <div class="card-body">
+                                @if(isset($attendance[0]))
+                                    @if($attendance[0]->status=='punch_in') 
+                                        @php( $statusNavbar='punch_out' )
+                                        <p class="card-text mt-2">In at {{$attendance[0]->time}} </p>
+                                        <a href=""  onclick="event.preventDefault();document.getElementById('attendance').submit();" class="btn btn-rounded btn-danger btn-sm edit-add-modal-button js-ajax-ux-request reset-target-modal-form mt-2">Punch Out</a>
+                                    @else 
+                                        @php( $statusNavbar='punch_in' )
+                                        <p class="card-text mt-2">Out at {{$attendance[0]->time}} </p> 
+                                        <a href=""  onclick="event.preventDefault();document.getElementById('attendance').submit();" class="btn btn-rounded btn-success btn-sm edit-add-modal-button js-ajax-ux-request reset-target-modal-form mt-2">Punch In</a>
+                                    @endif
+                                @else 
+                                    @php( $statusNavbar='punch_in' )
+                                    <p class="card-text mt-2">Wel Come, You are first time login. </p>
+                                    <a href=""  onclick="event.preventDefault();document.getElementById('attendance').submit();" class="btn btn-rounded btn-success btn-sm edit-add-modal-button js-ajax-ux-request reset-target-modal-form mt-2">Punch In</a>
+                                @endif
+                                
+                                
+                                <form action="{{ route('admin.attendance.store') }}" method="post" id="attendance">
+                                    @csrf
+                                    <input type="hidden" name="status" id="status" value="{{$statusNavbar}}">
+                                    <input type="hidden" name="latitude" id="latitudeNavbar" value="">
+                                    <input type="hidden" name="longitude" id="longitudeNavbar" value="">
+                                </form>
+                                    
+                              </div>
+                            </div>
+                        </li>
+
                         <li role="separator" class="divider"></li>
                         <!--my profile-->
                         <li>
@@ -144,3 +183,31 @@
         </li>
     </ul>
 </nav>
+
+<script type="text/javascript">
+    // Get Latitude & Longitude 
+    function getLocationNavbar() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                // Success function
+                showPositionNavbar, 
+                // Error function
+                null, 
+                // Options. See MDN for details.
+                {
+                   enableHighAccuracy: true,
+                   timeout: 5000,
+                   maximumAge: 0
+                });
+            
+        } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPositionNavbar(position) {
+        document.getElementById("latitudeNavbar").value= position.coords.latitude;
+        document.getElementById("longitudeNavbar").value= position.coords.longitude;
+    }
+    getLocationNavbar();
+</script>

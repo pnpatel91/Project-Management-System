@@ -60,7 +60,7 @@ class BranchController extends Controller
                             $html.= '<a href="'.  route('admin.branch.edit', ['branch' => $data->id]) .'" class="btn btn-success btn-sm float-left mr-3"  id="popup-modal-button"><span tooltip="Edit" flow="left"><i class="fas fa-edit"></i></span></a>';
                         }
 
-                        if (auth()->user()->can('edit branch')){
+                        if (auth()->user()->can('delete branch')){
                             $html.= '<form method="post" class="float-left delete-form" action="'.  route('admin.branch.destroy', ['branch' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="delete"><button type="submit" class="btn btn-danger btn-sm"><span tooltip="Delete" flow="up"><i class="fas fa-trash"></i></span></button></form>';
                         }
 

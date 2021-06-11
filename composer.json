@@ -18,7 +18,8 @@
         "spatie/laravel-permission": "^3.11",
         "stevebauman/location": "^6.1",
         "techguy/laravel-ckeditor": "^1.4",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "jeroendesloovere/distance": "1.0.*"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

@@ -37,5 +37,9 @@ Route::group([
     Route::resource('branch', 'BranchController');
     Route::get('branch/ajax/data', 'BranchController@datatables'); // For Datatables
 
+    // Attendance Routes
+    Route::resource('attendance', 'AttendanceController');
+    Route::get('attendance/ajax/data', 'AttendanceController@datatables'); // For Datatables
+
 });
 

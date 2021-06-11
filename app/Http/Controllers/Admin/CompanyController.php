@@ -67,7 +67,7 @@ class CompanyController extends Controller
                         $html.= '<a href="'.  route('admin.company.edit', ['company' => $data->id]) .'" class="btn btn-success btn-sm float-left mr-3"  id="popup-modal-button"><span tooltip="Edit" flow="left"><i class="fas fa-edit"></i></span></a>';
                     }
 
-                    if (auth()->user()->can('edit company')){
+                    if (auth()->user()->can('delete company')){
                         $html.= '<form method="post" class="float-left delete-form" action="'.  route('admin.company.destroy', ['company' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="delete"><button type="submit" class="btn btn-danger btn-sm"><span tooltip="Delete" flow="right"><i class="fas fa-trash"></i></span></button></form>';
                     }
 
