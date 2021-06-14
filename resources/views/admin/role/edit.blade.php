@@ -43,7 +43,7 @@
                             </div>
                             @endforeach
                         </div>
-                        @unless ($role->isAdmin())
+                        @unless ($role->isSuperAdmin())
                         <button type="submit" class="btn btn-primary">Update</button>
                         @endunless
                         <a href="" class="btn btn-secondary" data-dismiss="modal">Close</a>

@@ -91,6 +91,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Branch::class, 'user_has_branches')->with('company');
     }
 
+    public function getBranchIdsAttribute()
+    {
+        return $this->branches->pluck('id');
+    }
+
     /**
      * Get the creator of this attendance with branch.
      */

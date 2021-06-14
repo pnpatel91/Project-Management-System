@@ -11,6 +11,7 @@
     width: 100%;
     overflow-x: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
+    margin-top: 15px;
 }
 
 table th{
@@ -330,4 +331,12 @@ ol li {
     color: #ffffff !important;
     padding: 5px 10px !important;
     display: inline-block !important;
+}
+
+.search-area {
+    border-radius: 4px;
+    border: 1px solid #ccd2d8;
+    margin-top: 0px;
+    height: 37px;
+    padding-bottom: 7px;
 }

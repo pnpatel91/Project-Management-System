@@ -40,13 +40,32 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="table-responsive list-table-wrapper">
+                        <div class="mb-3">
+                            <span>Search Users</span>
+                            <select class="elect2" id="user_id" name="user_id" required autocomplete="user_id">
+                                <option value="All">All</option>
+                                @foreach ($users as $key => $user)
+                                    <option value="user_id_{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+
+                            <span>Search Date</span>
+                            <input class="search-area" type="text" name="datefilter" id="daterange" value="" />
+
+                            <button type="button" id="Clear_Filters" class="btn btn-primary"><i class="fas fa-sync"></i></button>
+
+                        </div>
                         <table class="table table-hover dataTable no-footer" id="table" width="100%">
                             <thead>
                             <tr>
                                 <th>Activity</th>
+                                <th>Company - Branch</th>
                                 <th>User Name</th>
                                 <th>Last Edit By</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
                                 <th class="noExport">Action</th>
+                                <th class="noExport">User Id</th>
                             </tr>
                             </thead>
                             <tbody></tbody>
@@ -66,38 +85,90 @@
 function datatables() {
 
     var table = $('#table').DataTable({
-        dom: 'Bfrtip',
-        buttons: [],
-        select: true,
-        
-        aaSorting     : [[0, 'asc']],
-        iDisplayLength: 25,
-        stateSave     : true,
+        "order": [[ 4, 'desc' ]],
+        "sDom":"ltipr",
         responsive    : true,
         fixedHeader   : true,
         processing    : true,
-        serverSide    : true,
-        "bDestroy"    : true,
-        pagingType    : "full_numbers",
+        serverSide    : false,
+        "bLengthChange": false,
         ajax          : {
             url     : '{{ url('admin/attendance/ajax/data') }}',
             dataType: 'json'
         },
         columns       : [
             {data: 'activity', name: 'activity'},
+            {data: 'branch', name: 'branch'},
             {data: 'username', name: 'username'},
             {data: 'editor', name: 'editor'},
+            {data: 'created_at', name: 'created_at', visible: false},
+            {data: 'updated_at', name: 'updated_at', visible: false},
             {data: 'action', name: 'action', orderable: false, searchable: false,
                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     //  console.log( nTd );
                     $("a", nTd).tooltip({container: 'body'});
                 }
-            }
+            },
+
+            {data: 'search_username', name: 'search_username', visible: false}
         ],
+    });
+
+    $('#user_id').on('change', function () {
+        if(this.value != 'All'){
+            table.columns(7).search( this.value ).draw();
+        }else{
+            table.search( '' ).columns().search( '' ).draw();
+        }
+    } );
+
+    // Date range vars
+    minDateFilter = "";
+    maxDateFilter = "";
+
+    $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            minDateFilter = Date.parse(picker.startDate);
+            maxDateFilter = Date.parse(picker.endDate);
+
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                var date = Date.parse(data[4]);
+
+                if (
+                (isNaN(minDateFilter) && isNaN(maxDateFilter)) ||
+                (isNaN(minDateFilter) && date <= maxDateFilter) ||
+                (minDateFilter <= date && isNaN(maxDateFilter)) ||
+                (minDateFilter <= date && date <= maxDateFilter)
+                ) {
+                    return true;
+                }
+                
+                return false;
+            });
+            table.draw();
+    });
+
+    $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+          table.draw();
+          $(this).val('');
+    });
+
+    $('#Clear_Filters').click(function () {
+        location.reload();
     });
 }
 
 datatables();
+
+$('input[name="datefilter"]').daterangepicker({
+  autoUpdateInput: false,   
+});
+
+$("#user_id").select2({
+  placeholder: "Select users",
+  allowClear: true
+});
+
 </script>
 
 

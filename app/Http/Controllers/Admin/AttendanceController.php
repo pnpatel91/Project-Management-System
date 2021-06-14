@@ -37,7 +37,8 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        return view('admin.attendance.index'); 
+        $users = User::all();
+        return view('admin.attendance.index', compact("users"));
     }
 
     /**
@@ -53,6 +54,12 @@ class AttendanceController extends Controller
 
             $model = Attendance::with('branch','creator','editor');
 
+            // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+            if(!auth()->user()->hasRole('superadmin')){
+                $branch_id = auth()->user()->getBranchIdsAttribute();
+                $model->whereIn('branch_id',$branch_id);
+            }
+            
             return Datatables::eloquent($model)
                     ->addColumn('action', function (Attendance $data) {
                         $html='';
@@ -72,8 +79,16 @@ class AttendanceController extends Controller
                         return $status .' '. date_format (date_create($data->time), "g:ia").' On '.date_format (date_create($data->time), "l jS F Y");
                     })
 
+                    ->addColumn('branch', function (Attendance $data) {
+                        return $data->branch->company->name.' - '.$data->branch->name;
+                    })
+
                     ->addColumn('username', function (Attendance $data) {
-                        return '<img src="'.$data->creator->getImageUrlAttribute($data->creator->id).'" alt="Admin" class="profile-user-img-small img-circle"> '. $data->creator->name;
+                        return '<img src="'.$data->creator->getImageUrlAttribute($data->creator->id).'" alt="user_id_'.$data->creator->id.'" class="profile-user-img-small img-circle"> '. $data->creator->name;
+                    })
+                    
+                    ->addColumn('search_username', function (Attendance $data) {
+                        return 'user_id_'.$data->creator->id;
                     })
                     ->addColumn('editor', function (Attendance $data) {
                         return '<img src="'.$data->editor->getImageUrlAttribute($data->editor->id).'" alt="Admin" class="profile-user-img-small img-circle"> '. $data->editor->name;

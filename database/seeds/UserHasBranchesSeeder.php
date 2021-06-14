@@ -18,6 +18,11 @@ class UserHasBranchesSeeder extends Seeder
         $user_has_branches->save();
 
         $user_has_branches = new User_has_branches();
+        $user_has_branches->branch_id = '2';
+        $user_has_branches->user_id = '1';
+        $user_has_branches->save();
+
+        $user_has_branches = new User_has_branches();
         $user_has_branches->branch_id = '1';
         $user_has_branches->user_id = '2';
         $user_has_branches->save();
@@ -35,6 +40,11 @@ class UserHasBranchesSeeder extends Seeder
         $user_has_branches = new User_has_branches();
         $user_has_branches->branch_id = '2';
         $user_has_branches->user_id = '5';
+        $user_has_branches->save();
+
+        $user_has_branches = new User_has_branches();
+        $user_has_branches->branch_id = '2';
+        $user_has_branches->user_id = '6';
         $user_has_branches->save();
     }
 }
