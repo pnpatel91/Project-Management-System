@@ -39,7 +39,10 @@ Route::group([
 
     // Attendance Routes
     Route::resource('attendance', 'AttendanceController');
+    Route::post('attendance/store_admin', 'AttendanceController@store_admin')->name('attendance.store_admin'); // For Admin 
     Route::get('attendance/ajax/data', 'AttendanceController@datatables'); // For Datatables
+    Route::post( 'attendance/ajax/user', 'AttendanceController@user' )->name('attendance.ajax.user'); // Get user option by branch in ajax
+    Route::post( 'attendance/ajax/status', 'AttendanceController@status' )->name('attendance.ajax.status'); // Get status option by branch in ajax
 
 });
 

@@ -15,7 +15,7 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('time')->comment('Punch In Punch Out Time')->useCurrent = true;
+            $table->timestamp('attendance_at')->comment('Punch In Punch Out Time')->useCurrent = true;
             $table->enum('status', ['punch_in', 'punch_out']);
             $table->decimal('distance', 18, 2)->nullable()->comment('Distance between user and branch when any user punche in or punche out in metres'); 
             $table->double('latitude')->nullable();

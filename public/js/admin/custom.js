@@ -44,8 +44,10 @@ $(document).ready(function () {
                     $("#popup-modal").modal('hide');
                     var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
                     $('#message').html(messageHtml);
+                    $("#navbar_current_Status").load(location.href+" #navbar_current_Status>*","");// after new attendance create. reload navbar_current_Status div
                     setTimeout(function() {   //calls click event after a certain time
                         datatables();
+                        getLocationNavbar(); // after new attendance create. reload navbar_current_Status div
                         $("#pageloader").hide();
                     }, 1000);
                 } else if(typeof(message.error) != "undefined" && message.error !== null){
@@ -99,3 +101,30 @@ $(document).ready(function () {
         return confirm_delete;
     }); 
 });
+
+
+// Get Latitude & Longitude For Navbar Current Status
+function getLocationNavbar() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            // Success function
+            showPositionNavbar, 
+            // Error function
+            null, 
+            // Options. See MDN for details.
+            {
+               enableHighAccuracy: true,
+               timeout: 5000,
+               maximumAge: 0
+            });
+        
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPositionNavbar(position) {
+    document.getElementById("latitudeNavbar").value= position.coords.latitude;
+    document.getElementById("longitudeNavbar").value= position.coords.longitude;
+}
+getLocationNavbar();

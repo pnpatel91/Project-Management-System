@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use JeroenDesloovere\Distance\Distance;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -38,7 +39,8 @@ class AttendanceController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.attendance.index', compact("users"));
+        $branches = Branch::all();
+        return view('admin.attendance.index', compact("users","branches"));
     }
 
     /**
@@ -76,7 +78,7 @@ class AttendanceController extends Controller
 
                     ->addColumn('activity', function (Attendance $data) {
                         if($data->status=='punch_in'){ $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; }else{ $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; }
-                        return $status .' '. date_format (date_create($data->time), "g:ia").' On '.date_format (date_create($data->time), "l jS F Y");
+                        return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
                     })
 
                     ->addColumn('branch', function (Attendance $data) {
@@ -107,7 +109,59 @@ class AttendanceController extends Controller
      */
     public function create()
     {
-        //
+        // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $branches = Branch::whereIn('branch_id',$branch_id)->get();
+        }else{
+            $branches = Branch::all();
+        }
+
+        return view('admin.attendance.create', compact("branches"));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    function user( Request $request )
+    {
+          $this->validate( $request, [ 'id' => 'required' ] );
+          $users = User::whereHas('branches', function($q) use ($request) { $q->where('branch_id', $request->id); })->get();
+          
+          //you can handle output in different ways, I just use a custom filled array. you may pluck data and directly output your data.
+          $output = [];
+          foreach( $users as $user )
+          {
+             $output[$user->id] = $user->name;
+          }
+          return $output;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    function status( Request $request )
+    {
+        $this->validate( $request, [ 'id' => 'required' ] );
+        $attendance = Attendance::where('created_by',$request->id)->latest('attendance_at')->take(1)->get();
+        $data = array();
+        $data['status'] = 'success';
+        
+        if(isset($attendance[0]) && $attendance[0]->status=='punch_in'){
+            $data['status'] = 'punch out';
+        }else{
+            $data['status'] = 'punch in';
+        }   
+
+        echo json_encode($data);    
+
+
     }
 
     /**
@@ -119,6 +173,7 @@ class AttendanceController extends Controller
     public function store(AttendanceStoreRequest $request)
     {
         try {
+
             $user = User::find(auth()->user()->id);
             $branches = $user->branches;
             foreach ($branches as $key => $branch) {
@@ -151,11 +206,57 @@ class AttendanceController extends Controller
 
                     Session::flash('success', 'Your attendance has been confirmed successfully.');
                     return redirect()->back();
-                }else{
-                    Session::flash('failed', 'You are away from your branch.');
-                    return redirect()->back()->withErrors('You are away from your branch.');
+                    exit;
                 }
             }
+
+            Session::flash('failed', 'You are away from your branch.');
+            return redirect()->back()->withErrors('You are away from your branch.');
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            //Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
+            /*return redirect()->back()->withInput($request->all());*/
+
+            return response()->json([
+                'error' => $exception->getMessage() . ' ' . $exception->getLine() // for status 200
+            ]);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage by Admin.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_admin(Request $request)
+    {
+        try {
+            
+                $branch = Branch::find($request->branch_id);
+
+                $attendance = new Attendance();
+                $attendance->status = str_replace(' ', '_', $request->status);
+                $attendance->distance = 0;
+                $attendance->latitude = $branch->latitude;
+                $attendance->longitude = $branch->longitude;
+                $attendance->ip_address = $request->ip();
+                $attendance->branch_id = $request->branch_id;
+                $attendance->created_by = $request->user_id;
+                $attendance->updated_by = auth()->user()->id;
+                $attendance->attendance_at = $request->attendance_at;
+                $attendance->save();
+
+                //Session::flash('success', 'Your attendance has been confirmed successfully.');
+                //return redirect()->back();
+
+                return response()->json([
+                    'success' => 'attendance has been confirmed successfully.' // for status 200
+                ]);
+
 
         } catch (\Exception $exception) {
 
@@ -173,10 +274,10 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\attendances  $attendances
+     * @param  \App\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function show(attendances $attendances)
+    public function show(Attendance $attendance)
     {
         //
     }
@@ -184,34 +285,90 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\attendances  $attendances
+     * @param  \App\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function edit(attendances $attendances)
+    public function edit(Attendance $attendance)
     {
-        //
+        // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $branches = Branch::whereIn('branch_id',$branch_id)->get();
+        }else{
+            $branches = Branch::all();
+        }
+
+        $users = User::whereHas('branches', function($q) use ($attendance) { $q->where('branch_id', $attendance->branch_id); })->get();
+
+        return view('admin.attendance.edit', compact('attendance', 'branches', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\attendances  $attendances
+     * @param  \App\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, attendances $attendances)
+    public function update(Request $request, Attendance $attendance)
     {
-        //
+        try {
+                if (empty($attendance)) {
+                    //Session::flash('failed', 'attendance Update Denied');
+                    //return redirect()->back();
+                    return response()->json([
+                        'error' => 'attendance update denied.' // for status 200
+                    ]);   
+                }
+            
+                $branch = Branch::find($request->branch_id);
+
+                $attendance->status = str_replace(' ', '_', $request->status);
+                $attendance->distance = 0;
+                $attendance->latitude = $branch->latitude;
+                $attendance->longitude = $branch->longitude;
+                $attendance->ip_address = $request->ip();
+                $attendance->branch_id = $request->branch_id;
+                $attendance->created_by = $request->user_id;
+                $attendance->updated_by = auth()->user()->id;
+                $attendance->attendance_at = $request->attendance_at;
+                $attendance->save();
+
+                //Session::flash('success', 'Your attendance has been confirmed successfully.');
+                //return redirect()->back();
+
+                return response()->json([
+                    'success' => 'attendance has been confirmed successfully.' // for status 200
+                ]);
+
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            //Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
+            /*return redirect()->back()->withInput($request->all());*/
+
+            return response()->json([
+                'error' => $exception->getMessage() . ' ' . $exception->getLine() // for status 200
+            ]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\attendances  $attendances
+     * @param  \App\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(attendances $attendances)
+    public function destroy(Attendance $attendance)
     {
-        //
+        // delete attendance
+        $attendance->delete();
+
+        //return redirect('admin/attendance')->with('success', 'attendance deleted successfully.');
+        return response()->json([
+            'success' => 'Attendance deleted successfully.' // for status 200
+        ]);
     }
 }

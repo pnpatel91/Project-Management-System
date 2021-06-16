@@ -32,6 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- DATEPICKER.CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+        
+        <link rel="stylesheet" href="{{ asset('plugins/datetimepicker/css/jquery.datetimepicker.min.css') }}">
 
         <!-- Select2 CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
@@ -64,9 +66,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- JQUERY UI JS -->
         <script src="https://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+        
 
         <!-- BOOTSTRAP DATEPICKER -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="{{ asset('plugins/datetimepicker/js/jquery.datetimepicker.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
         <!-- CK Editor JS -->
