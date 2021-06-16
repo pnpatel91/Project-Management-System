@@ -22,7 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->double('longitude')->nullable();
             $table->string('ip_address', 40)->nullable()->comment('User IP Address'); 
             $table->unsignedBigInteger('branch_id')->index();
-            $table->unsignedBigInteger('created_by')->index();
+            $table->unsignedBigInteger('created_by')->index()->comment('Attendanced User');
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();
 
