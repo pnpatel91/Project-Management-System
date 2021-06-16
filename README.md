@@ -39,11 +39,11 @@ The site will run localhost:8000
 ## Default Users
 
 ```cmd
-//Super Admin User
+//Super Admin User (View all data)
 username - superadmin@gmail.com
 password - password
 
-// Admin User
+// Admin User (View only his branch data)
 username - admin@gmail.com
 password - password
 
