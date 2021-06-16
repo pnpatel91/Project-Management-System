@@ -5,8 +5,14 @@ This is laravel admin project sample include below list
 - user
 - roles and permission
 - image uploading
-- company and branch
+- company 
+  - One To Many Branches (With company_id in branch table)
+- branch
+  - One Company To Many (With company_id in branch table)
+  - Many Branches To Many Users (With user_has_branches table)
 - attendance (punch-in & punch-out)
+  - One attendance To Many branchs (With branch_id in attendance table)
+  - One attendance To One User (With created_by in attendance table)
 - Eloquent: Relationships
   - One To Many
   - Many To Many
@@ -33,6 +39,10 @@ The site will run localhost:8000
 ## Default Users
 
 ```cmd
+//Super Admin User
+username - superadmin@gmail.com
+password - password
+
 // Admin User
 username - admin@gmail.com
 password - password
