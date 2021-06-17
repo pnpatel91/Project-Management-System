@@ -44,5 +44,9 @@ Route::group([
     Route::post( 'attendance/ajax/user', 'AttendanceController@user' )->name('attendance.ajax.user'); // Get user option by branch in ajax
     Route::post( 'attendance/ajax/status', 'AttendanceController@status' )->name('attendance.ajax.status'); // Get status option by branch in ajax
 
+    // Department Routes
+    Route::resource('department', 'DepartmentController');
+    Route::get('department/ajax/data', 'DepartmentController@datatables'); // For Datatables
+
 });
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Image;
 use App\Branch;
+use App\Department;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -24,7 +25,7 @@ class UserController extends Controller
         $users = User::when($search, function($user) use($search) {
             return $user->where("name", 'like', '%' . $search . '%')
             ->orWhere('id', $search);
-        })->paginate();
+        })->orderBy('id', 'ASC')->paginate();
         $users->load('roles');
         return view('admin.user.index', compact('users'));
     }
@@ -33,7 +34,8 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name', 'id');
         $branches = Branch::all();
-        return view('admin.user.create', compact('roles', 'branches'));
+        $departments = Department::all();
+        return view('admin.user.create', compact('roles', 'branches', 'departments'));
     }
 
     public function store(Request $request)
@@ -43,6 +45,7 @@ class UserController extends Controller
         $user = User::create($input);
         $user->assignRole($request->role);
         $user->branches()->attach($request->branch_id);
+        $user->departments()->attach($request->department_id);
         //return redirect()->route('admin.user.index')->with('success', 'A user was created.');
         return response()->json([
             'success' => 'A team member was created successfully.' // for status 200
@@ -59,8 +62,10 @@ class UserController extends Controller
         $roles = Role::pluck('name', 'id');
         $userRole = $user->getRoleNames()->first();
         $branches = Branch::all();
+        $departments = Department::all();
         $userBranches = $user->branches->pluck('id')->toArray();
-        return view('admin.user.edit', compact('user', 'roles', 'userRole', 'branches', 'userBranches'));
+        $userDepartments = $user->departments->pluck('id')->toArray();
+        return view('admin.user.edit', compact('user', 'roles', 'userRole', 'branches', 'userBranches', 'departments', 'userDepartments'));
     }
 
     public function update(Request $request, User $user)
@@ -72,6 +77,7 @@ class UserController extends Controller
         $user->update($input);
         $user->syncRoles($request->role);
         $user->branches()->sync($request->branch_id);
+        $user->departments()->sync($request->department_id);
         //return redirect()->route('admin.user.index')->with('success', 'A user was updated.');
         return response()->json([
             'success' => 'A team member was updated successfully.' // for status 200
@@ -87,6 +93,7 @@ class UserController extends Controller
             ]);
         }
         $user->branches()->detach();
+        $user->departments()->detach();
         $user->delete();
         //return redirect()->route('admin.user.index')->with('success', 'A user was deleted.');
         return response()->json([

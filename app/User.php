@@ -109,4 +109,17 @@ class User extends Authenticatable
     public function attendance_editor(){
         return $this->belongsTo(Attendance::class,'updated_by')->with('branch');
     }
+
+    /**
+     * The departments that belong to the user.
+     */
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'user_has_departments');
+    }
+
+    public function getDepartmentIdsAttribute()
+    {
+        return $this->departments->pluck('id');
+    }
 }

@@ -42,10 +42,12 @@
                         <table class="table table-hover" id="datatableUserRole">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th class="col-4">Name</th>
                                     <th>Email</th>
                                     <th>Role</th>
-                                    <th>Date</th>
+                                    <th class="col-3">Company - Branch</th>
+                                    <th>Department</th>
+                                    <th class="col-2">Date</th>
                                     @canany(['edit user', 'delete user'])
                                     <th>Actions</th>
                                     @endcanany
@@ -54,11 +56,13 @@
                             <tbody>
                                 @forelse ($users as $user)
                                 <tr>
-                                    <td><img src="{{ $user->getImageUrlAttribute($user->id) }}" alt="Admin" class="profile-user-img-small img-circle"> {{ $user->name }}</td>
+                                    <td class="col-4"><img src="{{ $user->getImageUrlAttribute($user->id) }}" alt="Admin" class="profile-user-img-small img-circle"> {{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->getRoleNames()->first() }}</td>
-                                    <td>{{ $user->date }}</td>
-                                    <td>
+                                    <td class="col-3">@foreach($user->branches as $branch)<span class="selection_choice">{{$branch->company->name}} - {{$branch->name}}</span>@endforeach</td>
+                                    <td>@foreach($user->departments as $department)<span class="selection_choice">{{ $department->name }}</span>@endforeach</td>
+                                    <td class="col-2">{{ $user->date }}</td>
+                                    <td  class="col-2">
                                         @can('edit user')
                                         <a href="{{ route('admin.user.edit', ['user' => $user->id]) }}" 
                                             class="btn btn-success btn-sm float-left mr-3"  id="popup-modal-buttonUserRole">
@@ -71,7 +75,7 @@
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                <span tooltip="Delete" flow="right"><i class="fas fa-trash-alt"></i></span>
+                                                <span tooltip="Delete" flow="up"><i class="fas fa-trash-alt"></i></span>
                                             </button>
                                         </form>
                                         @endcan

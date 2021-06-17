@@ -88,6 +88,15 @@
                         </li>
                         @endcan 
 
+                        @can('view department')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/department') }}" class="nav-link {{ Route::is('admin.department.*') || Route::is('admin.department.*')  ? 'active' : '' }}">
+                                <i class="far fa-id-card nav-icon"></i>
+                                <p>Department</p>
+                            </a>
+                        </li>
+                        @endcan 
+
                         @can('view attendance')
                         <li class="nav-item">
                             <a href="{{ url('admin/attendance') }}" class="nav-link {{ Route::is('admin.attendance.*') || Route::is('admin.attendance.*')  ? 'active' : '' }}">

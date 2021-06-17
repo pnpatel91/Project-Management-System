@@ -49,6 +49,16 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
+
+                        <div class="form-group">
+                            <label>Department</label>
+                            <select class="form-control select2" id="department_id" name="department_id[]" required autocomplete="department_id" multiple>
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department->id }}" @if(in_array($department->id, $userDepartments)) selected="selected" @endif >{{$department->name}}</option>
+                                @endforeach
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>
@@ -70,7 +80,12 @@
     }); //function end
 
     $("#select2").select2({
-      placeholder: "Select a company",
+      placeholder: "Select a company - branch",
+      allowClear: true
+    });
+
+    $("#department_id").select2({
+      placeholder: "Select a department",
       allowClear: true
     });
 </script>

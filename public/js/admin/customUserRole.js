@@ -19,6 +19,7 @@ $(document).ready(function () {
 function datatablesUserRole() {
     var table = $('#datatableUserRole').DataTable({
         dom: 'Bfrtip',
+        "ordering": false,
         buttons: []
     });
 }

@@ -10,9 +10,13 @@ This is laravel admin project sample include below list
 - branch
   - One Company To Many (With company_id in branch table)
   - Many Branches To Many Users (With user_has_branches table)
+- department
+  - Many Departments To Many Users (With user_has_departments table)
 - attendance (punch-in & punch-out)
   - One attendance To Many branchs (With branch_id in attendance table)
   - One attendance To One User (With created_by in attendance table)
+- rota (employee job time schedule)
+  - One rota To One User (With user_id in attendance table)
 - Eloquent: Relationships
   - One To Many
   - Many To Many
@@ -59,7 +63,7 @@ password - password
 username - accounting@gmail.com
 password - password
 ```
-## Create New Module
+## Create New Module [For Developer]
 
 - ```cmd 
   $ php artisan make:model Model_name --all

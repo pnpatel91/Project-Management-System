@@ -34,6 +34,11 @@ class Permission extends ModelsPermission
             'create attendance',
             'edit attendance',
             'delete attendance',
+
+            'view department',
+            'create department',
+            'edit department',
+            'delete department',
         ];
     }
 
