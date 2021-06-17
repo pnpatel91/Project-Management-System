@@ -51,7 +51,14 @@ class BranchController extends Controller
 
         if ($request->ajax() == true) {
 
+            //$model = Branch::with('company');//All Branches Show [Old Code]
+
+            // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
             $model = Branch::with('company');
+            if(!auth()->user()->hasRole('superadmin')){
+                $branch_id = auth()->user()->getBranchIdsAttribute();
+                $model->whereIn('id',$branch_id);
+            }
 
             return Datatables::eloquent($model)
                     ->addColumn('action', function (Branch $data) {
@@ -86,8 +93,14 @@ class BranchController extends Controller
      */
     public function create()
     {   
-        $company = Company::all('id', 'name');
-        $users = User::all('id', 'name');
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
+            $company = Company::select('id', 'name')->whereHas('branch', function($q) use ($branch_id) { $q->where('id', $branch_id); })->get();
+        }else{
+            $company = Company::all('id', 'name');
+            $users = User::all('id', 'name');
+        }
         return view('admin.branch.create', compact("company","users"));
     }
 
@@ -157,8 +170,15 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch)
     {
-        $company = Company::all('id', 'name');
-        $users = User::all('id', 'name');
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
+            $company = Company::select('id', 'name')->whereHas('branch', function($q) use ($branch_id) { $q->where('id', $branch_id); })->get();
+        }else{
+            $company = Company::all('id', 'name');
+            $users = User::all('id', 'name');
+        }
+        
         $branchUsers = $branch->users->pluck('id')->toArray();
         return view('admin.branch.edit', compact('branch', 'company', 'users', 'branchUsers'));
     }

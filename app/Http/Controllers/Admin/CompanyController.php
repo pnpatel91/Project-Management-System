@@ -59,6 +59,14 @@ class CompanyController extends Controller
                 'updated_at',
             ]);
 
+            // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+            if(!auth()->user()->hasRole('superadmin')){
+                $branch_id = auth()->user()->getBranchIdsAttribute();
+                $data->whereHas('branch', function($query) use ($branch_id) {
+                        $query->whereIn('id', $branch_id);
+                    })->get();
+            }
+
             return Datatables::eloquent($data)
                 ->addColumn('action', function ($data) {
                     

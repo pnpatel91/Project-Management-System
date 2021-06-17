@@ -54,12 +54,14 @@ class AttendanceController extends Controller
 
         if ($request->ajax() == true) {
 
-            $model = Attendance::with('branch','creator','editor');
-
-            // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+            
             if(!auth()->user()->hasRole('superadmin')){
                 $branch_id = auth()->user()->getBranchIdsAttribute();
-                $model->whereIn('branch_id',$branch_id);
+                $model = Attendance::with('branch','creator','editor')
+                                    ->whereHas('branch', function($q) use ($branch_id) { 
+                                            $q->where('branch_id', $branch_id); });
+            }else{
+               $model = Attendance::with('branch','creator','editor');
             }
             
             return Datatables::eloquent($model)
@@ -112,7 +114,7 @@ class AttendanceController extends Controller
         // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
-            $branches = Branch::whereIn('branch_id',$branch_id)->get();
+            $branches = Branch::whereIn('id',$branch_id)->get();
         }else{
             $branches = Branch::all();
         }
@@ -293,7 +295,7 @@ class AttendanceController extends Controller
         // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
-            $branches = Branch::whereIn('branch_id',$branch_id)->get();
+            $branches = Branch::whereIn('id',$branch_id)->get();
         }else{
             $branches = Branch::all();
         }

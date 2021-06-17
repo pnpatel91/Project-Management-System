@@ -12,10 +12,10 @@ Route::group([
     'namespace' => 'Admin',
     'middleware' => ['auth']
 ], function () {
-    Route::view('/', 'admin.layouts.master');
+    Route::get('/', 'DashboardController@index');
     
     // Profile Routes
-    Route::view('profile', 'admin.profile.index')->name('profile.index');;
+    Route::view('profile', 'admin.profile.index')->name('profile.index');
     Route::view('profile/edit', 'admin.profile.edit')->name('profile.edit');
     Route::put('profile/edit', 'ProfileController@update')->name('profile.update');
     Route::put('profile/updateProfileImage', 'ProfileController@updateProfileImage')->name('profile.updateProfileImage');

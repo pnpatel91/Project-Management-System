@@ -22,11 +22,26 @@ class UserController extends Controller
     public function index()
     {
         $search = request('search', null);
-        $users = User::when($search, function($user) use($search) {
+        /*$users = User::when($search, function($user) use($search) {
             return $user->where("name", 'like', '%' . $search . '%')
             ->orWhere('id', $search);
-        })->orderBy('id', 'ASC')->paginate();
-        $users->load('roles');
+        })->orderBy('id', 'ASC')->get();
+        $users->load('roles');*/
+
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $users = User::with(['branches' => function($query) use ($branch_id) {
+                                    $query->whereIn('branch_id', $branch_id);
+                                }])
+                            ->whereHas('branches', function($q) use ($branch_id) { 
+                                    $q->where('branch_id', $branch_id); })
+                            ->orderBy('id', 'ASC')
+                            ->get();
+        }else{
+           $users = User::orderBy('id', 'ASC')->get(); 
+        }
+
+        
         return view('admin.user.index', compact('users'));
     }
 
