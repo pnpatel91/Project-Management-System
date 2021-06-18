@@ -69,7 +69,7 @@
                             </a>
                         </li>
                         @endcan
-
+                        
                         @can('view company')
                         <li class="nav-item">
                             <a href="{{ url('admin/company') }}" class="nav-link {{ Route::is('admin.company.*') || Route::is('admin.company.*')  ? 'active' : '' }}">
@@ -93,6 +93,15 @@
                             <a href="{{ url('admin/department') }}" class="nav-link {{ Route::is('admin.department.*') || Route::is('admin.department.*')  ? 'active' : '' }}">
                                 <i class="far fa-id-card nav-icon"></i>
                                 <p>Department</p>
+                            </a>
+                        </li>
+                        @endcan 
+
+                        @can('view holiday')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/holiday') }}" class="nav-link {{ Route::is('admin.holiday.*') || Route::is('admin.holiday.*')  ? 'active' : '' }}">
+                                <i class="fas fa-glass-cheers nav-icon"></i>
+                                <p>Holiday</p>
                             </a>
                         </li>
                         @endcan 

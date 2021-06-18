@@ -48,5 +48,8 @@ Route::group([
     Route::resource('department', 'DepartmentController');
     Route::get('department/ajax/data', 'DepartmentController@datatables'); // For Datatables
 
+    // Department Routes
+    Route::resource('holiday', 'HolidayController');
+
 });
 

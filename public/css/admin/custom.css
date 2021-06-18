@@ -415,3 +415,8 @@ ol li {
   content: attr(data-text);
 }
 
+.datatable-active {
+    background-color: #ff5c6c;
+    color: #f8f9fa;
+}
+

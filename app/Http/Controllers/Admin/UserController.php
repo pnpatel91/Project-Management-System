@@ -48,7 +48,14 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'id');
-        $branches = Branch::all();
+        
+        // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $branches = Branch::whereIn('id',$branch_id)->get();
+        }else{
+            $branches = Branch::all();
+        }
         $departments = Department::all();
         return view('admin.user.create', compact('roles', 'branches', 'departments'));
     }
@@ -76,7 +83,13 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name', 'id');
         $userRole = $user->getRoleNames()->first();
-        $branches = Branch::all();
+        // Where condition on Role and Branch, If role super admin then show all records, other than only user branch records show.
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $branches = Branch::whereIn('id',$branch_id)->get();
+        }else{
+            $branches = Branch::all();
+        }
         $departments = Department::all();
         $userBranches = $user->branches->pluck('id')->toArray();
         $userDepartments = $user->departments->pluck('id')->toArray();

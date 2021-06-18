@@ -49,4 +49,12 @@ class Branch extends Model
     {
         return $this->belongsToMany(User::class, 'user_has_branches');
     }
+
+    /**
+     * The holidays that belong to the branch.
+     */
+    public function branches()
+    {
+        return $this->belongsToMany(Holiday::class, 'holidays_has_branches');
+    }
 }

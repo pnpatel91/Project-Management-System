@@ -2,7 +2,7 @@
 
 This is laravel admin project sample include below list
 
-- user
+- <i class="fas fa-users nav-icon"></i> Team Members
 - roles and permission
 - image uploading
 - company 
@@ -12,6 +12,8 @@ This is laravel admin project sample include below list
   - Many Branches To Many Users (With user_has_branches table)
 - department
   - Many Departments To Many Users (With user_has_departments table)
+- Holiday
+  - Many Holidays To Many Branches (With holidays_has_branches table)
 - attendance (punch-in & punch-out)
   - One attendance To Many branchs (With branch_id in attendance table)
   - One attendance To One User (With created_by in attendance table)

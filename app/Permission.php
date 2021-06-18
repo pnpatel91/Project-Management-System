@@ -39,6 +39,11 @@ class Permission extends ModelsPermission
             'create department',
             'edit department',
             'delete department',
+
+            'view holiday',
+            'create holiday',
+            'edit holiday',
+            'delete holiday',
         ];
     }
 

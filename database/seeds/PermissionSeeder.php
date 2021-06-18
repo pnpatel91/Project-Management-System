@@ -32,9 +32,9 @@ class PermissionSeeder extends Seeder
 
         $roleSuperAdmin->syncPermissions(Permission::all());
         $roleAdmin->syncPermissions(Permission::all());
-        $roleManagement->syncPermissions(Permission::where('name', 'like', 'create attendance')->get());
-        $roleStaff->syncPermissions(Permission::where('name', 'create attendance')->get());
-        $roleAccounting->syncPermissions(Permission::where('name', 'create attendance')->get());
+        $roleManagement->syncPermissions(Permission::where('name', 'create attendance')->orWhere('name', 'view holiday')->get());
+        $roleStaff->syncPermissions(Permission::where('name', 'create attendance')->orWhere('name', 'view holiday')->get());
+        $roleAccounting->syncPermissions(Permission::where('name', 'create attendance')->orWhere('name', 'view holiday')->get());
 
     }
 }

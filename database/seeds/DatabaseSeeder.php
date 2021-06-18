@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartmentSeeder::class);
         $this->call(UserHasDepartmentSeeder::class);
         $this->call(RotaSeeder::class);
+        $this->call(HolidaySeeder::class);
+        $this->call(HolidaysHasBranchesSeeder::class);
         
     }
 }
