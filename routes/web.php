@@ -17,6 +17,7 @@ Route::group([
     //Notifications
     Route::view('notifications-dropdown-menu', 'admin.layouts.notifications')->name('notifications-dropdown-menu');
     Route::get('/notificationMarkAsRead/{id}', 'DashboardController@notificationMarkAsRead');
+    Route::get('/notificationMarkAllAsRead/{id}', 'DashboardController@notificationMarkAllAsRead');
 
     // Profile Routes
     Route::view('profile', 'admin.profile.index')->name('profile.index');

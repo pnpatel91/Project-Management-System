@@ -57,6 +57,15 @@ class DashboardController extends Controller
         }
     }
 
+    public function notificationMarkAllAsRead($userID)
+    {
+        $user = User::findOrFail($userID);
+        $user->unreadNotifications->map(function($n) {
+            $n->markAsRead();
+        });
+        return back();
+    }
+
     public static function timeDiff($created_at)
     {
         $updated = new Carbon($created_at);
