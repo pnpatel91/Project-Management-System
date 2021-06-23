@@ -83,7 +83,8 @@ password - password
 - Update model, view, controller 
 
 ## Create New Notification
--```cmd 
+
+- ```cmd 
   $ php artisan make:notification leavesNotification
   ```
 ## License
