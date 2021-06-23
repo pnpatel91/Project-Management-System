@@ -272,23 +272,30 @@ class LeaveAdminController extends Controller
 
             /*NOTIFICATION CREATE [START]*/
             if($old_status != $leave->status){
+                
                 $sender = User::find($leave->approved_by);
                 $receiver = User::find($leave->employee_id);
                 if($leave->status=='New'){$leave->status='on hold';}
                 $leaveData = [
-                    'name' =>  Str::lower($leave->status),
-                    'body' => 'You received a leave.',
+                    'name' => Str::lower($leave->status),
+                    'subject' => 'Leave Notification' ,
+                    'body' => 'your leave has been '.Str::lower($leave->status),
                     'thanks' => 'Thank you',
-                    'leaveUrl' => url('admin/leave-employee'),
+                    'leaveUrl' => url('admin/leave'),
                     'leave_id' => $leave->id,
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
+                    'receiver_name' => $receiver->name,
                     'text' => 'your leave has been'
                 ];
 
                 Notification::send($receiver, new leavesNotification($leaveData));
+                Mail::to($receiver->email)->send(new LeavesNotificationMail($leaveData));
+                
             }
             /*NOTIFICATION CREATE [END]*/
+
+            
 
             //Session::flash('success', 'A branch updated successfully.');
             //return redirect('admin/branch');
