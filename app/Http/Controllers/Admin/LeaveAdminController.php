@@ -170,16 +170,13 @@ class LeaveAdminController extends Controller
                     'leave_id' => $leave->id,
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
+                    'receiver_name' => $receiver->name,
                     'text' => 'added new'
                 ];
 
                 Notification::send($receiver, new leavesNotification($leaveData));
+                Mail::to($receiver->email)->send(new LeavesNotificationMail($leaveData));
                 /*NOTIFICATION CREATE [END]*/
-
-                $email = 'parth.onfuro@gmail.com';
-          
-                Mail::to($email)->send(new LeavesNotificationMail($leaveData));
-                
 
                 //Session::flash('success', 'Your leave has been confirmed successfully.');
                 //return redirect()->back();
