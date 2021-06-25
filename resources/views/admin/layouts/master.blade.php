@@ -201,7 +201,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
             loadNotificationsDropdownMenu();
             setInterval(function(){
-                //loadNotificationsDropdownMenu();
+                loadNotificationsDropdownMenu();
             }, 10000);
         </script>
 

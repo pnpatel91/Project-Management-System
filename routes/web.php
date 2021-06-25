@@ -64,5 +64,11 @@ Route::group([
     Route::resource('leave-employee', 'LeaveEmployeeController');
     Route::get('leave-employee/ajax/data', 'LeaveEmployeeController@datatables'); // For Datatables
 
+    // Rota Template Routes
+    Route::get('rota_template/ajax/data', 'RotaTemplateController@datatables'); // For Datatables
+    Route::get('rota_template/create_rota', 'RotaTemplateController@create_rota')->name('rota_template.create_rota');
+    Route::put('rota_template/run_create_rota', 'RotaTemplateController@run_create_rota')->name('rota_template.run_create_rota');
+    Route::resource('rota_template', 'RotaTemplateController');
+
 });
 

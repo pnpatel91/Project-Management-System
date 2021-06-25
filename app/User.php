@@ -136,4 +136,12 @@ class User extends Authenticatable
     public function leave_approved_by(){
         return $this->belongsTo(Leave::class,'approved_by')->with('branch');
     }
+
+    /**
+     * Get the employee rota.
+     */
+    public function rota(){
+        return $this->belongsTo(Rota::class,'user_id');
+    }
+
 }

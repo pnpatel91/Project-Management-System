@@ -133,6 +133,16 @@
                         </li>
                         @endcan 
 
+                        @can('view rota_template')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/rota_template') }}" class="nav-link {{ Route::is('admin.rota_template.*') || Route::is('admin.rota_template.*')  ? 'active' : '' }}">
+                                <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
+                                <p>Rota Template</p>
+                            </a>
+                        </li>
+                        @endcan 
+                        
+
                         @if(auth()->user()->hasRole('superadmin'))
                         <li class="nav-item">
                             <a href="{{ url('maileclipse') }}" class="nav-link" target="_blank">

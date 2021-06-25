@@ -507,3 +507,7 @@ ul.notification-list > li a {
 }
 
 /*Notification Dropdown Manu CSS [END]*/
+
+.select2-container {
+    width: 100% !important;
+}
