@@ -18,8 +18,8 @@
                     <form action="{{ route('admin.rota.update', ['rota' => $rota->id]) }}" method="put"  id="popup-form-rota" >
                         @csrf
                         @method('PUT')
-                        <div class="form-group mt-4">
-                            <label>Employee</label>
+                        <div class="form-group d-flex justify-content-center mt-4">
+                            <!-- <label>Employee</label> -->
                             <div class="user-add-shedule-list">
                                 <h2 class="table-avatar">
                                     <a href="" class="avatar" tooltip="{{$user->name}}" flow="right"><img alt="" src="{{$user->getImageUrlAttribute($user->id)}}"></a>
@@ -158,7 +158,7 @@
             });
         }); 
     });
-    
+
     //CKEDITOR for notes
     CKEDITOR.replace( 'notes' );
 </script>

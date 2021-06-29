@@ -127,7 +127,7 @@ $(document).ready(function () {
                     success: function(message){
                         setTimeout(function() {   //calls click event after a certain time
                             load_table_data();
-                            $("#pageloader").hide();
+                            //$("#pageloader").hide();
                             alert_message(message);
                         }, 1000);
                     },

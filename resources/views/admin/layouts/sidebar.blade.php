@@ -136,7 +136,7 @@
                         @can('view rota_template')
                         <li class="nav-item">
                             <a href="{{ url('admin/rota_template') }}" class="nav-link {{ Route::is('admin.rota_template.*') || Route::is('admin.rota_template.*')  ? 'active' : '' }}">
-                                <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
+                                <i class="far fa-calendar-plus nav-icon" aria-hidden="true"></i>
                                 <p>Rota Template</p>
                             </a>
                         </li>
@@ -145,7 +145,7 @@
                         @can('view rota')
                         <li class="nav-item">
                             <a href="{{ url('admin/rota') }}" class="nav-link {{ Route::is('admin.rota.*') || Route::is('admin.rota.*')  ? 'active' : '' }}">
-                                <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
+                                <i class="fas fa-calendar-alt nav-icon"></i>
                                 <p>Rota</p>
                             </a>
                         </li>
