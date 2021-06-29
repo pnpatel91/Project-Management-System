@@ -191,9 +191,9 @@ class HolidayController extends Controller
         // delete holiday
         $holiday->delete();
 
-        //return redirect('admin/holiday')->with('success', 'holiday deleted successfully.');
+        //return redirect('admin/holiday')->with('delete', 'holiday deleted successfully.');
         return response()->json([
-            'success' => 'holiday deleted successfully.' // for status 200
+            'delete' => 'holiday deleted successfully.' // for status 200
         ]);
     }
 }

@@ -215,9 +215,9 @@ class CompanyController extends Controller
         // delete company
         $company->delete();
 
-        //return redirect('admin/company')->with('success', 'company deleted successfully.');
+        //return redirect('admin/company')->with('delete', 'company deleted successfully.');
         return response()->json([
-            'success' => 'company deleted successfully.' // for status 200
+            'delete' => 'company deleted successfully.' // for status 200
         ]);
     }
 }

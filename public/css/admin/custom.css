@@ -511,3 +511,66 @@ ul.notification-list > li a {
 .select2-container {
     width: 100% !important;
 }
+
+.user-add-shedule-list{
+    width: 200px;
+}
+
+.user-add-shedule-list h2 a.anchertag {
+    border: 2px dashed #1EB53A;
+    padding: 10px;
+    color: #1EB53A;
+}
+
+.anchertag {
+    display: inline-block;
+    padding: 10px;
+    border: 1px dashed #a7a7a7;
+    color: #a7a7a7;
+    border-radius: 5px;
+}
+
+.user-add-shedule-list h2 span {
+    color: #888;
+    display: block;
+    font-size: 12px;
+}
+
+.user-add-shedule-list span {
+    justify-content: center;
+    display: flex;
+}
+
+.delete-user-add-shedule-list {
+    /* margin: 0px 0px -25px 145px !important; */
+    text-align: right;
+    color: #ff5c6c;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.user-add-shedule-list h2.table-avatar {
+    align-items: center;
+    display: inline-flex;
+    font-size: inherit;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.user-add-shedule-list h2 a {
+    color: #ff5c6c;
+}
+
+.delete-form-rota{
+    margin-top: 2px;
+}
+
+

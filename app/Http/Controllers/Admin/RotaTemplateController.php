@@ -67,7 +67,7 @@ class RotaTemplateController extends Controller
                         }
 
                         if (auth()->user()->can('view rota_template')){
-                            $html.= '<a href="'.  route('admin.rota_template.create_rota', ['rota_template' => $data->id]) .'" class="btn btn-warning btn-sm float-left mr-3"  id="popup-modal-button"><span tooltip="create rota" flow="left"><i class="fas fa-plus"></i></span></a>';
+                            $html.= '<a href="'.  route('admin.rota.create_bulk', ['rota_template' => $data->id]) .'" class="btn btn-warning btn-sm float-left mr-3"  id="popup-modal-button"><span tooltip="create rota" flow="left"><i class="fas fa-plus"></i></span></a>';
                         }
 
                         if (auth()->user()->can('delete rota_template')){
@@ -113,7 +113,8 @@ class RotaTemplateController extends Controller
         $types = ['Day', 'Week', 'Month'];
         $day_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
         $over_time = ["Yes","No"];
-        return view('admin.rota_template.create', compact("types", "day_list", "over_time"));
+        $remotely_work = ["Yes","No"];
+        return view('admin.rota_template.create', compact("types", "day_list", "over_time", "remotely_work"));
     }
 
     /**
@@ -135,6 +136,7 @@ class RotaTemplateController extends Controller
             $rota_template->types = $request->types;
             $rota_template->day_list = json_encode($request->day_list);
             $rota_template->over_time = $request->over_time;
+            $rota_template->remotely_work = $request->remotely_work;
             $rota_template->created_by = auth()->user()->id;
             $rota_template->updated_by = auth()->user()->id;
             $rota_template->save();
@@ -181,7 +183,8 @@ class RotaTemplateController extends Controller
         $types = ['Day', 'Week', 'Month'];
         $day_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
         $over_time = ["Yes","No"];
-        return view('admin.rota_template.edit', compact("rota_template", "types", "day_list", "over_time"));
+        $remotely_work = ["Yes","No"];
+        return view('admin.rota_template.edit', compact("rota_template", "types", "day_list", "over_time", "remotely_work"));
     }
 
     /**
@@ -211,6 +214,7 @@ class RotaTemplateController extends Controller
             $rota_template->types = $request->types;
             $rota_template->day_list = json_encode($request->day_list);
             $rota_template->over_time = $request->over_time;
+            $rota_template->remotely_work = $request->remotely_work;
             $rota_template->updated_by = auth()->user()->id;
             $rota_template->save();
 
@@ -246,103 +250,21 @@ class RotaTemplateController extends Controller
         // delete rota_template
         $rota_template->delete();
 
-        //return redirect('admin/rota_template')->with('success', 'rota_template deleted successfully.');
+        //return redirect('admin/rota_template')->with('delete', 'rota_template deleted successfully.');
         return response()->json([
-            'success' => 'rota template deleted successfully.' // for status 200
+            'delete' => 'rota template deleted successfully.' // for status 200
         ]);
     }
 
-
     /**
-     * Show the form for create_rota the specified resource.
+     * get data of the specified resource.
      *
      * @param  \App\Rota_template  $rota_template
      * @return \Illuminate\Http\Response
      */
-    public function create_rota(Request $request)
+    public function get_rota_template(Request $request)
     {
-        $rota_template = Rota_template::find($request->rota_template);
-        $types = ['Day', 'Week', 'Month'];
-        $day_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-        $over_time = ["Yes","No"];
-
-        if(!auth()->user()->hasRole('superadmin')){
-            $branch_id = auth()->user()->getBranchIdsAttribute();
-            $branches = Branch::whereIn('id',$branch_id)->get();
-        }else{
-            $branches = Branch::all();
-        }
-
-        return view('admin.rota_template.create_rota', compact("rota_template", "types", "day_list", "over_time", "branches"));
+        return Rota_template::find($request->id)->toJSON();
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Rota_template  $rota_template
-     * @return \Illuminate\Http\Response
-     */
-    public function run_create_rota(RotaStoreByRotaTemplateRequest $request)
-    {
-        try {
-
-            //loop by employee
-            foreach ($request->employee_id as $employee_id) {
-
-                //loop by two date
-                for($d = Carbon::parse($request->start_date); $d->lte(Carbon::parse($request->end_date)); $d->addDay()) {
-
-                    $start_date = $d;
-                    $start_time = $request->start_at;
-                    $end_time = $request->end_at;
-                    
-                    if($start_time>$end_time){
-                       $end_date = $d->addDays(1); 
-                    }else{
-                       $end_date = $start_date;  
-                    }
-
-                    $max_start_at = $request->max_start_at;
-                    $break_time = $request->break_time;
-                    $over_time = $request->over_time;
-                    $rota_template_id = $request->rota_template; 
-
-                    $rota = new Rota();
-                    $rota->start_date = $start_date;
-                    $rota->start_time = $start_time;
-                    $rota->end_date = $end_date;
-                    $rota->end_time = $end_time;
-                    $rota->max_start_time = $max_start_at;
-                    $rota->break_time = $break_time;
-                    $rota->over_time = $over_time;
-                    $rota->user_id = $employee_id;
-                    $rota->rota_template_id = $rota_template_id;
-                    $rota->created_by = auth()->user()->id;
-                    $rota->updated_by = auth()->user()->id;
-                    $rota->save();
-
-                } 
-
-            }
-
-            //Session::flash('success', 'A rota_template updated successfully.');
-            //return redirect('admin/rota_template');
-
-            return response()->json([
-                'success' => 'rota create successfully.' // for status 200
-            ]);
-
-        } catch (\Exception $exception) {
-
-            DB::rollBack();
-
-            //Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
-            /*return redirect()->back()->withInput($request->all());*/
-
-            return response()->json([
-                'error' => $exception->getMessage() . ' ' . $exception->getLine() // for status 200
-            ]);
-        }
-    }
+    
 }

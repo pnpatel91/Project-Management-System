@@ -65,4 +65,12 @@ class Branch extends Model
     {
         return $this->hasMany(Leave::class);
     }
+
+    /**
+     * Get all of the rotas for the branch.
+     */
+    public function rotas()
+    {
+        return $this->hasMany(Rota::class);
+    }
 }

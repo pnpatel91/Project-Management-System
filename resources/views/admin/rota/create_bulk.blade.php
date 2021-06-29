@@ -15,7 +15,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('admin.rota_template.run_create_rota', ['rota_template' => $rota_template->id]) }}" method="put"  id="popup-form" >
+                    <form action="{{ route('admin.rota.store_bulk', ['rota_template' => $rota_template->id]) }}" method="put"  id="popup-form" >
                         @csrf
                         @method('PUT')
                         <!-- <div class="form-group">
@@ -91,6 +91,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Remotely Work</label>
+                            <select class="form-control select2" id="remotely_work" name="remotely_work" required autocomplete="remotely_work">
+                                <option></option>
+                                @foreach ($remotely_work as $remotely_work)
+                                    <option value="{{ $remotely_work }}" @if($remotely_work==$rota_template->remotely_work) selected @endif>{{ $remotely_work }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>Over Time</label>
                             <select class="form-control select2" id="over_time" name="over_time" required autocomplete="over_time">
                                 <option></option>
@@ -98,6 +108,11 @@
                                     <option value="{{ $over_time }}" @if($over_time==$rota_template->over_time) selected @endif>{{ $over_time }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea id="notes" name="notes" class="form-control" required maxlength="5" autofocus></textarea>  
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
@@ -201,5 +216,8 @@
 
     end_date_value();
 
+
+    //CKEDITOR for notes
+    CKEDITOR.replace( 'notes' );
 </script>
 @endsection

@@ -15,7 +15,7 @@ class Rota extends Model
      * @var array
      */
     protected $fillable = [
-        'start_at', 'end_at', 'max_start_at', 'break_time', 'over_time', 'user_id', 'rota_templates_id', 'created_by', 'updated_by'
+        'start_date', 'start_time', 'end_date', 'end_time', 'max_start_time', 'break_time', 'over_time', 'remotely_work', 'branch_id', 'notes', 'user_id', 'rota_templates_id', 'created_by', 'updated_by'
     ];
 
     /**
@@ -37,6 +37,13 @@ class Rota extends Model
      */
     public function employee(){
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    /**
+     * Get the last rota_templates of this rota.
+     */
+    public function branch(){
+        return $this->belongsTo(Branch::class,'branch_id');
     }
 
     /**

@@ -23,6 +23,7 @@ class CreateRotaTemplatesTable extends Migration
             $table->json('day_list')->comment('Day list')->nullable();
             $table->enum('types', ['Day', 'Week', 'Month'])->comment('Day, Week, Month')->default('Day');
             $table->enum('over_time', ['Yes', 'No'])->comment('Yes, No')->default('No');
+            $table->enum('remotely_work', ['Yes', 'No'])->default('No');
             $table->unsignedBigInteger('created_by')->index();
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();

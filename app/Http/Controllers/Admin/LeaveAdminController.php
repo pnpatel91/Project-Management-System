@@ -328,9 +328,9 @@ class LeaveAdminController extends Controller
         // delete branch
         $leave->delete();
 
-        //return redirect('admin/branch')->with('success', 'branch deleted successfully.');
+        //return redirect('admin/branch')->with('delete', 'branch deleted successfully.');
         return response()->json([
-            'success' => 'leave deleted successfully.' // for status 200
+            'delete' => 'leave deleted successfully.' // for status 200
         ]);
     }
 }

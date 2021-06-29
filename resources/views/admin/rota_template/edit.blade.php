@@ -63,6 +63,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Remotely Work</label>
+                            <select class="form-control select2" id="remotely_work" name="remotely_work" required autocomplete="remotely_work">
+                                <option></option>
+                                @foreach ($remotely_work as $remotely_work)
+                                    <option value="{{ $remotely_work }}" @if($remotely_work==$rota_template->remotely_work) selected @endif>{{ $remotely_work }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>Over Time</label>
                             <select class="form-control select2" id="over_time" name="over_time" required autocomplete="over_time">
                                 <option></option>

@@ -225,9 +225,9 @@ class DepartmentController extends Controller
         // delete department
         $department->delete();
 
-        //return redirect('admin/department')->with('success', 'department deleted successfully.');
+        //return redirect('admin/department')->with('delete', 'department deleted successfully.');
         return response()->json([
-            'success' => 'department & users deleted successfully.' // for status 200
+            'delete' => 'department & users deleted successfully.' // for status 200
         ]);
     }
 }

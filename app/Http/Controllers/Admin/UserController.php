@@ -123,9 +123,9 @@ class UserController extends Controller
         $user->branches()->detach();
         $user->departments()->detach();
         $user->delete();
-        //return redirect()->route('admin.user.index')->with('success', 'A user was deleted.');
+        //return redirect()->route('admin.user.index')->with('delete', 'A user was deleted.');
         return response()->json([
-            'success' => 'A team member was deleted successfully.' // for status 200
+            'delete' => 'A team member was deleted successfully.' // for status 200
         ]);
     }
 

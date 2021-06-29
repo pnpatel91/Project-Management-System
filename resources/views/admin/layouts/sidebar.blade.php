@@ -141,6 +141,15 @@
                             </a>
                         </li>
                         @endcan 
+
+                        @can('view rota')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/rota') }}" class="nav-link {{ Route::is('admin.rota.*') || Route::is('admin.rota.*')  ? 'active' : '' }}">
+                                <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
+                                <p>Rota</p>
+                            </a>
+                        </li>
+                        @endcan 
                         
 
                         @if(auth()->user()->hasRole('superadmin'))

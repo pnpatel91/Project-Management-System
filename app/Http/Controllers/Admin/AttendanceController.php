@@ -366,9 +366,9 @@ class AttendanceController extends Controller
         // delete attendance
         $attendance->delete();
 
-        //return redirect('admin/attendance')->with('success', 'attendance deleted successfully.');
+        //return redirect('admin/attendance')->with('delete', 'attendance deleted successfully.');
         return response()->json([
-            'success' => 'Attendance deleted successfully.' // for status 200
+            'delete' => 'Attendance deleted successfully.' // for status 200
         ]);
     }
 

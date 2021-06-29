@@ -22,13 +22,17 @@ class CreateRotasTable extends Migration
             $table->time('max_start_time')->comment('max shift start time')->useCurrent = true;
             $table->integer('break_time')->comment('Shift Break Time In Minutes')->default('0');
             $table->enum('over_time', ['Yes', 'No'])->default('No');
+            $table->enum('remotely_work', ['Yes', 'No'])->default('No');
             $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('branch_id')->index();
             $table->unsignedBigInteger('rota_template_id')->index()->nullable();
+            $table->text('notes')->nullable();
             $table->unsignedBigInteger('created_by')->index();
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('rota_template_id')->references('id')->on('rota_templates')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
@@ -44,6 +48,7 @@ class CreateRotasTable extends Migration
     {
         Schema::table('rotas', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
+            $table->dropForeign(['branch_id']);
             $table->dropForeign(['rota_template_id']);
             $table->dropForeign(['created_by']);
             $table->dropForeign(['updated_by']);

@@ -22,6 +22,7 @@ class RotaTemplateSeeder extends Seeder
         $Rota_template->day_list = json_encode(["Monday","Tuesday","Wednesday","Thursday","Friday"]);
         $Rota_template->types = "Week";
         $Rota_template->over_time = "No";
+        $Rota_template->remotely_work = "No";
         $Rota_template->created_by = 1;
         $Rota_template->updated_by = 1;
         $Rota_template->save();

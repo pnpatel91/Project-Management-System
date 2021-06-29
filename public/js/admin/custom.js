@@ -22,9 +22,18 @@ function alert_message(message) {
         var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         $('#error_message').html(messageHtml);
         $('#message').html(messageHtml);
+        Swal.fire({icon: 'Success', title: 'Success!', text: message.success })
+
+    }else if(typeof(message.delete) != "undefined" && message.delete !== null) {
+        var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Delete: </strong> '+ message.delete +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        $('#error_message').html(messageHtml);
+        $('#message').html(messageHtml);
+        Swal.fire({ icon: 'delete', title: 'Delete!', text: message.delete })
+
     } else if(typeof(message.error) != "undefined" && message.error !== null){
         var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         $('#message').html(messageHtml);
+        Swal.fire({ icon: 'error',  title: 'Oops...', text: message.error})
     }
     
 }
@@ -44,18 +53,33 @@ $(document).ready(function () {
                     $("#popup-modal").modal('hide');
                     var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
                     $('#message').html(messageHtml);
+
                     $("#navbar_current_Status").load(location.href+" #navbar_current_Status>*","");// after new attendance create. reload navbar_current_Status div
                     setTimeout(function() {   //calls click event after a certain time
                         datatables();
                         getLocationNavbar(); // after new attendance create. reload navbar_current_Status div
                         $("#pageloader").hide();
+                        Swal.fire({ icon: 'Success', title: 'Success!', text: message.success})
+                    }, 1000);
+                } else if(typeof(message.delete) != "undefined" && message.delete !== null) {
+                    $("#popup-modal").modal('hide');
+                    var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Delete: </strong> '+ message.delete +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                    $('#message').html(messageHtml);
+                    $("#navbar_current_Status").load(location.href+" #navbar_current_Status>*","");// after new attendance create. reload navbar_current_Status div
+                    setTimeout(function() {   //calls click event after a certain time
+                        datatables();
+                        getLocationNavbar(); // after new attendance create. reload navbar_current_Status div
+                        $("#pageloader").hide();
+                        Swal.fire({ icon: 'delete', title: 'Delete!', text: message.delete })
                     }, 1000);
                 } else if(typeof(message.error) != "undefined" && message.error !== null){
                     var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
                     $('#error_message').html(messageHtml);
+                    
                     setTimeout(function() {   //calls click event after a certain time
                         datatables();
                         $("#pageloader").hide();
+                        Swal.fire({ icon: 'error', title: 'Oops...', text: message.error})
                     }, 1000);
                 }
             },
@@ -80,25 +104,38 @@ $(document).ready(function () {
 $(document).ready(function () {
     $(document).on('submit','.delete-form',function(e){
         e.preventDefault();
-        var confirm_delete = confirm("Are you sure want to delete it?");
-        if (confirm_delete == true) {
-            $("#pageloader").fadeIn();
-            var url = $(this).attr('action');
-            $.ajax({
-                method: "POST",
-                url: url,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: $(this).serialize(),
-                success: function(message){
-                    alert_message(message);
-                    setTimeout(function() {   //calls click event after a certain time
-                        datatables();
-                        $("#pageloader").hide();
-                    }, 1000);
-                },
-            });
-        }
-        return confirm_delete;
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        swal({
+            title: "Delete?",
+            text: "Are you sure want to delete it?",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: !0
+        }).then(function (r) {
+            if (r.value === true) {
+                $("#pageloader").fadeIn();
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: data,
+                    success: function(message){
+                        setTimeout(function() {   //calls click event after a certain time
+                            datatables();
+                            $("#pageloader").hide();
+                            alert_message(message);
+                        }, 1000);
+                    },
+                });
+            } else {
+                r.dismiss;
+            }
+        }, function (dismiss) {
+            return false;
+        })
     }); 
 });
 

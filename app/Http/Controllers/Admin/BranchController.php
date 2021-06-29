@@ -255,9 +255,9 @@ class BranchController extends Controller
         // delete branch
         $branch->delete();
 
-        //return redirect('admin/branch')->with('success', 'branch deleted successfully.');
+        //return redirect('admin/branch')->with('delete', 'branch deleted successfully.');
         return response()->json([
-            'success' => 'branch deleted successfully.' // for status 200
+            'delete' => 'branch deleted successfully.' // for status 200
         ]);
     }
 }
