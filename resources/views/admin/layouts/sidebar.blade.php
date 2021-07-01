@@ -144,12 +144,19 @@
 
                         @can('view rota')
                         <li class="nav-item">
-                            <a href="{{ url('admin/rota') }}" class="nav-link {{ Route::is('admin.rota.*') || Route::is('admin.rota.*')  ? 'active' : '' }}">
+                            <a href="{{ url('admin/rota') }}" class="nav-link {{ Route::is('admin.rota.*') && !Route::is('admin.rota.employee')  ? 'active' : '' }}">
                                 <i class="fas fa-calendar-alt nav-icon"></i>
-                                <p>Rota</p>
+                                <p>Rota - Admin</p>
                             </a>
                         </li>
                         @endcan 
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/rota/employee') }}" class="nav-link {{ Route::is('admin.rota.employee') ? 'active' : '' }}">
+                                <i class="fas fa-calendar-alt nav-icon"></i>
+                                <p>Rota - Employee</p>
+                            </a>
+                        </li>
                         
 
                         @if(auth()->user()->hasRole('superadmin'))

@@ -42,16 +42,6 @@
                     <div class="col-md-12">
                         <div class="form-row" id="search"> 
 
-                            <div class="form-group col-md-6">
-                                <span tooltip="search by default all employees" flow="right">search by users <i class="fas fa-info-circle"></i></span>
-                                <select class="select2 form-control" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
-                                    <option value="All">All</option>
-                                    @foreach ($users as $key => $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
                             <div class="form-group col-md-3">
                                 <span>search by rota date</span>
                                 <input class="search-area form-control" type="text" name="datefilter" id="daterange" value="" />  
@@ -63,7 +53,18 @@
 
                         </div>
                         <div class="table-responsive" id="ajax_table_data">
-
+                            <table class="table table-hover dataTable no-footer" id="table" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Date</th>
+                                    <th>End Time</th>
+                                    <th class="noExport">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
 
                     </div>
@@ -86,65 +87,7 @@ function datatables() {
     });
 }
 
-$(document).ready(function () {
-
-    $('body').on('click', '#popup-modal-button-rota', function(event) {
-        event.preventDefault();
-        var url = $(this).attr('href');
-        $.ajax({
-            url: url,
-            dataType: 'html',
-            success: function(response) {
-                $('#popup-modal-body').html(response);
-            },
-            error: function (data){
-                    console.log(data);
-            }
-        });
-
-        $('#popup-modal').modal('show');
-    });
-
-
-    $(document).on('submit','.delete-form-rota',function(e){
-        e.preventDefault();
-        var url = $(this).attr('action');
-        var data = $(this).serialize();
-        swal({
-            title: "Delete?",
-            text: "Are you sure want to delete it?",
-            type: "warning",
-            showCancelButton: !0,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: !0
-        }).then(function (r) {
-            if (r.value === true) {
-                $("#pageloader").fadeIn();
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    data: data,
-                    success: function(message){
-                        setTimeout(function() {   //calls click event after a certain time
-                            load_table_data();
-                            //$("#pageloader").hide();
-                            alert_message(message);
-                        }, 1000);
-                    },
-                });
-            } else {
-                r.dismiss;
-            }
-        }, function (dismiss) {
-            return false;
-        })
-    }); 
-});
-
-
- $('input[name="datefilter"]').daterangepicker({
+$('input[name="datefilter"]').daterangepicker({
         ranges: {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -165,13 +108,12 @@ function load_table_data() {
     $("#pageloader").fadeIn();
     $('#ajax_table_data').html('');
     $.ajax({
-        url:  '{{ route('admin.rota.ajax.table') }}',
+        url:  '{{ route('admin.rota.ajax.table_employee') }}',
         dataType: 'html',
         data: {
             "_token": "{{ csrf_token() }}",
             "startDate": date[0],
-            "endDate": date[1],
-            "employee": $('#user_id').val(),
+            "endDate": date[1]
         },
         success: function(response) {
             $('#ajax_table_data').html(response);
@@ -184,11 +126,6 @@ function load_table_data() {
     });
 }
 load_table_data();
-
-$("#user_id").select2({
-  placeholder: "select multiple employee",
-  allowClear: false
-});
 </script>
 @endsection
 

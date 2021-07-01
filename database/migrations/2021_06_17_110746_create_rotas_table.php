@@ -26,7 +26,8 @@ class CreateRotasTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('branch_id')->index();
             $table->unsignedBigInteger('rota_template_id')->index()->nullable();
-            $table->text('notes')->nullable();
+            $table->text('notes')->nullable()->comment('Admin or Employer Notes');
+            $table->text('employee_notes')->nullable()->comment('Employee Notes');
             $table->unsignedBigInteger('created_by')->index();
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();

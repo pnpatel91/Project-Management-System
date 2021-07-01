@@ -74,7 +74,13 @@ Route::group([
     Route::get('rota/ajax/table', 'RotaController@table')->name('rota.ajax.table');
     Route::get('rota/create_single_rota/{user_id}/{date}', 'RotaController@create_single_rota')->name('rota.create_single_rota');
     Route::put('rota/store_single_rota', 'RotaController@store_single_rota')->name('rota.store_single_rota');
+    Route::get('rota/employee', 'RotaController@index_employee')->name('rota.employee');
+    Route::get('rota/ajax/table_employee', 'RotaController@table_employee')->name('rota.ajax.table_employee');
+    Route::get('rota/edit_employee', 'RotaController@edit_employee')->name('rota.edit_employee');
+    Route::put('rota/update_employee', 'RotaController@update_employee')->name('rota.update_employee');
     Route::resource('rota', 'RotaController')->parameters(['rota' => 'rota']);
+
+
 
 });
 

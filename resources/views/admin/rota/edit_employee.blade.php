@@ -15,10 +15,10 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('admin.rota.update', ['rota' => $rota->id]) }}" method="put"  id="popup-form-rota" >
+                    <form action="{{ route('admin.rota.update_employee', ['rota' => $rota->id]) }}" method="put"  id="popup-form-rota" >
                         @csrf
                         @method('PUT')
-                        <div class="form-group d-flex justify-content-center mt-4">
+                        <div class="form-group mt-4">
                             <!-- <label>Employee</label> -->
                             <div class="user-add-shedule-list">
                                 <h2 class="table-avatar">
@@ -30,69 +30,44 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Company - Branch</label>
-                            <select class="form-control select2" id="branch_id" name="branch_id" required autocomplete="branch_id">
-                                <option></option>
-                                @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}" {{ $rota->branch_id ? 'selected="selected"' : '' }}>{{ $branch->company->name .' - '. $branch->name}}</option>
-                                @endforeach
-                            </select>
+                            <label>Company - Branch :</label> {{ $rota->branch->name}}
                         </div>
 
                         <div class="form-group">
-                            <label>Start Date</label>
-                            <input type='text' class="form-control datepicker" id='start_date' name="start_date" value="{{Carbon\Carbon::parse($rota->start_date)->format('Y-m-d')}}" required min={{date('Y-m-d')}} readonly />
+                            <label>Start Date & Time :</label> {{Carbon\Carbon::parse($rota->start_date)->format('Y-m-d')}} {{Carbon\Carbon::parse($rota->start_time)->format('H:i')}}
                         </div>
 
                         <div class="form-group">
-                            <label>Start At</label>
-                            <input type='time' class="form-control" id='start_at' name="start_at" value="{{$rota->start_time}}" required />
+                            <label>End Date & Time :</label> {{Carbon\Carbon::parse($rota->end_date)->format('Y-m-d')}} {{Carbon\Carbon::parse($rota->end_time)->format('H:i')}}
                         </div>
 
                         <div class="form-group">
-                            <label>Max Start At</label>
-                            <input type='time' class="form-control" id='max_start_at' name="max_start_at" value="{{$rota->max_start_time}}" required />
-                        </div>
-                        <div class="form-group">
-                            <label>End Date</label>
-                            <input type='text' class="form-control datepicker" id='end_date' name="end_date" value="{{Carbon\Carbon::parse($rota->end_date)->format('Y-m-d')}}" required min={{date('Y-m-d')}} readonly />
-                        </div>
-                        <div class="form-group">
-                            <label>End At</label>
-                            <input type='time' class="form-control" id='end_at' name="end_at" value="{{$rota->end_time}}" required />
+                            <label>Max Start At :</label> {{Carbon\Carbon::parse($rota->max_start_time)->format('H:i')}}
                         </div>
 
                         <div class="form-group">
-                            <label>Break Time <span class="tooltipfontsize" tooltip="break time in minutes" flow="right"><i class="fas fa-info-circle"></i></span></label>
-                            <input type='number' class="form-control" id='break_time' name="break_time" value="{{$rota->break_time}}" min="0" max="120" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" required />
+                            <label>Break Time :</label> {{$rota->break_time}} minutes
                         </div>
 
                         <div class="form-group">
-                            <label>Remotely Work</label>
-                            <select class="form-control select2" id="remotely_work" name="remotely_work" required autocomplete="remotely_work">
-                                <option></option>
-                                @foreach ($remotely_work as $remotely_work)
-                                    <option value="{{ $remotely_work }}" {{ $rota->remotely_work ? 'selected="selected"' : '' }}>{{ $remotely_work }}</option>
-                                @endforeach
-                            </select>
+                            <label>Location :</label> @if($rota->remotely_work=='No')
+                                                {{$rota->branch->name}} - {{$rota->branch->address}}, {{$rota->branch->city}}, {{$rota->branch->state}}, {{$rota->branch->postcode}}, {{$rota->branch->country}}
+                                            @else
+                                                Remotely Work
+                                            @endif
                         </div>
 
                         <div class="form-group">
-                            <label>Over Time</label>
-                            <select class="form-control select2" id="over_time" name="over_time" required autocomplete="over_time">
-                                <option></option>
-                                @foreach ($over_time as $over_time)
-                                    <option value="{{ $over_time }}" {{ $rota->over_time ? 'selected="selected"' : '' }}>{{ $over_time }}</option>
-                                @endforeach
-                            </select>
+                            <label>Over Time :</label> {{ $rota->over_time }}
                         </div>
+
                         <div class="form-group">
-                            <label>Employee Notes :</label> {!!$rota->employee_notes?$rota->employee_notes : 'no notes from employee on this rota'!!}
+                            <label>Employer or Admin Notes :</label> {!!$rota->notes!!}
                         </div>
 
                         <div class="form-group">
                             <label>Your Notes</label>
-                            <textarea id="notes" name="notes" class="form-control" required maxlength="5" autofocus>{{$rota->notes}}</textarea>  
+                            <textarea id="employee_notes" name="employee_notes" class="form-control" required maxlength="5" autofocus>{{$rota->employee_notes}}</textarea>  
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
@@ -163,6 +138,6 @@
     });
 
     //CKEDITOR for notes
-    CKEDITOR.replace( 'notes' );
+    CKEDITOR.replace( 'employee_notes' );
 </script>
 @endsection

@@ -17,7 +17,7 @@
                             {{$notification->data['user_name']}}
                             <!-- <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span> -->
                         </h3>
-                        <p class="text-sm">{{$notification->data['text']}} <span class="noti-title">{{$notification->data['name']}}</span></p>
+                        <p class="text-sm">{{$notification->data['text']}} <!-- <span class="noti-title">{{$notification->data['name']}}</span> --></p>
                         <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{ $DashboardController::timeDiff($notification->created_at) }}</p>
                     </div>
                 </div>

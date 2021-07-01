@@ -171,7 +171,7 @@ class LeaveAdminController extends Controller
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
                     'receiver_name' => $receiver->name,
-                    'text' => 'added new'
+                    'text' => 'added new leave'
                 ];
 
                 Notification::send($receiver, new leavesNotification($leaveData));
@@ -286,7 +286,7 @@ class LeaveAdminController extends Controller
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
                     'receiver_name' => $receiver->name,
-                    'text' => 'your leave has been'
+                    'text' => 'your leave has been '.Str::lower($leave->status)
                 ];
 
                 Notification::send($receiver, new leavesNotification($leaveData));

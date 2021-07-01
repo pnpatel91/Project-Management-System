@@ -151,7 +151,7 @@ class LeaveEmployeeController extends Controller
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
                     'receiver_name' => $receiver->name,
-                    'text' => 'added new'
+                    'text' => 'added new leave'
                 ];
 
                 Notification::send($receiver, new leavesNotification($leaveData));

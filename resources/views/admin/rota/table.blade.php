@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th>Scheduled Shift</th>
-        @for($d = Carbon\Carbon::parse(Carbon\Carbon::today()); $d->lte(Carbon\Carbon::parse(Carbon\Carbon::today()->addDay(30))); $d->addDay())
+        @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
         <th>{{$d->format('Y-m-d')}}</th>
         @endfor
     </tr>
@@ -18,10 +18,9 @@
                     </h2>
                 </div>
             </td>
-            @for($d = Carbon\Carbon::parse(Carbon\Carbon::today()); $d->lte(Carbon\Carbon::parse(Carbon\Carbon::today()->addDay(30))); $d->addDay())
+             @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
             @php 
                 $rotas = \App\Rota::with('branch')->where('user_id',$user->id)->where('start_date',$d)->get();
-
             @endphp
             <td>
                 @if($rotas->count()!=0)

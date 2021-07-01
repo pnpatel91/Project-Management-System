@@ -12,6 +12,7 @@ use App\Leave;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RotaStoreByRotaTemplateRequest;
 use App\Traits\UploadTrait;
+use App\Notifications\rotasNotification;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,16 @@ class RotaController extends Controller
      */
     public function index()
     {
-        return view('admin.rota.index');
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $branches = Branch::whereIn('id',$branch_id)->get();
+            $users = User::whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
+        }else{
+            $branches = Branch::all();
+            $users = User::all();
+        }
+
+        return view('admin.rota.index', compact("users","branches"));
 
     }
 
@@ -44,22 +54,30 @@ class RotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function table()
+    public function table(Request $request)
     {
-        if(!auth()->user()->hasRole('superadmin')){
-            $branch_id = auth()->user()->getBranchIdsAttribute();
-            $users = User::whereHas('branches', function($q) use ($branch_id) { 
-                                    $q->where('branch_id', $branch_id); })
-                            ->get();
+        $startDate = $request->startDate ? $request->startDate :Carbon\Carbon::today();
+        $endDate = $request->endDate ? $request->endDate :Carbon\Carbon::today()->addDay(7);
+
+        if(!empty($request->employee)){
+            $users = User::whereIn('id',$request->employee)->get();
         }else{
-            $users = User::all();
+            if(!auth()->user()->hasRole('superadmin')){
+                $branch_id = auth()->user()->getBranchIdsAttribute();
+                $users = User::whereHas('branches', function($q) use ($branch_id) { 
+                                        $q->where('branch_id', $branch_id); })
+                                ->get();
+            }else{
+                $users = User::all();
+            } 
         }
-        return view('admin.rota.table', compact("users"));
+        
+        return view('admin.rota.table', compact("users","startDate","endDate"));
 
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource.[When Click '+'(create new) on rota.index then this funaction call]
      *
      * @return \Illuminate\Http\Response
      */
@@ -142,6 +160,27 @@ class RotaController extends Controller
                 $rota->created_by = auth()->user()->id;
                 $rota->updated_by = auth()->user()->id;
                 $rota->save();  
+
+                /*NOTIFICATION CREATE [START]*/
+                $sender = User::find(auth()->user()->id);
+                $receiver = User::find($employee_id);
+                $rotaData = [
+                    'name' => 'rota' ,
+                    'subject' => 'Rota Notification' ,
+                    'body' => 'You received a rota.',
+                    'thanks' => 'Thank you',
+                    'leaveUrl' => url('admin/rota/employee'),
+                    'id' => $rota->id,
+                    'employee_id' => $sender->id,
+                    'employee_name' => $sender->name,
+                    'receiver_name' => $receiver->name,
+                    'text' => 'You received a rota.',
+                ];
+
+                Notification::send($receiver, new rotasNotification($rotaData));
+                //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+                /*NOTIFICATION CREATE [END]*/
+
             }
 
             //Session::flash('success', 'A rota_template updated successfully.');
@@ -227,7 +266,27 @@ class RotaController extends Controller
             $rota->rota_template_id = $request->rota_template;
             $rota->notes = $request->notes;
             $rota->updated_by = auth()->user()->id;
-            $rota->save();  
+            $rota->save(); 
+
+            /*NOTIFICATION CREATE [START]*/
+            $sender = User::find(auth()->user()->id);
+            $receiver = User::find($employee_id);
+            $rotaData = [
+                'name' => 'rota' ,
+                'subject' => 'Rota Notification' ,
+                'body' => 'Your rota updated.',
+                'thanks' => 'Thank you',
+                'leaveUrl' => url('admin/rota/employee'),
+                'id' => $rota->id,
+                'employee_id' => $sender->id,
+                'employee_name' => $sender->name,
+                'receiver_name' => $receiver->name,
+                'text' => 'Your rota updated.',
+            ];
+
+            Notification::send($receiver, new rotasNotification($rotaData));
+            //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+            /*NOTIFICATION CREATE [END]*/ 
 
             //Session::flash('success', 'A rota updated successfully.');
             //return redirect('admin/rota');
@@ -341,9 +400,29 @@ class RotaController extends Controller
                         $rota->notes = $request->notes;
                         $rota->created_by = auth()->user()->id;
                         $rota->updated_by = auth()->user()->id;
-                        $rota->save();  
+                        $rota->save(); 
                     }
                 } 
+
+                /*NOTIFICATION CREATE [START]*/
+                $sender = User::find(auth()->user()->id);
+                $receiver = User::find($employee_id);
+                $rotaData = [
+                    'name' => 'rota' ,
+                    'subject' => 'Rota Notification' ,
+                    'body' => 'You received a rota.',
+                    'thanks' => 'Thank you',
+                    'leaveUrl' => url('admin/rota/employee'),
+                    'id' => 1, //Not reqiered 
+                    'employee_id' => $sender->id,
+                    'employee_name' => $sender->name,
+                    'receiver_name' => $receiver->name,
+                    'text' => 'added new rota'
+                ];
+
+                Notification::send($receiver, new rotasNotification($rotaData));
+                //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+                /*NOTIFICATION CREATE [END]*/ 
 
             }
 
@@ -367,5 +446,104 @@ class RotaController extends Controller
         }
     }
 
+    /*Employee Rota [Start]*/
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_employee()
+    {
+        return view('admin.rota.index_employee');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function table_employee(Request $request)
+    {
+        $startDate = $request->startDate ? $request->startDate :Carbon\Carbon::today();
+        $endDate = $request->endDate ? $request->endDate :Carbon\Carbon::today()->addDay(7);
+        $user = User::find(auth()->user()->id);
+        
+        return view('admin.rota.table_employee', compact("user","startDate","endDate"));
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit_employee(Request $request)
+    {
+        $over_time = ["Yes","No"];
+        $remotely_work = ["Yes","No"];
+        $user_id = auth()->user()->id;
+        $user = User::findOrFail($user_id);
+        $branches = Branch::with('company')->whereHas('users', function($q) use ($user_id) { $q->where('user_id', $user_id); })->get();
+        $rota = Rota::find($request->rota);
+        return view('admin.rota.edit_employee', compact("rota", "user", "over_time", "remotely_work", "branches"));
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Rota  $rota
+     * @return \Illuminate\Http\Response
+     */
+    public function update_employee(Request $request)
+    {
+        try {
+
+            $rota = Rota::find($request->rota);
+            $rota->employee_notes = $request->employee_notes;
+            $rota->updated_by = auth()->user()->id;
+            $rota->save(); 
+
+            /*NOTIFICATION CREATE [START]*/
+            $sender = User::find(auth()->user()->id);
+            $receiver = User::find($rota->created_by);
+            $rotaData = [
+                'name' => 'rota' ,
+                'subject' => 'Rota Notification' ,
+                'body' => 'updated rota notes by'.$sender->name.'. Please check date is '.$rota->start_date,
+                'thanks' => 'Thank you',
+                'leaveUrl' => url('admin/rota'),
+                'id' => $rota->id,
+                'employee_id' => $sender->id,
+                'employee_name' => $sender->name,
+                'receiver_name' => $receiver->name,
+                'text' => 'updated rota notes by'.$sender->name.'. Please check date is '.$rota->start_date,
+            ];
+
+            Notification::send($receiver, new rotasNotification($rotaData));
+            //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+            /*NOTIFICATION CREATE [END]*/ 
+
+            //Session::flash('success', 'A rota updated successfully.');
+            //return redirect('admin/rota');
+
+            return response()->json([
+                'success' => 'rota update successfully.' // for status 200
+            ]);
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            //Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
+            /*return redirect()->back()->withInput($request->all());*/
+
+            return response()->json([
+                'error' => $exception->getMessage() . ' ' . $exception->getLine() // for status 200
+            ]);
+        }
+    }
+    
 }
