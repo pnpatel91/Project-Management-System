@@ -34,8 +34,8 @@
                                 @if (auth()->user()->can('delete rota'))
                                        <form method="post" class="float-right delete-form-rota" action="{{route('admin.rota.destroy', ['rota' => $rota->id ])}}"><input type="hidden" name="_token" value="{{Session::token()}}"><input type="hidden" name="_method" value="delete"><button type="submit" class="close"  tooltip="Delete" flow="left"><i class="fas fa-trash"></i></button></form>
                                 @endif
-                                <span class="username-info m-b-10 mt-4">Start at - {{$rota->start_date}} {{$rota->start_time}}</span>
-                                <span class="username-info m-b-10">End at - {{$rota->end_date}} {{$rota->end_time}}</span>
+                                <span class="username-info m-b-10 mt-4">Start at - {{$rota->start_date}} {{Carbon\Carbon::parse($rota->start_time)->format('H:i')}}</span>
+                                <span class="username-info m-b-10">End at - {{$rota->end_date}} {{Carbon\Carbon::parse($rota->end_time)->format('H:i')}}</span>
                                 <?php 
                                 $end_date_time=Carbon\Carbon::parse($rota->end_date.' '.$rota->end_time);
                                 $start_date_time=Carbon\Carbon::parse($rota->start_date.' '.$rota->start_time);

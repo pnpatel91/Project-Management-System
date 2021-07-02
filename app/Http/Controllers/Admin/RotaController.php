@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RotaStoreByRotaTemplateRequest;
 use App\Traits\UploadTrait;
 use App\Notifications\rotasNotification;
+use App\Mail\RotasNotificationMail;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -169,7 +170,7 @@ class RotaController extends Controller
                     'subject' => 'Rota Notification' ,
                     'body' => 'You received a rota.',
                     'thanks' => 'Thank you',
-                    'leaveUrl' => url('admin/rota/employee'),
+                    'rotaUrl' => url('admin/rota/employee'),
                     'id' => $rota->id,
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
@@ -178,7 +179,7 @@ class RotaController extends Controller
                 ];
 
                 Notification::send($receiver, new rotasNotification($rotaData));
-                //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+                Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
                 /*NOTIFICATION CREATE [END]*/
 
             }
@@ -274,9 +275,9 @@ class RotaController extends Controller
             $rotaData = [
                 'name' => 'rota' ,
                 'subject' => 'Rota Notification' ,
-                'body' => 'Your rota updated.',
+                'body' => 'Your rota updated.'. $this->mailBody($employee_id),
                 'thanks' => 'Thank you',
-                'leaveUrl' => url('admin/rota/employee'),
+                'rotaUrl' => url('admin/rota/employee'),
                 'id' => $rota->id,
                 'employee_id' => $sender->id,
                 'employee_name' => $sender->name,
@@ -285,7 +286,7 @@ class RotaController extends Controller
             ];
 
             Notification::send($receiver, new rotasNotification($rotaData));
-            //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+            Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
             /*NOTIFICATION CREATE [END]*/ 
 
             //Session::flash('success', 'A rota updated successfully.');
@@ -410,9 +411,9 @@ class RotaController extends Controller
                 $rotaData = [
                     'name' => 'rota' ,
                     'subject' => 'Rota Notification' ,
-                    'body' => 'You received a rota.',
+                    'body' => 'You received a rota.'. $this->mailBody($employee_id),
                     'thanks' => 'Thank you',
-                    'leaveUrl' => url('admin/rota/employee'),
+                    'rotaUrl' => url('admin/rota/employee'),
                     'id' => 1, //Not reqiered 
                     'employee_id' => $sender->id,
                     'employee_name' => $sender->name,
@@ -421,7 +422,7 @@ class RotaController extends Controller
                 ];
 
                 Notification::send($receiver, new rotasNotification($rotaData));
-                //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+                Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
                 /*NOTIFICATION CREATE [END]*/ 
 
             }
@@ -465,8 +466,8 @@ class RotaController extends Controller
      */
     public function table_employee(Request $request)
     {
-        $startDate = $request->startDate ? $request->startDate :Carbon\Carbon::today();
-        $endDate = $request->endDate ? $request->endDate :Carbon\Carbon::today()->addDay(7);
+        $startDate = $request->startDate ? $request->startDate :Carbon::today();
+        $endDate = $request->endDate ? $request->endDate :Carbon::today()->addDay(7);
         $user = User::find(auth()->user()->id);
         
         return view('admin.rota.table_employee', compact("user","startDate","endDate"));
@@ -514,7 +515,7 @@ class RotaController extends Controller
                 'subject' => 'Rota Notification' ,
                 'body' => 'updated rota notes by'.$sender->name.'. Please check date is '.$rota->start_date,
                 'thanks' => 'Thank you',
-                'leaveUrl' => url('admin/rota'),
+                'rotaUrl' => url('admin/rota'),
                 'id' => $rota->id,
                 'employee_id' => $sender->id,
                 'employee_name' => $sender->name,
@@ -523,7 +524,7 @@ class RotaController extends Controller
             ];
 
             Notification::send($receiver, new rotasNotification($rotaData));
-            //Mail::to($receiver->email)->send(new rotasNotificationMail($rotaData));
+            Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
             /*NOTIFICATION CREATE [END]*/ 
 
             //Session::flash('success', 'A rota updated successfully.');
@@ -544,6 +545,14 @@ class RotaController extends Controller
                 'error' => $exception->getMessage() . ' ' . $exception->getLine() // for status 200
             ]);
         }
+    }
+
+    function mailBody($user_id){
+        $startDate = Carbon::today();
+        $endDate = Carbon::today()->addDay(7);
+        $user = User::find($user_id);
+        return view('admin.rota.mail_body', compact("user","startDate","endDate"));
+
     }
     
 }

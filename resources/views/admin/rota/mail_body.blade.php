@@ -1,24 +1,22 @@
 <table class="table table-striped custom-table datatable" id="table" width="100%">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Start Date & Time</th>
-        <th>End Date & Time</th>
-        <th>Break Time</th>
-        <th>Location</th>
-        <th>Action</th>
-    </tr>
-    </thead>
     <tbody>
+    <tr>
+        <td>Date</td>
+        <td>Start Date & Time</td>
+        <td>End Date & Time</td>
+        <td>Break Time</td>
+        <td>Location</td>
+    </tr>
         @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
             @php 
                 $rotas = \App\Rota::with('branch')->where('user_id',$user->id)->where('start_date',$d)->get();
             @endphp
-        <tr>
+        
             @if($rotas->count()!=0)
                 @foreach($rotas as $rota)
+                <tr>
                     <td>
-                        <a href="{{ route('admin.rota.edit_employee', ['rota' => $rota->id]) }}" class="float-left ml-2"  id="popup-modal-button">{{$d->format('Y-m-d')}}</a>
+                        {{$d->format('Y-m-d')}}
                     </td>
                     <td>
                         {{$rota->start_date}} {{Carbon\Carbon::parse($rota->start_time)->format('H:i')}}
@@ -31,23 +29,22 @@
                     </td>
                     <td class=" col-md-3">
                         @if($rota->remotely_work=='No')
-                            <span class="username-info m-b-10">{{$rota->branch->name}} - {{$rota->branch->address}}, {{$rota->branch->city}}, {{$rota->branch->state}}, {{$rota->branch->postcode}}, {{$rota->branch->country}}</span>
+                            {{$rota->branch->name}}
                         @else
-                            <span class="username-info m-b-10">Remotely Work</span>
+                            Remotely Work
                         @endif
                     </td>
-                    <td>
-                        <a href="{{ route('admin.rota.edit_employee', ['rota' => $rota->id]) }}" class="float-left ml-2"  id="popup-modal-button"><span tooltip="Edit" flow="left"><i class="fas fa-edit"></i> Edit Notes</span></a>
-                    </td>
-                    
+                </tr>     
                 @endforeach
             @else
+            <tr>
                 <td>
                     {{$d->format('Y-m-d')}}
                 </td>
-                <td></td><td></td><td>No Scheduled</td><td></td><td></td>
+                <td colspan="4">No Scheduled</td>
+            </tr> 
             @endif
-        </tr> 
+        
         @endfor
     </tbody>
 </table>

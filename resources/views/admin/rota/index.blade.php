@@ -40,10 +40,10 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="col-md-12">
-                        <div class="form-row" id="search"> 
+                        <div class="form-row pt-3" id="search"> 
 
                             <div class="form-group col-md-6">
-                                <span tooltip="search by default all employees" flow="right">search by users <i class="fas fa-info-circle"></i></span>
+                                <span tooltip="search by default all employees" flow="right">Search by users <i class="fas fa-info-circle"></i></span>
                                 <select class="select2 form-control" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
                                     <option value="All">All</option>
                                     @foreach ($users as $key => $user)
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="form-group col-md-3">
-                                <span>search by rota date</span>
+                                <span>Search by rota date</span>
                                 <input class="search-area form-control" type="text" name="datefilter" id="daterange" value="" />  
                             </div>
 
@@ -188,6 +188,53 @@ load_table_data();
 $("#user_id").select2({
   placeholder: "select multiple employee",
   allowClear: false
+});
+
+$(document).ready(function () {
+    $(document).on('submit','#popup-form-rota',function(e){
+        e.preventDefault();
+        var url = $(this).attr('action');
+        $("#pageloader").fadeIn();
+        $.ajax({
+            method: "POST",
+            url: url,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: $(this).serialize(),
+            success: function(message){
+                if(typeof(message.success) != "undefined" && message.success !== null) {
+                    $("#popup-modal").modal('hide');
+                    var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                    $('#message').html(messageHtml);
+                    setTimeout(function() {   //calls click event after a certain time
+                        load_table_data();
+                        Swal.fire({ icon: 'Success', title: 'Success!', text: message.success})
+                        $("#pageloader").hide();
+                    }, 1000);
+                } else if(typeof(message.error) != "undefined" && message.error !== null){
+                    var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                    $('#error_message').html(messageHtml);
+                    setTimeout(function() {   //calls click event after a certain time
+                        load_table_data();
+                        $("#pageloader").hide();
+                    }, 1000);
+                }
+            },
+            error: function(message){
+                if(typeof(message.responseJSON.errors) != "undefined" && message.responseJSON.errors !== null){
+                    var errors = message.responseJSON.errors;
+                    $.each(errors, function (key, val) {
+                        var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+val[0]+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+                        $('#error_message').append(messageHtml);
+                    });
+                    
+                    setTimeout(function() {   //calls click event after a certain time
+                        load_table_data();
+                        $("#pageloader").hide();
+                    }, 1000);
+                }
+            },
+        });
+    }); 
 });
 </script>
 @endsection

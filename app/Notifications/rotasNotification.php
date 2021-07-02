@@ -44,7 +44,7 @@ class rotasNotification extends Notification
         return (new MailMessage)                    
                     ->greeting($this->rotaData['name'])
                     ->line($this->rotaData['body'])
-                    ->action($this->rotaData['text'], $this->rotaData['leaveUrl'])
+                    ->action($this->rotaData['text'], $this->rotaData['rotaUrl'])
                     ->line($this->rotaData['thanks']);
     }
 
@@ -63,7 +63,7 @@ class rotasNotification extends Notification
             'user_id' => $this->rotaData['employee_id'],
             'user_name' => $this->rotaData['employee_name'],
             'receiver_name' => $this->rotaData['receiver_name'],
-            'actionUrl'=> $this->rotaData['leaveUrl']
+            'actionUrl'=> $this->rotaData['rotaUrl']
         ];
     }
 }

@@ -89,54 +89,6 @@
         }); //valdate end
     }); //function end
 
-    $(document).ready(function () {
-        $(document).on('submit','#popup-form-rota',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            $("#pageloader").fadeIn();
-            $.ajax({
-                method: "POST",
-                url: url,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: $(this).serialize(),
-                success: function(message){
-                    if(typeof(message.success) != "undefined" && message.success !== null) {
-                        $("#popup-modal").modal('hide');
-                        var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                        $('#message').html(messageHtml);
-                        $("#navbar_current_Status").load(location.href+" #navbar_current_Status>*","");// after new attendance create. reload navbar_current_Status div
-                        setTimeout(function() {   //calls click event after a certain time
-                            load_table_data();
-                            getLocationNavbar(); // after new attendance create. reload navbar_current_Status div
-                            $("#pageloader").hide();
-                        }, 1000);
-                    } else if(typeof(message.error) != "undefined" && message.error !== null){
-                        var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                        $('#error_message').html(messageHtml);
-                        setTimeout(function() {   //calls click event after a certain time
-                            datatables();
-                            $("#pageloader").hide();
-                        }, 1000);
-                    }
-                },
-                error: function(message){
-                    if(typeof(message.responseJSON.errors) != "undefined" && message.responseJSON.errors !== null){
-                        var errors = message.responseJSON.errors;
-                        $.each(errors, function (key, val) {
-                            var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+val[0]+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                            $('#error_message').append(messageHtml);
-                        });
-                        
-                        setTimeout(function() {   //calls click event after a certain time
-                            datatables();
-                            $("#pageloader").hide();
-                        }, 1000);
-                    }
-                },
-            });
-        }); 
-    });
-
     //CKEDITOR for notes
     CKEDITOR.replace( 'employee_notes' );
 </script>

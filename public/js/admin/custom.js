@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('body').on('click', '#popup-modal-button', function(event) {
+        $('#popup-modal-body').html('');
         event.preventDefault();
         var url = $(this).attr('href');
         $.ajax({

@@ -79,7 +79,7 @@ div.dataTables_wrapper div.dataTables_paginate {
   }
   [tooltip] {
     position: relative; /* opinion 1 */
-    font-size: 13px !important;
+    font-size: 15px !important;
   }
 
   /* Applies to all tooltips */
@@ -571,6 +571,14 @@ ul.notification-list > li a {
 
 .delete-form-rota{
     margin-top: 2px;
+}
+
+.dataTables_info{
+    position: absolute;
+}
+
+.dataTables_paginate{
+    margin-top: 10px !important;
 }
 
 
