@@ -60,7 +60,12 @@
                             <div class="mt-4 form-group col-md-2">
                                 <button type="button  form-control" id="search" class="btn btn-primary" onclick="load_table_data()">Search</button>
                             </div>
+                            
 
+                        </div>
+                        <div class="mt-4 form-group">
+                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
+                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button>
                         </div>
                         <div class="table-responsive" id="ajax_table_data">
 
@@ -83,6 +88,7 @@ function datatables() {
     var table = $('#table').DataTable({
         'scrollX': 'true',
         dom: 'ltipr',
+        "bLengthChange": false,
     });
 }
 
@@ -154,8 +160,8 @@ $(document).ready(function () {
             'This Month': [moment().startOf('month'), moment().endOf('month')],
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        "startDate": moment(),
-        "endDate": moment().add(6, 'days')
+        "startDate": moment().format("MM/DD/YYYY"),
+        "endDate": moment().add(6, 'days').format("MM/DD/YYYY")
     }, function (start, end, label) {   
 });
 
@@ -184,6 +190,23 @@ function load_table_data() {
     });
 }
 load_table_data();
+
+function date_range_change(i) {
+    var datefilter = $('#daterange').val();
+    var date = datefilter.split(" - ");
+    var start_date = date[0];
+    var end_date = date[1];
+
+    if(i==1){
+        var new_date_range = end_date +' - '+ moment(end_date).add(6,'days').format("MM/DD/YYYY"); 
+        $('#daterange').val(new_date_range);
+    }else{
+        var new_date_range = moment(start_date).add(-6,'days').format("MM/DD/YYYY") +' - '+ start_date; 
+        $('#daterange').val(new_date_range);
+    }
+
+    load_table_data();
+}
 
 $("#user_id").select2({
   placeholder: "select multiple employee",

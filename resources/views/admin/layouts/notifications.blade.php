@@ -1,3 +1,8 @@
+@if(str_contains(URL::previous(), 'login'))
+<script type="text/javascript">
+    window.location = "{{URL::previous()}}";//here double curly bracket
+</script>
+@endif
 <a class="nav-link" data-toggle="dropdown" href="#">
     <i class="far fa-bell"></i>
     <span class="badge badge-warning navbar-badge">{{count(auth()->user()->unreadNotifications)}}</span>

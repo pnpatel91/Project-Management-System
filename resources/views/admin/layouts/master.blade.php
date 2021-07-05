@@ -202,7 +202,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="{{ asset('public/js/admin/customUserRole.js') }}"></script>
         <script type="text/javascript">
             function loadNotificationsDropdownMenu(){
-                $('#Notifications-Dropdown-Menu').load("{{ route('admin.notifications-dropdown-menu') }}");
+                if($('.dropdown-menu').is(":visible")==false){
+                   $('#Notifications-Dropdown-Menu').load("{{ route('admin.notifications-dropdown-menu') }}"); 
+                }
             }
             loadNotificationsDropdownMenu();
             setInterval(function(){

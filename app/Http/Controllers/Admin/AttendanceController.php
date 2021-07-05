@@ -39,7 +39,6 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $branches = Branch::whereIn('id',$branch_id)->get();
@@ -379,5 +378,69 @@ class AttendanceController extends Controller
         if($ip=='::1'){$ip='';}
         $data = \Location::get($ip);
         return $data;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_employee()
+    {
+        return view('admin.attendance.index_employee');
+    }
+
+    /**
+     * Datatables Ajax Data
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function datatables_employee(Request $request)
+    {
+
+        if ($request->ajax() == true) {
+            
+            $model = Attendance::with('branch','creator','editor')->where('created_by',auth()->user()->id);
+            
+            return Datatables::eloquent($model)
+                    /*->addColumn('action', function (Attendance $data) {
+                        $html='';
+                        if (auth()->user()->can('edit attendance')){
+                            $html.= '<a href="'.  route('admin.attendance.edit', ['attendance' => $data->id]) .'" class="btn btn-success btn-sm float-left mr-3"  id="popup-modal-button"><span tooltip="Edit" flow="left"><i class="fas fa-edit"></i></span></a>';
+                        }
+
+                        if (auth()->user()->can('delete attendance')){
+                            $html.= '<form method="post" class="float-left delete-form" action="'.  route('admin.attendance.destroy', ['attendance' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="delete"><button type="submit" class="btn btn-danger btn-sm"><span tooltip="Delete" flow="up"><i class="fas fa-trash"></i></span></button></form>';
+                        }
+
+                        return $html; 
+                    })*/
+
+                    ->addColumn('activity', function (Attendance $data) {
+                        if($data->status=='punch_in'){ $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; }else{ $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; }
+                        return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
+                    })
+
+                    ->addColumn('branch', function (Attendance $data) {
+                        return $data->branch->company->name.' - '.$data->branch->name;
+                    })
+
+                    ->addColumn('username', function (Attendance $data) {
+                        return '<img src="'.$data->creator->getImageUrlAttribute($data->creator->id).'" alt="user_id_'.$data->creator->id.'" class="profile-user-img-small img-circle"> '. $data->creator->name;
+                    })
+                    
+                    ->addColumn('search_username', function (Attendance $data) {
+                        return 'user_id_'.$data->creator->id;
+                    })
+                    ->addColumn('editor', function (Attendance $data) {
+                        return '<img src="'.$data->editor->getImageUrlAttribute($data->editor->id).'" alt="Admin" class="profile-user-img-small img-circle"> '. $data->editor->name;
+                    })
+                    
+                    ->rawColumns(['activity', 'username', 'editor', 'action'])
+
+                    ->make(true);
+        }
     }
 }

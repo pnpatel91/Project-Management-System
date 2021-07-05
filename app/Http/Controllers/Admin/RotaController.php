@@ -139,7 +139,7 @@ class RotaController extends Controller
                 $start_time = $request->start_at;
                 $end_time = $request->end_at;
                 if($start_time>$end_time){
-                   $end_date = $d->addDays(1); 
+                   $end_date = Carbon::parse($start_date)->addDays(1); 
                 }else{
                    $end_date = $start_date;  
                 }
@@ -249,7 +249,7 @@ class RotaController extends Controller
             $start_time = $request->start_at;
             $end_time = $request->end_at;
             if($start_time>$end_time){
-               $end_date = $d->addDays(1); 
+               $end_date = Carbon::parse($start_date)->addDays(1); 
             }else{
                $end_date = $start_date;  
             }
@@ -380,7 +380,7 @@ class RotaController extends Controller
                         $start_time = $request->start_at;
                         $end_time = $request->end_at;
                         if($start_time>$end_time){
-                           $end_date = $d->addDays(1); 
+                           $end_date = Carbon::parse($start_date)->addDays(1); 
                         }else{
                            $end_date = $start_date;  
                         }
@@ -513,14 +513,14 @@ class RotaController extends Controller
             $rotaData = [
                 'name' => 'rota' ,
                 'subject' => 'Rota Notification' ,
-                'body' => 'updated rota notes by'.$sender->name.'. Please check date is '.$rota->start_date,
+                'body' => 'The rotas notes have been changed from '.$sender->name.', please check the date of '.$rota->start_date.' rota employee notes',
                 'thanks' => 'Thank you',
                 'rotaUrl' => url('admin/rota'),
                 'id' => $rota->id,
                 'employee_id' => $sender->id,
                 'employee_name' => $sender->name,
                 'receiver_name' => $receiver->name,
-                'text' => 'updated rota notes by'.$sender->name.'. Please check date is '.$rota->start_date,
+                'text' => 'The rotas notes have been changed from '.$sender->name.', please check the date of '.$rota->start_date.' rota employee notes',
             ];
 
             Notification::send($receiver, new rotasNotification($rotaData));

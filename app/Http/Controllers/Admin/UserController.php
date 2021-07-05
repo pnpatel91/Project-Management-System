@@ -7,8 +7,21 @@ use App\User;
 use App\Image;
 use App\Branch;
 use App\Department;
+
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
+use App\Traits\UploadTrait;
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use JeroenDesloovere\Distance\Distance;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -60,7 +73,7 @@ class UserController extends Controller
         return view('admin.user.create', compact('roles', 'branches', 'departments'));
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
         $input = $request->only('name', 'email', 'password');
         $input['password'] = bcrypt($request->password);
@@ -96,7 +109,7 @@ class UserController extends Controller
         return view('admin.user.edit', compact('user', 'roles', 'userRole', 'branches', 'userBranches', 'departments', 'userDepartments'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
         $input = $request->only('name', 'email');
         if($request->filled('password')) {

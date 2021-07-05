@@ -12,13 +12,14 @@ use App\Attendance;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class DashboardController extends Controller
 {
     
     public function index()
     {
-
+        Artisan::call('cache:clear');
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $users_count = User::whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->count();

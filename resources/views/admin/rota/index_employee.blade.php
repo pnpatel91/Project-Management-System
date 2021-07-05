@@ -40,10 +40,10 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="col-md-12">
-                        <div class="form-row" id="search"> 
+                        <div class="form-row pt-3" id="search"> 
 
                             <div class="form-group col-md-3">
-                                <span>search by rota date</span>
+                                <span>Search by rota date</span>
                                 <input class="search-area form-control" type="text" name="datefilter" id="daterange" value="" />  
                             </div>
 
@@ -51,6 +51,10 @@
                                 <button type="button  form-control" id="search" class="btn btn-primary" onclick="load_table_data()">Search</button>
                             </div>
 
+                        </div>
+                        <div class="mt-4 form-group">
+                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
+                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button>
                         </div>
                         <div class="table-responsive" id="ajax_table_data">
                             <table class="table table-hover dataTable no-footer" id="table" width="100%">
@@ -84,6 +88,7 @@ function datatables() {
     var table = $('#table').DataTable({
         'scrollX': 'true',
         dom: 'ltipr',
+        "bLengthChange": false,
     });
 }
 
@@ -126,6 +131,22 @@ function load_table_data() {
     });
 }
 load_table_data();
+function date_range_change(i) {
+    var datefilter = $('#daterange').val();
+    var date = datefilter.split(" - ");
+    var start_date = date[0];
+    var end_date = date[1];
+
+    if(i==1){
+        var new_date_range = end_date +' - '+ moment(end_date).add(6,'days').format("MM/DD/YYYY"); 
+        $('#daterange').val(new_date_range);
+    }else{
+        var new_date_range = moment(start_date).add(-6,'days').format("MM/DD/YYYY") +' - '+ start_date; 
+        $('#daterange').val(new_date_range);
+    }
+
+    load_table_data();
+}
 
 $(document).ready(function () {
     $(document).on('submit','#popup-form-rota',function(e){

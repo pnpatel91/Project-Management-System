@@ -108,12 +108,18 @@
 
                         @can('view attendance')
                         <li class="nav-item">
-                            <a href="{{ url('admin/attendance') }}" class="nav-link {{ Route::is('admin.attendance.*') || Route::is('admin.attendance.*')  ? 'active' : '' }}">
+                            <a href="{{ url('admin/attendance') }}" class="nav-link {{ Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')  ? 'active' : '' }}">
+                                <i class="fa fa-clock-o  nav-icon" aria-hidden="true"></i>
+                                <p>Attendance - Admin</p>
+                            </a>
+                        </li>
+                        @endcan 
+                        <li class="nav-item">
+                            <a href="{{ url('admin/attendance/employee') }}" class="nav-link {{ Route::is('admin.attendance.employee')  ? 'active' : '' }}">
                                 <i class="fa fa-clock-o  nav-icon" aria-hidden="true"></i>
                                 <p>Attendance</p>
                             </a>
                         </li>
-                        @endcan 
 
                         @can('view leave - admin')
                         <li class="nav-item">
@@ -128,7 +134,7 @@
                         <li class="nav-item">
                             <a href="{{ url('admin/leave-employee') }}" class="nav-link {{ Route::is('admin.leave-employee.*') || Route::is('admin.leave-employee.*')  ? 'active' : '' }}">
                                 <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
-                                <p>Leave - Employee</p>
+                                <p>Leave</p>
                             </a>
                         </li>
                         @endcan 
@@ -154,7 +160,7 @@
                         <li class="nav-item">
                             <a href="{{ url('admin/rota/employee') }}" class="nav-link {{ Route::is('admin.rota.employee') ? 'active' : '' }}">
                                 <i class="fas fa-calendar-alt nav-icon"></i>
-                                <p>Rota - Employee</p>
+                                <p>Rota</p>
                             </a>
                         </li>
                         

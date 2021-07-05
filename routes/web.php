@@ -44,10 +44,14 @@ Route::group([
     Route::get('branch/ajax/data', 'BranchController@datatables'); // For Datatables
 
     // Attendance Routes
+    Route::get('attendance/employee', 'AttendanceController@index_employee')->name('attendance.employee');
+    Route::get('attendance/ajax/datatables_employee', 'AttendanceController@datatables_employee')->name('attendance.ajax.datatables_employee');
     Route::resource('attendance', 'AttendanceController');
     Route::post('attendance/store_admin', 'AttendanceController@store_admin')->name('attendance.store_admin'); // For Admin 
     Route::get('attendance/ajax/data', 'AttendanceController@datatables'); // For Datatables
     Route::post( 'attendance/ajax/status', 'AttendanceController@status' )->name('attendance.ajax.status'); // Get status option by branch in ajax
+
+    
 
     // Department Routes
     Route::resource('department', 'DepartmentController');
