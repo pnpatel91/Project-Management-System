@@ -373,7 +373,7 @@ class AttendanceController extends Controller
     }
 
 
-    public function get_location()
+    public static function get_location()
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))
         {
@@ -399,7 +399,7 @@ class AttendanceController extends Controller
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        
+
         if($ip=='::1'){$ip='';}
         $data = \Location::get($ip);
         return $data;

@@ -121,9 +121,17 @@
     }
 
     function showPosition(position) {
-
-        document.getElementById("latitude").value= position.coords.latitude;
-        document.getElementById("longitude").value= position.coords.longitude;
+        if (position.coords.latitude === undefined || position.coords.latitude === null) {
+            document.getElementById("latitude").value= {{App\Http\Controllers\Admin\AttendanceController::get_location()->latitude}};
+        }else{
+            document.getElementById("latitude").value= position.coords.latitude;
+        }
+        
+        if (position.coords.longitude === undefined || position.coords.longitude === null) {
+            document.getElementById("longitude").value= {{App\Http\Controllers\Admin\AttendanceController::get_location()->longitude}};
+        }else{
+            document.getElementById("longitude").value= position.coords.longitude;
+        } 
     }
 
     getLocation();
