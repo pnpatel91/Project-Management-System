@@ -47,14 +47,13 @@
                                 <input class="search-area form-control" type="text" name="datefilter" id="daterange" value="" />  
                             </div>
 
-                            <div class="mt-4 form-group col-md-2">
+                            <div class="mt-4 form-group col-md-3">
                                 <button type="button  form-control" id="search" class="btn btn-primary" onclick="load_table_data()">Search</button>
                             </div>
-
-                        </div>
-                        <div class="mt-4 form-group">
-                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
-                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button>
+                            <div class="mt-4 form-group col-md-6 text-right">
+                               <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
+                                <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button> 
+                            </div>
                         </div>
                         <div class="table-responsive" id="ajax_table_data">
                             <table class="table table-hover dataTable no-footer" id="table" width="100%">

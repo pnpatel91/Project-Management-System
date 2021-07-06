@@ -63,6 +63,7 @@ Route::group([
     // Leave - Admin Routes
     Route::resource('leave', 'LeaveAdminController');
     Route::get('leave/ajax/data', 'LeaveAdminController@datatables'); // For Datatables
+    Route::get('leave/ajax/change_status', 'LeaveAdminController@change_status')->name('leave.ajax.change_status'); // For change status
 
     // Leave - Employee Routes
     Route::resource('leave-employee', 'LeaveEmployeeController');

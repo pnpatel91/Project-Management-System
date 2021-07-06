@@ -42,7 +42,7 @@ class AttendanceController extends Controller
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $branches = Branch::whereIn('id',$branch_id)->get();
-            $users = User::whereHas('branches', function($q) use ($attendance) { $q->where('branch_id', $attendance->branch_id); })->get();
+            $users = User::whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
         }else{
             $branches = Branch::all();
             $users = User::all();

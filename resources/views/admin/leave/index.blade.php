@@ -218,6 +218,32 @@ $("#branch").select2({
   allowClear: true
 });
 
+function funChangeStatus(id,status) {
+    $("#pageloader").fadeIn();
+    if(status==0){
+        leave_status = 'New';
+    }else if(status==1){
+        leave_status = 'Approved';
+    }else{
+        leave_status = 'Declined';
+    }
+    $.ajax({
+      url : '{{ route('admin.leave.ajax.change_status') }}',
+      data: {
+        "_token": "{{ csrf_token() }}",
+        "id": id,
+        "status": leave_status
+        },
+      type: 'get',
+      dataType: 'json',
+      success: function( result )
+      {
+        datatables();
+        $("#pageloader").hide();
+      }
+    });
+}
+
 </script>
 
 

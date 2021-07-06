@@ -43,7 +43,7 @@
                         <div class="form-row" id="search"> 
 
                             <div class="form-group col-md-3">
-                                <span>search by users</span>
+                                <span>Search by users</span>
                                 <select class="select2 form-control" id="user_id" name="user_id" required autocomplete="user_id">
                                     <option value="All">All</option>
                                     @foreach ($users as $key => $user)
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="form-group col-md-3">
-                                <span>search by company - branch</span>
+                                <span>Search by company - branch</span>
                                 <select class="select2 form-control" id="branch" name="branch" required autocomplete="branch">
                                     <option value="All">All</option>
                                     @foreach ($branches as $key => $branch)
@@ -63,7 +63,7 @@
                             </div>
 
                             <div class="form-group col-md-3">
-                                <span>search by activity date</span>
+                                <span>Search by activity date</span>
                                 <input class="search-area form-control" type="text" name="datefilter" id="daterange" value="" />  
                             </div>
 

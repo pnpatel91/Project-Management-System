@@ -52,20 +52,20 @@
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <span>Search by rota date</span>
                                 <input class="search-area form-control" type="text" name="datefilter" id="daterange" value="" />  
                             </div>
 
-                            <div class="mt-4 form-group col-md-2">
+                            <div class="mt-4 form-group col-md-1">
                                 <button type="button  form-control" id="search" class="btn btn-primary" onclick="load_table_data()">Search</button>
+                            </div>
+                            <div class="mt-4 form-group col-md-1 text-right">
+                               <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
+                                <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button> 
                             </div>
                             
 
-                        </div>
-                        <div class="mt-4 form-group">
-                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
-                            <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button>
                         </div>
                         <div class="table-responsive" id="ajax_table_data">
 
