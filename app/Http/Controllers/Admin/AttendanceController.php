@@ -174,7 +174,7 @@ class AttendanceController extends Controller
             }else{
                 $request_longitude = $request->longitude;
             }
-
+            
             $user = User::find(auth()->user()->id);
             $branches = $user->branches;
             foreach ($branches as $key => $branch) {
