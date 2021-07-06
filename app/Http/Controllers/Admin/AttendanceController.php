@@ -159,8 +159,9 @@ class AttendanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AttendanceStoreRequest $request)
+    public function store(Request $request)
     {
+
         try {
 
             if($request->latitude==''){
@@ -174,7 +175,7 @@ class AttendanceController extends Controller
             }else{
                 $request_longitude = $request->longitude;
             }
-            
+
             $user = User::find(auth()->user()->id);
             $branches = $user->branches;
             foreach ($branches as $key => $branch) {
@@ -374,7 +375,31 @@ class AttendanceController extends Controller
 
     public function get_location()
     {
-        $ip = \Request::ip();
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))
+        {
+            $HTTP_CLIENT_IP = explode(":", $_SERVER['HTTP_CLIENT_IP']);
+            $ip = $HTTP_CLIENT_IP[0];
+        }elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            if (strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',') !== false) {
+                $iplist = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+                foreach ($iplist as $ip) {
+                        $ip = $ip;
+                }
+            } else {
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED'];
+        } elseif (!empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_FORWARDED_FOR'];
+        } elseif (!empty($_SERVER['HTTP_FORWARDED'])) {
+            $ip = $_SERVER['HTTP_FORWARDED'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        
         if($ip=='::1'){$ip='';}
         $data = \Location::get($ip);
         return $data;
