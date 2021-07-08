@@ -164,7 +164,7 @@ class AttendanceController extends Controller
 
         try {
 
-            if($request->latitude==''){
+            /*if($request->latitude==''){
                 $request_latitude = $this->get_location()->latitude;
             }else{
                 $request_latitude = $request->latitude;
@@ -174,7 +174,11 @@ class AttendanceController extends Controller
                 $request_longitude = $this->get_location()->longitude;
             }else{
                 $request_longitude = $request->longitude;
-            }
+            }*/
+
+            $request_latitude = $this->get_location()->latitude;
+            $request_longitude = $this->get_location()->longitude;
+
 
             $user = User::find(auth()->user()->id);
             $branches = $user->branches;
