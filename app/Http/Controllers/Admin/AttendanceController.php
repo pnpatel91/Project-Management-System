@@ -405,6 +405,7 @@ class AttendanceController extends Controller
         }
 
         if($ip=='::1'){$ip='';}
+        $data['ip'] = $ip;
         $data = \Location::get($ip);
         return $data;
     }
