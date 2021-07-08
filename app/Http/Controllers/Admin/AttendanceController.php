@@ -164,7 +164,7 @@ class AttendanceController extends Controller
 
         try {
 
-            /*if($request->latitude==''){
+            if($request->latitude==''){
                 $request_latitude = $this->get_location()->latitude;
             }else{
                 $request_latitude = $request->latitude;
@@ -174,10 +174,10 @@ class AttendanceController extends Controller
                 $request_longitude = $this->get_location()->longitude;
             }else{
                 $request_longitude = $request->longitude;
-            }*/
+            }
 
-            $request_latitude = $this->get_location()->latitude;
-            $request_longitude = $this->get_location()->longitude;
+            $laravel_latitude = $this->get_location()->latitude;
+            $laravel_longitude = $this->get_location()->longitude;
 
 
             $user = User::find(auth()->user()->id);
@@ -194,6 +194,19 @@ class AttendanceController extends Controller
                 );
 
                 $distance = $distance*1000; // distance convert into kilometers to meters
+
+                $distance_laravel = Distance::between(
+                    $branch_latitude,
+                    $branch_longitude,
+                    $request_latitude,
+                    $request_longitude
+                );
+
+                $distance_laravel = $distance_laravel*1000; // distance convert into kilometers to meters
+
+                if($branch->radius < $distance && $branch->radius >= $distance_laravel){
+                    $distance = $distance_laravel;
+                }
 
                 if($branch->radius >= $distance){
 
