@@ -20,6 +20,7 @@ class CreateRotasTable extends Migration
             $table->date('end_date')->comment('shift end date')->useCurrent = true;
             $table->time('end_time')->comment('shift end time')->useCurrent = true;
             $table->time('max_start_time')->comment('max shift start time')->useCurrent = true;
+            $table->time('break_start_time')->comment('break start time')->nullable()->useCurrent = true;
             $table->integer('break_time')->comment('Shift Break Time In Minutes')->default('0');
             $table->enum('over_time', ['Yes', 'No'])->default('No');
             $table->enum('remotely_work', ['Yes', 'No'])->default('No');

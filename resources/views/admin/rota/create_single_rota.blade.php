@@ -65,6 +65,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Break Start At</label>
+                            <input type='time' class="form-control" id='break_start_at' name="break_start_at" value="02:00"  required />
+                        </div>
+
+                        <div class="form-group">
                             <label>Remotely Work</label>
                             <select class="form-control select2" id="remotely_work" name="remotely_work" required autocomplete="remotely_work">
                                 <option></option>

@@ -3,7 +3,7 @@
     <tr>
         <th>Scheduled Shift</th>
         @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
-        <th>{{$d->format('Y-m-d')}}</th>
+        <th>{{$d->format('Y-m-d D')}}</th>
         @endfor
     </tr>
     </thead>
@@ -40,6 +40,14 @@
                                 $end_date_time=Carbon\Carbon::parse($rota->end_date.' '.$rota->end_time);
                                 $start_date_time=Carbon\Carbon::parse($rota->start_date.' '.$rota->start_time);
                                 $shift_time = $end_date_time->diff($start_date_time)->format('%h hrs %i mins');?>
+                                <span class="username-info m-b-10">Brake Time : 
+                                @if($rota->break_start_time!='')
+                                    {{Carbon\Carbon::parse($rota->break_start_time)->format('g:ia').' to '.Carbon\Carbon::parse($rota->break_start_time)->addMinutes(intval($rota->break_time))->format('g:ia')}}
+                                @else
+                                    {{intval($rota->break_time).' minutes'}}
+
+                                @endif
+                                </span>
                                 <span class="username-info m-b-10">({{$shift_time}})</span>
                                 @if($rota->remotely_work=='No')
                                     <span class="username-info m-b-10">Branch - {{$rota->branch->name}}</span>

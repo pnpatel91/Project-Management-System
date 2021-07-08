@@ -152,6 +152,7 @@ class RotaController extends Controller
                 $rota->end_time = $end_time;
                 $rota->max_start_time = $request->max_start_at;
                 $rota->break_time = $request->break_time;
+                $rota->break_start_time = $request->break_start_at;
                 $rota->over_time = $request->over_time;
                 $rota->remotely_work = $request->remotely_work;
                 $rota->user_id = $employee_id;
@@ -260,6 +261,7 @@ class RotaController extends Controller
             $rota->end_time = $end_time;
             $rota->max_start_time = $request->max_start_at;
             $rota->break_time = $request->break_time;
+            $rota->break_start_time = $request->break_start_at;
             $rota->over_time = $request->over_time;
             $rota->remotely_work = $request->remotely_work;
             $rota->user_id = $employee_id;
@@ -393,6 +395,7 @@ class RotaController extends Controller
                         $rota->end_time = $end_time;
                         $rota->max_start_time = $request->max_start_at;
                         $rota->break_time = $request->break_time;
+                        $rota->break_start_time = $request->break_start_at;
                         $rota->over_time = $request->over_time;
                         $rota->remotely_work = $request->remotely_work;
                         $rota->user_id = $employee_id;

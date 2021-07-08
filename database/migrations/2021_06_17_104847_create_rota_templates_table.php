@@ -19,6 +19,7 @@ class CreateRotaTemplatesTable extends Migration
             $table->time('start_at')->comment('shift start time')->useCurrent = true;
             $table->time('end_at')->comment('shift end time')->useCurrent = true;
             $table->time('max_start_at')->comment('max shift start time')->useCurrent = true;
+            $table->time('break_start_at')->comment('break start time')->nullable()->useCurrent = true;
             $table->integer('break_time')->comment('Shift Break Time In Minutes')->default('0');
             $table->json('day_list')->comment('Day list')->nullable();
             $table->enum('types', ['Day', 'Week', 'Month'])->comment('Day, Week, Month')->default('Day');

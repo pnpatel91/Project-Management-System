@@ -18,6 +18,7 @@ class RotaTemplateSeeder extends Seeder
         $Rota_template->start_at = "09:00:00";
         $Rota_template->end_at = "18:00:00";
         $Rota_template->max_start_at = "09:10:00";
+        $Rota_template->break_start_at = "02:00:00";
         $Rota_template->break_time = "30";
         $Rota_template->day_list = json_encode(["Monday","Tuesday","Wednesday","Thursday","Friday"]);
         $Rota_template->types = "Week";

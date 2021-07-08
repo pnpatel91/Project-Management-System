@@ -40,6 +40,11 @@
                             <label>Break Time <span class="tooltipfontsize" tooltip="break time in minutes" flow="right"><i class="fas fa-info-circle"></i></span></label>
                             <input type='number' class="form-control" id='break_time' name="break_time" value="30" min="0" max="120" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" required />
                         </div>
+                        <div class="form-group">
+                            <label>Break Start At</label>
+                            <input type='time' class="form-control" id='break_start_at' name="break_start_at" value="02:00" required />
+                        </div>
+
 
                         <div class="form-group">
                             <label>Types</label>

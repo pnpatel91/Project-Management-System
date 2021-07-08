@@ -68,6 +68,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Break Start At</label>
+                            <input type='time' class="form-control" id='break_start_at' name="break_start_at" value="{{$rota->break_start_time}}"  required />
+                        </div>
+
+                        <div class="form-group">
                             <label>Remotely Work</label>
                             <select class="form-control select2" id="remotely_work" name="remotely_work" required autocomplete="remotely_work">
                                 <option></option>

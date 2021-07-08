@@ -87,7 +87,15 @@ class RotaTemplateController extends Controller
                     })
 
                     
-                    ->editColumn('break_time', '{{intval($break_time)}} minutes')
+                    //->editColumn('break_time', '{{intval($break_time)}} minutes')
+                    ->editColumn('break_time', function (Rota_template $data) {
+                        if($data->break_start_at!=''){
+                            return Carbon::parse($data->break_start_at)->format('g:ia').' to '.Carbon::parse($data->break_start_at)->addMinutes(intval($data->break_time))->format('g:ia');
+                        }else{
+                            return intval($data->break_time).' minutes'; 
+                        }
+                        
+                    })
                     ->addColumn('creator', function (Rota_template $data) {
                         return '<img src="'.$data->creator->getImageUrlAttribute($data->creator->id).'" alt="user_id_'.$data->creator->id.'" class="profile-user-img-small img-circle"> '. $data->creator->name;
                     })
@@ -133,6 +141,7 @@ class RotaTemplateController extends Controller
             $rota_template->max_start_at = $request->max_start_at;
             $rota_template->end_at = $request->end_at;
             $rota_template->break_time = $request->break_time;
+            $rota_template->break_start_at = $request->break_start_at;
             $rota_template->types = $request->types;
             $rota_template->day_list = json_encode($request->day_list);
             $rota_template->over_time = $request->over_time;
@@ -211,6 +220,7 @@ class RotaTemplateController extends Controller
             $rota_template->max_start_at = $request->max_start_at;
             $rota_template->end_at = $request->end_at;
             $rota_template->break_time = $request->break_time;
+            $rota_template->break_start_at = $request->break_start_at;
             $rota_template->types = $request->types;
             $rota_template->day_list = json_encode($request->day_list);
             $rota_template->over_time = $request->over_time;

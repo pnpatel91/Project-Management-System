@@ -43,6 +43,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Break Start At</label>
+                            <input type='time' class="form-control" id='break_start_at' name="break_start_at" value="{{$rota_template->break_start_at}}"  required />
+                        </div>
+
+                        <div class="form-group">
                             <label>Types</label>
                             <select class="form-control select2" id="types" name="types" required autocomplete="types">
                                 <option></option>

@@ -18,7 +18,7 @@
             @if($rotas->count()!=0)
                 @foreach($rotas as $rota)
                     <td>
-                        <a href="{{ route('admin.rota.edit_employee', ['rota' => $rota->id]) }}" class="text-dark"  id="popup-modal-button">{{$d->format('Y-m-d')}}</a>
+                        <a href="{{ route('admin.rota.edit_employee', ['rota' => $rota->id]) }}" class="text-dark"  id="popup-modal-button">{{$d->format('Y-m-d D')}}</a>
                     </td>
                     <td>
                         {{$rota->start_date}} {{Carbon\Carbon::parse($rota->start_time)->format('H:i')}}
@@ -27,7 +27,12 @@
                         {{$rota->end_date}} {{Carbon\Carbon::parse($rota->end_time)->format('H:i')}}
                     </td>
                     <td>
-                        {{$rota->break_time}} minutes
+                        @if($rota->break_start_time!='')
+                            {{Carbon\Carbon::parse($rota->break_start_time)->format('g:ia').' to '.Carbon\Carbon::parse($rota->break_start_time)->addMinutes(intval($rota->break_time))->format('g:ia')}}
+                        @else
+                            {{intval($rota->break_time).' minutes'}}
+
+                        @endif
                     </td>
                     <td class=" col-md-3">
                         @if($rota->remotely_work=='No')
@@ -43,7 +48,7 @@
                 @endforeach
             @else
                 <td>
-                    {{$d->format('Y-m-d')}}
+                    {{$d->format('Y-m-d D')}}
                 </td>
                 <td></td><td></td><td>No Scheduled</td><td></td><td></td>
             @endif

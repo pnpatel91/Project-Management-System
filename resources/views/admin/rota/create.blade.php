@@ -77,6 +77,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Break Start At</label>
+                            <input type='time' class="form-control" id='break_start_at' name="break_start_at" value=""  required />
+                        </div>
+
+                        <div class="form-group">
                             <label>Types</label>
                             <select class="form-control select2" id="types" name="types" required autocomplete="types" onchange="end_date_value()">
                                 <option></option>
@@ -216,6 +221,7 @@
             $('#max_start_at').val(result.max_start_at);
             $('#end_at').val(result.end_at);
             $('#break_time').val(result.break_time);
+            $('#break_start_at').val(result.break_start_at);
             $('#types').val(result.types);
             var day_list = result.day_list.replace(/[\[\]"]+/g,'').split(",");
             console.log(day_list);

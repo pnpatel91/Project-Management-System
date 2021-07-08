@@ -15,7 +15,7 @@ class Rota extends Model
      * @var array
      */
     protected $fillable = [
-        'start_date', 'start_time', 'end_date', 'end_time', 'max_start_time', 'break_time', 'over_time', 'remotely_work', 'branch_id', 'notes', 'user_id', 'rota_templates_id', 'created_by', 'updated_by'
+        'start_date', 'start_time', 'end_date', 'end_time', 'max_start_time', 'break_start_time', 'break_time', 'over_time', 'remotely_work', 'branch_id', 'notes', 'user_id', 'rota_templates_id', 'created_by', 'updated_by'
     ];
 
     /**
