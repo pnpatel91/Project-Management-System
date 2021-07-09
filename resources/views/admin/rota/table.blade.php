@@ -18,7 +18,7 @@
                     </h2>
                 </div>
             </td>
-             @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
+            @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
             @php 
                 $rotas = \App\Rota::with('branch')->where('user_id',$user->id)->where('start_date',$d)->get();
             @endphp

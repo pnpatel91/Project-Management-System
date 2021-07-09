@@ -86,8 +86,12 @@ class AttendanceController extends Controller
                     })
 
                     ->addColumn('activity', function (Attendance $data) {
-                        if($data->status=='punch_in'){ $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; }else{ $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; }
-                        return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
+                        if($data->status=='punch_in'){ $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; 
+                            return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
+                        }else{ $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; 
+                            return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
+                        }
+                        
                     })
 
                     ->addColumn('branch', function (Attendance $data) {

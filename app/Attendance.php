@@ -41,4 +41,17 @@ class Attendance extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id')->with('company');
     }
+
+    /**
+     * The punch_in that belong to the attendances.
+     */
+    public function punch_in()
+    {
+        return $this->belongsTo($this, 'punch_in_id');
+    }
+
+
+    public function punch_out() {
+        return $this->hasOne($this, 'punch_in_id');
+    }
 }
