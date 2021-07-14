@@ -10,6 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="refresh" content="{{ (config('session.lifetime') * 60)+10 }}">
 
     <title>{{ config('app.name', 'Project Management System') }}</title>
 
