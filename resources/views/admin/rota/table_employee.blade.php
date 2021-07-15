@@ -18,7 +18,7 @@
             @if($rotas->count()!=0)
                 @foreach($rotas as $rota)
                     <td>
-                        <a href="{{ route('admin.rota.edit_employee', ['rota' => $rota->id]) }}" class="text-dark"  id="popup-modal-button">{{$d->format('Y-m-d D')}}</a>
+                        <a href="{{ route('admin.rota.edit_employee', ['rota' => $rota->id]) }}" class="text-dark"  id="popup-modal-button">{{$d->format('Y-m-d l')}}</a>
                     </td>
                     <td>
                         {{$rota->start_date}} {{Carbon\Carbon::parse($rota->start_time)->format('H:i')}}
@@ -48,7 +48,7 @@
                 @endforeach
             @else
                 <td>
-                    {{$d->format('Y-m-d D')}}
+                    {{$d->format('Y-m-d l')}}
                 </td>
                 <td></td><td></td><td>No Scheduled</td><td></td><td></td>
             @endif

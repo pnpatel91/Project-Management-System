@@ -3,7 +3,7 @@
     <tr>
         <th>Scheduled Shift</th>
         @for($d = Carbon\Carbon::parse($startDate); $d->lte(Carbon\Carbon::parse($endDate)); $d->addDay())
-        <th>{{$d->format('Y-m-d D')}}</th>
+        <th>{{$d->format('Y-m-d l')}}</th>
         @endfor
     </tr>
     </thead>

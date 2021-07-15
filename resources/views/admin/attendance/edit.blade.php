@@ -18,24 +18,23 @@
                     <form action="{{ route('admin.attendance.update', ['attendance' => $attendance->id]) }}" method="put"  id="popup-form" >
                         @csrf
                         @method('PUT')
-                        <div class="form-group">
-                            <label>Company - Branch: {{$attendance->branch->company->name .' - '. $attendance->branch->name}}</label>
-                            <select class="form-control select2" id="branch_id" name="branch_id" required autocomplete="branch_id" style="display:none;">
-                                <option></option>
-                                @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}" @if($attendance->branch_id==$branch->id) selected @endif>{{ $branch->company->name .' - '. $branch->name}}</option>
-                                @endforeach
-                            </select>
+
+                        <div class="form-group mt-4">
+                            <!-- <label>Employee</label> -->
+                            <div class="user-add-shedule-list">
+                                <h2 class="table-avatar">
+                                    <a href="" class="avatar" tooltip="{{$attendance->creator->name}}" flow="right"><img alt="" src="{{$attendance->creator->getImageUrlAttribute($attendance->creator->id)}}"></a>
+                                    <a href="">{{$attendance->creator->name}} <span>{{$attendance->creator->departments[0]->name}}</span></a>
+                                    <input type="hidden" name="user_id" id="user_id" value="{{$attendance->creator->id}}" >
+                                </h2>
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label>Users: {{$attendance->creator->name}}</label>
-                            <select class="form-control select2" id="ajax_user_id" name="user_id" required autocomplete="user_id" style="display:none;">
-                                <option></option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" @if($attendance->created_by==$user->id) selected @endif>{{ $user->name }}</option>
-                                @endforeach
-                            </select>
+                            <label>Company - Branch :</label> {{$attendance->branch->company->name .' - '. $attendance->branch->name}}
+                            <input type="hidden" name="branch_id" id="branch_id" value="{{$attendance->branch_id}}" >
                         </div>
+
                         <div class="form-group" style="display:none;">
                             <label>Attendance Status</label>
                             <input type='text' class="form-control" id='ajax_status' name="status" value="{{str_replace('_', ' ', $attendance->status)}}" required readonly />
@@ -68,63 +67,6 @@
             }
         }); //valdate end
     }); //function end
-
-    /*$("#branch_id").select2({
-      placeholder: "select a company - branch",
-      allowClear: false
-    });
-
-    $("#ajax_user_id").select2({
-      placeholder: "select a user",
-      allowClear: false
-    });*/
-
-    
-    $('#branch_id').change(function(){
-        $("#pageloader").fadeIn();
-        $("#ajax_user_id option").remove();
-        $('#ajax_status').val('');
-        
-        var id = $(this).val();
-        
-        $.ajax({
-           url : '{{ route('admin.user.ajax.users') }}',
-          data: {
-            "_token": "{{ csrf_token() }}",
-            "id": id
-            },
-          type: 'post',
-          dataType: 'json',
-          success: function( result )
-          {
-            $('#ajax_user_id').append($('<option>', {value:'', text:''}));
-            $.each( result, function(k, v) {
-                $('#ajax_user_id').append($('<option>', {value:k, text:v}));
-                $("#pageloader").hide();
-            });
-          }
-        });
-    });
-
-    $('#ajax_user_id').change(function(){
-        $("#pageloader").fadeIn();
-        $('#ajax_status').val('');
-        
-        $.ajax({
-          url : '{{ route('admin.attendance.ajax.status') }}',
-          data: {
-            "_token": "{{ csrf_token() }}",
-            "id": $(this).val()
-            },
-          type: 'post',
-          dataType: 'json',
-          success: function( result )
-          {
-               $('#ajax_status').val(result.status);
-               $("#pageloader").hide();
-          },
-        });
-    });
 
     $("#punch_in").datetimepicker({
         dateFormat: 'yy-mm-dd',
