@@ -40,6 +40,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function isDisabled()
+    {
+        if(!auth()->user()->hasRole('superadmin') && $this->getRoleNames()->first()=='superadmin'){
+           return 'disabled'; 
+        }else{
+            return null; 
+        }
+    }
+
     public function images()
     {
         return $this->morphMany('App\Image', 'profileImage');
