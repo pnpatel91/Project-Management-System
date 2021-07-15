@@ -125,7 +125,7 @@ class LeaveAdminController extends Controller
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $branches = Branch::whereIn('id',$branch_id)->get();
             $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "admin"); })->get();
-            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
         }else{
             $branches = Branch::all();
             $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "admin"); })->get();

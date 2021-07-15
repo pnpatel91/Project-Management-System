@@ -19,8 +19,8 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label>Company - Branch</label>
-                            <select class="form-control select2" id="branch_id" name="branch_id" required autocomplete="branch_id">
+                            <label>Company - Branch: {{$attendance->branch->company->name .' - '. $attendance->branch->name}}</label>
+                            <select class="form-control select2" id="branch_id" name="branch_id" required autocomplete="branch_id" style="display:none;">
                                 <option></option>
                                 @foreach ($branches as $branch)
                                     <option value="{{ $branch->id }}" @if($attendance->branch_id==$branch->id) selected @endif>{{ $branch->company->name .' - '. $branch->name}}</option>
@@ -28,21 +28,26 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Users</label>
-                            <select class="form-control select2" id="ajax_user_id" name="user_id" required autocomplete="user_id">
+                            <label>Users: {{$attendance->creator->name}}</label>
+                            <select class="form-control select2" id="ajax_user_id" name="user_id" required autocomplete="user_id" style="display:none;">
                                 <option></option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}" @if($attendance->created_by==$user->id) selected @endif>{{ $user->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display:none;">
                             <label>Attendance Status</label>
                             <input type='text' class="form-control" id='ajax_status' name="status" value="{{str_replace('_', ' ', $attendance->status)}}" required readonly />
                         </div>
                         <div class="form-group">
-                            <label>Date & Time</label>
-                            <input type='datetime' class="form-control" id='datetimepicker4' name="attendance_at" value="{{$attendance->attendance_at}}" required />
+                            <label>Punch In - Date & Time</label>
+                            <input type='datetime' class="form-control" id='punch_in' name="punch_in" value="{{$attendance->attendance_at}}" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Punch Out - Date & Time</label>
+                            <input type='datetime' class="form-control" id='punch_out' name="punch_out" value="@if($attendance->punch_out!=null) {{$attendance->punch_out->attendance_at}} @endif" required />
                         </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
@@ -64,7 +69,7 @@
         }); //valdate end
     }); //function end
 
-    $("#branch_id").select2({
+    /*$("#branch_id").select2({
       placeholder: "select a company - branch",
       allowClear: false
     });
@@ -72,7 +77,7 @@
     $("#ajax_user_id").select2({
       placeholder: "select a user",
       allowClear: false
-    });
+    });*/
 
     
     $('#branch_id').change(function(){
@@ -121,9 +126,16 @@
         });
     });
 
-    $("#datetimepicker4").datetimepicker({
+    $("#punch_in").datetimepicker({
         dateFormat: 'yy-mm-dd',
         timeFormat: 'HH:mm:ss',
+        step: 1,
+    }).attr('readonly', 'readonly');
+
+    $("#punch_out").datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'HH:mm:ss',
+        step: 1,
     }).attr('readonly', 'readonly');
 </script>
 @endsection

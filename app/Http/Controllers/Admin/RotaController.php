@@ -66,7 +66,7 @@ class RotaController extends Controller
             if(!auth()->user()->hasRole('superadmin')){
                 $branch_id = auth()->user()->getBranchIdsAttribute();
                 $users = User::whereHas('branches', function($q) use ($branch_id) { 
-                                        $q->where('branch_id', $branch_id); })
+                                        $q->whereIn('branch_id', $branch_id); })
                                 ->get();
             }else{
                 $users = User::all();

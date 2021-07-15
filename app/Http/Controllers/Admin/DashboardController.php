@@ -22,14 +22,14 @@ class DashboardController extends Controller
         Artisan::call('cache:clear');
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
-            $users_count = User::whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->count();
-            $companies_count = Company::whereHas('branch', function($q) use ($branch_id) { $q->where('id', $branch_id); })->count();
+            $users_count = User::whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->count();
+            $companies_count = Company::whereHas('branch', function($q) use ($branch_id) { $q->whereIn('id', $branch_id); })->count();
 
             $branches_count = Branch::whereIn('id',$branch_id)->count();
 
             $today_attendances = Attendance::with('branch','creator','editor')
                                             ->whereHas('branch', function($q) use ($branch_id) { 
-                                                $q->where('branch_id', $branch_id); 
+                                                $q->whereIn('branch_id', $branch_id); 
                                             })->whereDate('attendance_at', Carbon::today())->get();
 
         }else{

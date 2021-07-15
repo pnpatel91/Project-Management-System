@@ -103,7 +103,7 @@
 function datatables() {
 
     var table = $('#table').DataTable({
-        dom: 'ltipr',
+        dom: 'Rltipr',
         buttons: [],
         select: true,
         aaSorting     : [[1, 'desc']],

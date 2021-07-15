@@ -17,7 +17,7 @@ class Attendance extends Model
      * @var array
      */
     protected $fillable = [
-        'time','status', 'distance', 'latitude', 'longitude', 'ip_address', 'branch_id', 'created_at', 'updated_at', 'created_by', 'updated_by'
+        'time','status', 'distance', 'latitude', 'longitude', 'ip_address', 'branch_id', 'punch_in_id', 'created_at', 'updated_at', 'created_by', 'updated_by'
     ];
 
     /**

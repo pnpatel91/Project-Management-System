@@ -42,7 +42,7 @@ class AttendanceController extends Controller
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $branches = Branch::whereIn('id',$branch_id)->get();
-            $users = User::whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
+            $users = User::whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
         }else{
             $branches = Branch::all();
             $users = User::all();
@@ -64,11 +64,10 @@ class AttendanceController extends Controller
             
             if(!auth()->user()->hasRole('superadmin')){
                 $branch_id = auth()->user()->getBranchIdsAttribute();
-                $model = Attendance::with('branch','creator','editor')
-                                    ->whereHas('branch', function($q) use ($branch_id) { 
-                                            $q->where('branch_id', $branch_id); });
+                $model = Attendance::where('status','punch_in')->with('branch','creator','editor','punch_out')->whereHas('branch', function($q) use ($branch_id) { 
+                                            $q->whereIn('branch_id', $branch_id); });
             }else{
-               $model = Attendance::with('branch','creator','editor');
+               $model = Attendance::where('status','punch_in')->with('branch','creator','editor','punch_out');
             }
             
             return Datatables::eloquent($model)
@@ -85,12 +84,20 @@ class AttendanceController extends Controller
                         return $html; 
                     })
 
-                    ->addColumn('activity', function (Attendance $data) {
-                        if($data->status=='punch_in'){ $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; 
+                    ->addColumn('punch_in', function (Attendance $data) {
+                        $status='<span class="text-success"><i class="fas fa-sign-in-alt"></i></span> In at'; 
                             return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
-                        }else{ $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; 
-                            return $status .' '. date_format (date_create($data->attendance_at), "g:ia").' On '.date_format (date_create($data->attendance_at), "l jS F Y");
+                        
+                    })
+
+                    ->addColumn('punch_out', function (Attendance $data) {
+                        if($data->punch_out==null){
+                            return 'To be continue..';
+                        }else{
+                            $status='<span class="text-danger"><i class="fas fa-sign-out-alt"></i></span> Out at'; 
+                            return $status .' '. date_format (date_create($data->punch_out->attendance_at), "g:ia").' On '.date_format (date_create($data->punch_out->attendance_at), "l jS F Y");
                         }
+                        
                         
                     })
 
@@ -109,7 +116,7 @@ class AttendanceController extends Controller
                         return '<img src="'.$data->editor->getImageUrlAttribute($data->editor->id).'" alt="Admin" class="profile-user-img-small img-circle"> '. $data->editor->name;
                     })
                     
-                    ->rawColumns(['activity', 'username', 'editor', 'action'])
+                    ->rawColumns(['punch_in', 'punch_out', 'username', 'editor', 'action'])
 
                     ->make(true);
         }
@@ -221,6 +228,10 @@ class AttendanceController extends Controller
                     $attendance->longitude = $request_longitude;
                     $attendance->ip_address = $request->ip();
                     $attendance->branch_id = $branch->id;
+                    if($request->status=='punch_out'){
+                        $last_attendance = Attendance::where('created_by',auth()->user()->id)->latest('attendance_at')->take(1)->get();
+                        $attendance->punch_in_id = $last_attendance[0]->id;
+                    }
                     $attendance->created_by = auth()->user()->id;
                     $attendance->updated_by = auth()->user()->id;
                     $attendance->save();
@@ -258,25 +269,41 @@ class AttendanceController extends Controller
         try {
             
                 $branch = Branch::find($request->branch_id);
+                if(str_replace(' ', '_', $request->status)=='punch_out'){
+                    $last_attendance = Attendance::where('created_by',$request->user_id)->latest('attendance_at')->take(1)->get();
+                    $punch_in_id = $last_attendance[0]->id;
+                    $punch_in_time = $last_attendance[0]->attendance_at;
+                }else{
+                    $punch_in_id = null;
+                    $punch_in_time = null;
+                }
 
-                $attendance = new Attendance();
-                $attendance->status = str_replace(' ', '_', $request->status);
-                $attendance->distance = 0;
-                $attendance->latitude = $branch->latitude;
-                $attendance->longitude = $branch->longitude;
-                $attendance->ip_address = $request->ip();
-                $attendance->branch_id = $request->branch_id;
-                $attendance->created_by = $request->user_id;
-                $attendance->updated_by = auth()->user()->id;
-                $attendance->attendance_at = $request->attendance_at;
-                $attendance->save();
+                if($punch_in_time==null || Carbon::parse($punch_in_time)<=Carbon::parse($request->attendance_at)){
+                    $attendance = new Attendance();
+                    $attendance->status = str_replace(' ', '_', $request->status);
+                    $attendance->distance = 0;
+                    $attendance->latitude = $branch->latitude;
+                    $attendance->longitude = $branch->longitude;
+                    $attendance->ip_address = $request->ip();
+                    $attendance->branch_id = $request->branch_id;
+                    $attendance->created_by = $request->user_id;
+                    $attendance->punch_in_id = $punch_in_id;
+                    $attendance->updated_by = auth()->user()->id;
+                    $attendance->attendance_at = $request->attendance_at;
+                    $attendance->save();
 
-                //Session::flash('success', 'Your attendance has been confirmed successfully.');
-                //return redirect()->back();
+                    //Session::flash('success', 'Your attendance has been confirmed successfully.');
+                    //return redirect()->back();
 
-                return response()->json([
-                    'success' => 'attendance has been confirmed successfully.' // for status 200
-                ]);
+                    return response()->json([
+                        'success' => 'attendance has been confirmed successfully.' // for status 200
+                    ]); 
+                }else{
+                    return response()->json([
+                        'error' => 'Punch Out must be a date & time after Punch In attendance.' // for status 200
+                    ]); 
+                }
+                
 
 
         } catch (\Exception $exception) {
@@ -352,8 +379,28 @@ class AttendanceController extends Controller
                 $attendance->branch_id = $request->branch_id;
                 $attendance->created_by = $request->user_id;
                 $attendance->updated_by = auth()->user()->id;
-                $attendance->attendance_at = $request->attendance_at;
+                $attendance->attendance_at = $request->punch_in;
                 $attendance->save();
+
+                if($attendance->punch_out!=null){
+                    $attendance_punch_out = $attendance->punch_out;
+                    $attendance_punch_out->attendance_at = $request->punch_out;
+                    $attendance_punch_out->save();
+                }else{
+                    $attendance_punch_out = new Attendance();
+                    $attendance_punch_out->status = 'punch_out';
+                    $attendance_punch_out->distance = 0;
+                    $attendance_punch_out->latitude = $branch->latitude;
+                    $attendance_punch_out->longitude = $branch->longitude;
+                    $attendance_punch_out->ip_address = $request->ip();
+                    $attendance_punch_out->branch_id = $request->branch_id;
+                    $attendance_punch_out->created_by = $request->user_id;
+                    $attendance_punch_out->punch_in_id = $attendance->id;
+                    $attendance_punch_out->updated_by = auth()->user()->id;
+                    $attendance_punch_out->attendance_at = $request->punch_out;
+                    $attendance_punch_out->save();
+                }
+                
 
                 //Session::flash('success', 'Your attendance has been confirmed successfully.');
                 //return redirect()->back();

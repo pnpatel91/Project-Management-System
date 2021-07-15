@@ -98,7 +98,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.colVis.min.js"></script>
-        
+        <script src="https://cdn.jsdelivr.net/gh/jeffreydwalter/ColReorderWithResize@9ce30c640e394282c9e0df5787d54e5887bc8ecc/ColReorderWithResize.js"></script>
 
         <!-- Select2 JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
@@ -119,7 +119,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- PAGE LOADER -->
         <div id="pageloader">
-           <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
+           <img src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
         </div>
 
         <!-- Navbar -->

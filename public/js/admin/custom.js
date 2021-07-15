@@ -21,19 +21,19 @@ $(document).ready(function () {
 function alert_message(message) {
     if(typeof(message.success) != "undefined" && message.success !== null) {
         var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-        $('#error_message').html(messageHtml);
-        $('#message').html(messageHtml);
+        //$('#error_message').html(messageHtml);
+        //$('#message').html(messageHtml);
         Swal.fire({icon: 'Success', title: 'Success!', text: message.success })
 
     }else if(typeof(message.delete) != "undefined" && message.delete !== null) {
         var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Delete: </strong> '+ message.delete +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-        $('#error_message').html(messageHtml);
-        $('#message').html(messageHtml);
+        //$('#error_message').html(messageHtml);
+        //$('#message').html(messageHtml);
         Swal.fire({ icon: 'delete', title: 'Delete!', text: message.delete })
 
     } else if(typeof(message.error) != "undefined" && message.error !== null){
         var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-        $('#message').html(messageHtml);
+        //$('#message').html(messageHtml);
         Swal.fire({ icon: 'error',  title: 'Oops...', text: message.error})
     }
     
@@ -50,10 +50,10 @@ $(document).ready(function () {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: $(this).serialize(),
             success: function(message){
+                $("#popup-modal").modal('hide');
                 if(typeof(message.success) != "undefined" && message.success !== null) {
-                    $("#popup-modal").modal('hide');
                     var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                    $('#message').html(messageHtml);
+                    //$('#message').html(messageHtml);
 
                     $("#navbar_current_Status").load(location.href+" #navbar_current_Status>*","");// after new attendance create. reload navbar_current_Status div
                     setTimeout(function() {   //calls click event after a certain time
@@ -63,9 +63,8 @@ $(document).ready(function () {
                         Swal.fire({ icon: 'Success', title: 'Success!', text: message.success})
                     }, 1000);
                 } else if(typeof(message.delete) != "undefined" && message.delete !== null) {
-                    $("#popup-modal").modal('hide');
                     var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Delete: </strong> '+ message.delete +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                    $('#message').html(messageHtml);
+                    //$('#message').html(messageHtml);
                     $("#navbar_current_Status").load(location.href+" #navbar_current_Status>*","");// after new attendance create. reload navbar_current_Status div
                     setTimeout(function() {   //calls click event after a certain time
                         datatables();
@@ -75,8 +74,7 @@ $(document).ready(function () {
                     }, 1000);
                 } else if(typeof(message.error) != "undefined" && message.error !== null){
                     var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                    $('#error_message').html(messageHtml);
-                    
+                    //$('#message').html(messageHtml);
                     setTimeout(function() {   //calls click event after a certain time
                         datatables();
                         $("#pageloader").hide();
@@ -87,9 +85,11 @@ $(document).ready(function () {
             error: function(message){
                 if(typeof(message.responseJSON.errors) != "undefined" && message.responseJSON.errors !== null){
                     var errors = message.responseJSON.errors;
+                    $("#popup-modal").modal('hide');
                     $.each(errors, function (key, val) {
                         var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+val[0]+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                        $('#error_message').append(messageHtml);
+                        //$('#message').append(messageHtml);
+                        Swal.fire({ icon: 'error', title: 'Oops...', text: val[0]})
                     });
                     
                     setTimeout(function() {   //calls click event after a certain time

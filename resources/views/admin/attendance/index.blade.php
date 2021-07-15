@@ -75,13 +75,14 @@
                         <table class="table table-hover dataTable no-footer" id="table" width="100%">
                             <thead>
                             <tr>
-                                <th>Activity</th>
+                                <th>Punch In</th>
+                                <th>Punch Out</th>
                                 <th>Company - Branch</th>
                                 <th>User Name</th>
                                 <th>Last Edit By</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
-                                <th class="noExport">Action</th>
+                                <th class="noExport" width="100">Action</th>
                                 <th class="noExport">User Id</th>
                                 <th class="noExport">ID</th>
                             </tr>
@@ -103,10 +104,10 @@
 function datatables() {
 
     var table = $('#table').DataTable({
-        dom: 'ltipr',
+        dom: 'Rltipr',
         buttons: [],
         select: true,
-        aaSorting     : [[8, 'desc']],
+        aaSorting     : [[5, 'desc']],
         iDisplayLength: 25,
         stateSave     : true,
         responsive    : true,
@@ -121,7 +122,8 @@ function datatables() {
             dataType: 'json'
         },
         columns       : [
-            {data: 'activity', name: 'activity'},
+            {data: 'punch_in', name: 'punch_in'},
+            {data: 'punch_out', name: 'punch_out'},
             {data: 'branch', name: 'branch'},
             {data: 'username', name: 'username'},
             {data: 'editor', name: 'editor'},
@@ -140,7 +142,7 @@ function datatables() {
 
     $('#user_id').on('change', function () {
         if(this.value != 'All'){
-            table.columns(7).search( this.value ).draw();
+            table.columns(8).search( this.value ).draw();
         }else{
             table.search( '' ).columns().search( '' ).draw();
         }
@@ -148,7 +150,7 @@ function datatables() {
 
     $('#branch').on('change', function () {
         if(this.value != 'All'){
-            table.columns(1).search( this.value ).draw();
+            table.columns(2).search( this.value ).draw();
         }else{
             table.search( '' ).columns().search( '' ).draw();
         }
@@ -164,7 +166,7 @@ function datatables() {
             maxDateFilter = Date.parse(picker.endDate);
 
             $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                var date = Date.parse(data[4]);
+                var date = Date.parse(data[5]);
 
                 if (
                 (isNaN(minDateFilter) && isNaN(maxDateFilter)) ||
@@ -200,8 +202,6 @@ function datatables() {
 }
 
 datatables();
-
-
 
 $('input[name="datefilter"]').daterangepicker({
   autoUpdateInput: false,   

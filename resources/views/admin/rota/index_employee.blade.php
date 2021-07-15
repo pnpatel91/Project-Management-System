@@ -86,7 +86,7 @@ function datatables() {
 
     var table = $('#table').DataTable({
         'scrollX': 'true',
-        dom: 'ltipr',
+        dom: 'Rltipr',
         "bLengthChange": false,
     });
 }

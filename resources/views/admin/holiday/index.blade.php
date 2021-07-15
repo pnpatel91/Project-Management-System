@@ -105,6 +105,7 @@ function datatables() {
 
 function datatables_firstcall() {
     var table = $('#table').DataTable({
+        dom: 'RBfrtip',
         buttons: [],
         aaSorting     : [[1, 'asc']],
         "bDestroy": true

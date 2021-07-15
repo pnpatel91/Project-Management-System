@@ -96,8 +96,8 @@ class BranchController extends Controller
     {   
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
-            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
-            $company = Company::select('id', 'name')->whereHas('branch', function($q) use ($branch_id) { $q->where('id', $branch_id); })->get();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
+            $company = Company::select('id', 'name')->whereHas('branch', function($q) use ($branch_id) { $q->whereIn('id', $branch_id); })->get();
         }else{
             $company = Company::all('id', 'name');
             $users = User::all('id', 'name');
@@ -173,8 +173,8 @@ class BranchController extends Controller
     {
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
-            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id', $branch_id); })->get();
-            $company = Company::select('id', 'name')->whereHas('branch', function($q) use ($branch_id) { $q->where('id', $branch_id); })->get();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
+            $company = Company::select('id', 'name')->whereHas('branch', function($q) use ($branch_id) { $q->whereIn('id', $branch_id); })->get();
         }else{
             $company = Company::all('id', 'name');
             $users = User::all('id', 'name');

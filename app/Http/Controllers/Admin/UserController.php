@@ -47,7 +47,7 @@ class UserController extends Controller
                                     $query->whereIn('branch_id', $branch_id);
                                 }])
                             ->whereHas('branches', function($q) use ($branch_id) { 
-                                    $q->where('branch_id', $branch_id); })
+                                    $q->whereIn('branch_id', $branch_id); })
                             ->orderBy('id', 'ASC')
                             ->get();
         }else{
