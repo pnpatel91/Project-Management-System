@@ -86,7 +86,7 @@ function datatables() {
             dataType: 'json'
         },
         columns       : [
-            {data: 'id', name: 'id', visible: true},
+            {data: 'id', name: 'id', visible: false},
             {data: 'name', name: 'name'},
             {data: 'users_avatars', name: 'users_avatars'},
             {data: 'created_at', name: 'created_at', visible: false},
