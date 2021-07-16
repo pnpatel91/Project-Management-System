@@ -27,10 +27,10 @@ class CreateAttendancesTable extends Migration
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();
 
-            $table->foreign('punch_in_id')->references('id')->on('attendances')->onDelete('cascade');
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('punch_in_id')->references('id')->on('attendances');
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('created_by')->references('id')->on('users')->delete('cascade');
+            $table->foreign('updated_by')->references('id')->on('users')->delete('cascade');
         });
     }
 

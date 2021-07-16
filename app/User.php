@@ -8,11 +8,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
-
+    use Notifiable, HasRoles,SoftDeletes;
+    
+    protected $softDelete = true;
     /**
      * The attributes that are mass assignable.
      *

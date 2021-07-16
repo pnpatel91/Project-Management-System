@@ -248,9 +248,16 @@ class BranchController extends Controller
     public function destroy(Branch $branch)
     {
         $branch->users()->detach();
+        $branch->holidays()->detach();
 
         // delete related leave   
         $branch->leaves()->delete();
+
+        // delete related rotas   
+        $branch->rotas()->delete();
+        
+        // delete related attendance   
+        $branch->attendance()->delete();
 
         // delete branch
         $branch->delete();

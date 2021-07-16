@@ -210,7 +210,7 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         // delete related branch   
-        //$company->branchs()->delete();
+        $company->branch()->delete();
 
         // delete company
         $company->delete();

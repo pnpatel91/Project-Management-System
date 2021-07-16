@@ -7,6 +7,9 @@ use App\User;
 use App\Image;
 use App\Branch;
 use App\Department;
+use App\Attendance;
+use App\Leave;
+use App\Rota;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
@@ -135,6 +138,14 @@ class UserController extends Controller
         }
         $user->branches()->detach();
         $user->departments()->detach();
+
+        // delete related attendances 
+        $attendance = Attendance::where('created_by',$user->id)->orWhere('updated_by',$user->id)->delete();
+
+        // delete related leaves
+        $leave = Leave::where('employee_id',$user->id)->orWhere('approved_by',$user->id)->delete();
+
+        $user->rota()->delete();
         $user->delete();
         //return redirect()->route('admin.user.index')->with('delete', 'A user was deleted.');
         return response()->json([

@@ -33,11 +33,11 @@ class CreateRotasTable extends Migration
             $table->unsignedBigInteger('updated_by')->index();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('rota_template_id')->references('id')->on('rota_templates')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('rota_template_id')->references('id')->on('rota_templates');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
         });
     }
 
