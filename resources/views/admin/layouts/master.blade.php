@@ -50,6 +50,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ asset('public/dist/css/adminlte.min.css') }}">
 
+        <link rel="stylesheet" href="{{asset('public/adminLTE/plugins/fullcalendar/dist/fullcalendar.min.css')}}">
+
         <!-- CUSTOM STYLE -->
         <link rel="stylesheet" href="{{ asset('public/css/admin/custom.css') }}">
 
@@ -109,6 +111,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+
+        <script src="{{asset('public/adminLTE/plugins/fullcalendar/dist/fullcalendar.min.js')}}"></script>
 
     <!-- REQUIRED HEAD SCRIPTS [END]-->
     

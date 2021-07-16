@@ -83,6 +83,8 @@ Route::group([
     Route::get('rota/ajax/table_employee', 'RotaController@table_employee')->name('rota.ajax.table_employee');
     Route::get('rota/edit_employee', 'RotaController@edit_employee')->name('rota.edit_employee');
     Route::put('rota/update_employee', 'RotaController@update_employee')->name('rota.update_employee');
+    
+    Route::get('rota/ajax/calendarRota', 'RotaController@calendarRota')->name('rota.ajax.calendarRota');
     Route::resource('rota', 'RotaController')->parameters(['rota' => 'rota']);
 
 

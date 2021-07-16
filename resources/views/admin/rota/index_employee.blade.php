@@ -36,10 +36,15 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">All Rota List</h3>
+                    <div class="text-right">
+                        <button type="button  form-control" id="viewgrid" class="btn btn-primary active" onclick="changeview(1)"><i class="fa fa-bars"></i></button> 
+                        <button type="button  form-control" id="viewlist" class="btn btn-primary" onclick="changeview(0)"><i class="fa fa-th"></i></button>
+                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="col-md-12">
+                        
                         <div class="form-row pt-3" id="search"> 
 
                             <div class="form-group col-md-3">
@@ -51,7 +56,7 @@
                                 <button type="button  form-control" id="search" class="btn btn-primary" onclick="load_table_data()">Search</button>
                             </div>
                             <div class="mt-4 form-group col-md-6 text-right">
-                               <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
+                                <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
                                 <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button> 
                             </div>
                         </div>
@@ -69,6 +74,9 @@
                                 <tbody></tbody>
                             </table>
                         </div>
+
+
+                        <div id='full_calendar_events' style="display:none"></div>
 
                     </div>
                     
@@ -195,7 +203,56 @@ $(document).ready(function () {
             },
         });
     }); 
+
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    var calendar = $('#full_calendar_events').fullCalendar({
+        events: "{{ route('admin.rota.ajax.calendarRota') }}",
+        displayEventTime: true,
+        eventRender: function (event, element, view) {
+            if (event.allDay === 'true') {
+                event.allDay = true;
+            } else {
+                event.allDay = false;
+            }
+
+            if(event.break_start_time!=''){
+                var break_time = moment.utc(event.break_start_time,'hh:mm').format('hh:mm')+' to '+moment.utc(event.break_start_time,'hh:mm').add(event.break_time,'minutes').format('hh:mm');
+            }else{
+                var break_time = event.break_time+' minutes';
+            }
+
+            if(event.remotely_work=='No'){
+                var branch = event.branch.name +' - '+ event.branch.address +', '+ event.branch.city +', '+ event.branch.state +', '+ event.branch.postcode +', '+ event.branch.country;
+            }else{
+                var branch = 'Remotely Work';
+            }
+
+            return $('<div class="user-add-shedule-list"><h2><div class="anchertag" style="border:2px dashed #1eb53a;width: 120px;margin: 0 0 0 10px;""><span class="username-info">'+ moment( event.start, true).format("YYYY-MM-DD") +' '+ event.start_time +' To</span><span class="username-info m-b-10"></span><span class="username-info m-b-10">' + event.end_date +' '+ event.end_time +'</span><br><span class="username-info m-b-10">Brake Time : '+ break_time +'</span><br><span class="username-info m-b-10">'+branch+'</span> </div></h2></div>');
+        },
+    });
 });
+
+function changeview(view) {
+    if(view==0){
+        $('#search').hide();
+        $('#ajax_table_data').hide();
+        $('#full_calendar_events').show();
+        $("#viewlist").addClass("active");
+        $("#viewgrid").removeClass("active")
+    }else{
+        $('#search').show();
+        $('#ajax_table_data').show();
+        $('#full_calendar_events').hide();
+        $("#viewgrid").addClass("active");
+        $("#viewlist").removeClass("active")
+    }
+}
 </script>
 @endsection
 

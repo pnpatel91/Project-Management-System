@@ -581,4 +581,20 @@ ul.notification-list > li a {
     margin-top: 10px !important;
 }
 
+.view-icons {
+    float: right;
+}
 
+.view-icons .btn.active {
+    color: #333;
+}
+
+.view-icons .btn {
+    background-color: #fff;
+    border: 1px solid #e3e3e3;
+    color: #888;
+    font-size: 18px;
+    margin-right: 5px;
+    min-width: 40px;
+    padding: 4px;
+}

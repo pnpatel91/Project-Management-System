@@ -557,5 +557,23 @@ class RotaController extends Controller
         return view('admin.rota.mail_body', compact("user","startDate","endDate"));
 
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calendarRota(Request $request)
+    {
+        if($request->ajax()) {  
+            $data = Rota::with('branch')->whereDate('start_date', '>=', $request->start)
+                ->whereDate('end_date',   '<=', $request->end)->where('user_id',auth()->user()->id)
+                ->get(['id', 'start_date AS start', 'end_date AS end', 'end_date', 'start_time', 'end_time', 'break_time', 'break_start_time', 'branch_id', 'remotely_work']);
+
+            return response()->json($data);
+        }
+
+    }
     
 }
