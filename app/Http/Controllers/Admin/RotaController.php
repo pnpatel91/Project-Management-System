@@ -128,14 +128,14 @@ class RotaController extends Controller
             $employee_id = $request->employee_id;
             $branch_id = $request->branch_id;
             $start_date = $request->start_date;
-            $holiday = Holiday::where('holiday_date',$start_date)->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id','=',$branch_id); })->get();
+            //$holiday = Holiday::where('holiday_date',$start_date)->whereHas('branches', function($q) use ($branch_id) { $q->where('branch_id','=',$branch_id); })->get();
 
             $leave = Leave::where('start_at', '>=', $start_date)->where('end_at', '<=', $start_date)->where('branch_id','=',$branch_id)->where('employee_id','=',$employee_id)->where('status','=','Approved')->get();
 
             // Check this date & user rota already created or not
             $checkRotaExist = Rota::where('user_id',$employee_id)->where('start_date',$start_date)->get();
             
-            if($holiday->count()==0 && $leave->count()==0 && $checkRotaExist->count()==0){
+            if(/*$holiday->count()==0 &&*/ $leave->count()==0 && $checkRotaExist->count()==0){
                 $start_time = $request->start_at;
                 $end_time = $request->end_at;
                 if($start_time>$end_time){

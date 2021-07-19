@@ -212,7 +212,7 @@ $(document).ready(function () {
     });
 
     var calendar = $('#full_calendar_events').fullCalendar({
-        events: '{{ url('admin.rota.ajax.calendarRota') }}',
+        events: "{{ url('admin/rota/ajax/calendarRota') }}",
         displayEventTime: true,
         eventRender: function (event, element, view) {
             if (event.allDay === 'true') {
