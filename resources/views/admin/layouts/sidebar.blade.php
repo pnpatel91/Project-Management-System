@@ -15,37 +15,11 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-               <!-- <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Manage
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @can('view role')
-                        <li class="nav-item">
-                            <a href="{{ route('admin.role.index') }}" class="nav-link">
-                                <i class="fas fa-file-alt nav-icon"></i>
-                                <p>Role & Permission</p>
-                            </a>
-                        </li>
-                        @endcan 
-                        @can('view user')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/user') }}" class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>Users</p>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
-                </li> -->
+               
                 <li class="nav-item has-treeview menu-open">
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin') }}" class="nav-link {{ Route::is('admin.') || Route::is('admin.')  ? 'active' : '' }}">
+                            <a href="{{ url('admin') }}" class="nav-link {{ Route::is('admin.') ? 'active' : '' }}">
                                 <i class="fas fa-home nav-icon"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -63,48 +37,80 @@
                         
                         @can('view role')
                         <li class="nav-item">
-                            <a href="{{ route('admin.role.index') }}" class="nav-link {{ Route::is('admin.role.*') || Route::is('admin.role.*')  ? 'active' : '' }}">
+                            <a href="{{ route('admin.role.index') }}" class="nav-link {{ Route::is('admin.role.*') ? 'active' : '' }}">
                                 <i class="fas fa-file-alt nav-icon"></i>
                                 <p>Role & Permission</p>
                             </a>
                         </li>
                         @endcan
+
+                        <li class="nav-item has-treeview {{ Route::is('admin.holiday.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ Route::is('admin.holiday.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Settings
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+
+                                @can('view company')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/company') }}" class="nav-link {{ Route::is('admin.company.*')  ? 'active' : '' }}">
+                                        <i class="fas fa-warehouse nav-icon"></i>
+                                        <p>Company</p>
+                                    </a>
+                                </li>
+                                @endcan 
+
+                                @can('view branch')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/branch') }}" class="nav-link {{ Route::is('admin.branch.*') ? 'active' : '' }}">
+                                        <i class="fas fa-code-branch nav-icon"></i>
+                                        <p>Branch</p>
+                                    </a>
+                                </li>
+                                @endcan 
+
+                                @can('view department')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/department') }}" class="nav-link {{ Route::is('admin.department.*') ? 'active' : '' }}">
+                                        <i class="far fa-id-card nav-icon"></i>
+                                        <p>Department</p>
+                                    </a>
+                                </li>
+                                @endcan
+
+                                @can('view holiday')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/holiday') }}" class="nav-link {{ Route::is('admin.holiday.*')  ? 'active' : '' }}">
+                                        <i class="fas fa-glass-cheers nav-icon"></i>
+                                        <p>Public Holiday</p>
+                                    </a>
+                                </li>
+                                @endcan 
+
+                                @can('view rota_template')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/rota_template') }}" class="nav-link {{ Route::is('admin.rota_template.*') ? 'active' : '' }}">
+                                        <i class="far fa-calendar-plus nav-icon" aria-hidden="true"></i>
+                                        <p>Rota Template</p>
+                                    </a>
+                                </li>
+                                @endcan  
+
+                                @if(auth()->user()->hasRole('superadmin'))
+                                <li class="nav-item">
+                                    <a href="{{ url('maileclipse') }}" class="nav-link" target="_blank">
+                                        <i class="fas fa-envelope-open-text nav-icon" aria-hidden="true"></i>
+                                        <p>Email Templates</p>
+                                    </a>
+                                </li>
+                                @endif
+                            </ul>
+                        </li>
+
                         
-                        @can('view company')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/company') }}" class="nav-link {{ Route::is('admin.company.*') || Route::is('admin.company.*')  ? 'active' : '' }}">
-                                <i class="fas fa-warehouse nav-icon"></i>
-                                <p>Company</p>
-                            </a>
-                        </li>
-                        @endcan 
-
-                        @can('view branch')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/branch') }}" class="nav-link {{ Route::is('admin.branch.*') || Route::is('admin.branch.*')  ? 'active' : '' }}">
-                                <i class="fas fa-code-branch nav-icon"></i>
-                                <p>Branch</p>
-                            </a>
-                        </li>
-                        @endcan 
-
-                        @can('view department')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/department') }}" class="nav-link {{ Route::is('admin.department.*') || Route::is('admin.department.*')  ? 'active' : '' }}">
-                                <i class="far fa-id-card nav-icon"></i>
-                                <p>Department</p>
-                            </a>
-                        </li>
-                        @endcan 
-
-                        @can('view holiday')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/holiday') }}" class="nav-link {{ Route::is('admin.holiday.*') || Route::is('admin.holiday.*')  ? 'active' : '' }}">
-                                <i class="fas fa-glass-cheers nav-icon"></i>
-                                <p>Holiday</p>
-                            </a>
-                        </li>
-                        @endcan 
 
                         @can('view attendance')
                         <li class="nav-item">
@@ -123,7 +129,7 @@
 
                         @can('view leave - admin')
                         <li class="nav-item">
-                            <a href="{{ url('admin/leave') }}" class="nav-link {{ Route::is('admin.leave.*') || Route::is('admin.leave.*')  ? 'active' : '' }}">
+                            <a href="{{ url('admin/leave') }}" class="nav-link {{ Route::is('admin.leave.*')  ? 'active' : '' }}">
                                 <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
                                 <p>Leave - Admin</p>
                             </a>
@@ -132,18 +138,9 @@
 
                         @can('view leave - employee')
                         <li class="nav-item">
-                            <a href="{{ url('admin/leave-employee') }}" class="nav-link {{ Route::is('admin.leave-employee.*') || Route::is('admin.leave-employee.*')  ? 'active' : '' }}">
+                            <a href="{{ url('admin/leave-employee') }}" class="nav-link {{ Route::is('admin.leave-employee.*') ? 'active' : '' }}">
                                 <i class="fas fa-briefcase nav-icon" aria-hidden="true"></i>
                                 <p>Leave</p>
-                            </a>
-                        </li>
-                        @endcan 
-
-                        @can('view rota_template')
-                        <li class="nav-item">
-                            <a href="{{ url('admin/rota_template') }}" class="nav-link {{ Route::is('admin.rota_template.*') || Route::is('admin.rota_template.*')  ? 'active' : '' }}">
-                                <i class="far fa-calendar-plus nav-icon" aria-hidden="true"></i>
-                                <p>Rota Template</p>
                             </a>
                         </li>
                         @endcan 
@@ -163,16 +160,6 @@
                                 <p>Rota</p>
                             </a>
                         </li>
-                        
-
-                        @if(auth()->user()->hasRole('superadmin'))
-                        <li class="nav-item">
-                            <a href="{{ url('maileclipse') }}" class="nav-link" target="_blank">
-                                <i class="fas fa-envelope-open-text nav-icon" aria-hidden="true"></i>
-                                <p>Email Templates</p>
-                            </a>
-                        </li>
-                        @endif
 
                     </ul>
                 </li>

@@ -13,8 +13,9 @@ $(document).ready(function () {
                     console.log(data);
             }
         });
-
-        $('#popup-modal').modal('show');
+        setTimeout(function() {   //calls click event after a certain time 
+            $('#popup-modal').modal('show');
+        }, 1000);
     });
 });
 
