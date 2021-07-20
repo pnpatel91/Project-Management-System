@@ -206,32 +206,37 @@
     $('#rota_template').change(function(){
         $("#pageloader").fadeIn();
         var id = $(this).val();
-        
-        $.ajax({
-          url : '{{ route('admin.rota_template.ajax.get_rota_template') }}',
-          data: {
-            "_token": "{{ csrf_token() }}",
-            "id": id
-            },
-          type: 'get',
-          dataType: 'json',
-          success: function( result )
-          {
-            $('#start_at').val(result.start_at);
-            $('#max_start_at').val(result.max_start_at);
-            $('#end_at').val(result.end_at);
-            $('#break_time').val(result.break_time);
-            $('#break_start_at').val(result.break_start_at);
-            $('#types').val(result.types);
-            var day_list = result.day_list.replace(/[\[\]"]+/g,'').split(",");
-            console.log(day_list);
-            $('#day_list').val(day_list).change();
-            $('#remotely_work').val(result.remotely_work);
-            $('#over_time').val(result.over_time);
-            end_date_value();
+
+        if(id==''){
             $("#pageloader").hide();
-          }
-        });
+        }else{
+            $.ajax({
+              url : '{{ route('admin.rota_template.ajax.get_rota_template') }}',
+              data: {
+                "_token": "{{ csrf_token() }}",
+                "id": id
+                },
+              type: 'get',
+              dataType: 'json',
+              success: function( result )
+              {
+                $('#start_at').val(result.start_at);
+                $('#max_start_at').val(result.max_start_at);
+                $('#end_at').val(result.end_at);
+                $('#break_time').val(result.break_time);
+                $('#break_start_at').val(result.break_start_at);
+                $('#types').val(result.types);
+                var day_list = result.day_list.replace(/\s+/g, '').replace(/[\[\]"]+/g,'').split(",");
+                console.log(day_list);
+                $('#day_list').val(day_list).change();
+                $('#remotely_work').val(result.remotely_work);
+                $('#over_time').val(result.over_time);
+                end_date_value();
+                $("#pageloader").hide();
+              }
+            });   
+        }
+        
     });
 
     function end_date_value() {
