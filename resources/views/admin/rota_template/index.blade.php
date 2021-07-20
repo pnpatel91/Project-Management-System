@@ -53,7 +53,7 @@
                                 <th>Updated By</th>
                                 <th>Created At</th>
                                 <th>Updated At</th> -->
-                                <th class="noExport" style="width: 100px;">Action1</th>
+                                <th class="noExport" >Action</th>
                             </tr>
                             </thead>
                             <tbody></tbody>
@@ -101,7 +101,7 @@ function datatables() {
             {data: 'editor', name: 'editor', visible: false},
             {data: 'created_at', name: 'created_at', visible: false},
             {data: 'updated_at', name: 'updated_at', visible: false},*/
-            {class : "col-md-2",data: 'action', name: 'action', orderable: false, searchable: false,
+            {data: 'action', name: 'action', orderable: false, searchable: false,
                 fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     //  console.log( nTd );
                     $("a", nTd).tooltip({container: 'body'});

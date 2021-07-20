@@ -37,7 +37,7 @@
                         <li class="nav-item has-treeview {{ (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee'))  ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
                                 (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cogs"></i>
+                                <i class="nav-icon fas fa-user-cog"></i>
                                 <p>
                                     Admin Panel
                                     <i class="right fas fa-angle-left"></i>

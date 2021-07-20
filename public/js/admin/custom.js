@@ -139,6 +139,26 @@ $(document).ready(function () {
             return false;
         })
     }); 
+
+    $(document).on('submit','.replicate-form',function(e){
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        $("#pageloader").fadeIn();
+        $.ajax({
+            method: "POST",
+            url: url,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: data,
+            success: function(message){
+                setTimeout(function() {   //calls click event after a certain time
+                    datatables();
+                    $("#pageloader").hide();
+                    alert_message(message);
+                }, 1000);
+            },
+        });
+    }); 
 });
 
 

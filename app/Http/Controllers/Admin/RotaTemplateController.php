@@ -74,6 +74,8 @@ class RotaTemplateController extends Controller
                             $html.= '<form method="post" class="float-left delete-form" action="'.  route('admin.rota_template.destroy', ['rota_template' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="delete"><button type="submit" class="btn btn-danger btn-sm"><span tooltip="Delete" flow="up"><i class="fas fa-trash"></i></span></button></form>';
                         }
 
+                        $html.= '<form method="post" class="float-left ml-3 replicate-form" action="'.  route('admin.rota_template.replicate', ['rota_template' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="get"><button type="submit" class="btn btn-info btn-sm"><span tooltip="Replicate" flow="up"><i class="fas fa-clone"></i></span></button></form>';
+
                         return $html; 
                     })
                     ->addColumn('start_time', function (Rota_template $data) {
@@ -275,6 +277,24 @@ class RotaTemplateController extends Controller
     public function get_rota_template(Request $request)
     {
         return Rota_template::find($request->id)->toJSON();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Rota_template  $rota_template
+     * @return \Illuminate\Http\Response
+     */
+    public function replicate(Rota_template $rota_template)
+    {
+        $newPost = $rota_template->replicate();
+        $newPost->created_at = Carbon::now();
+        $newPost->save();
+
+        return response()->json([
+            'success' => 'rota template replicate successfully.' // for status 200
+        ]);
+
     }
     
 }
