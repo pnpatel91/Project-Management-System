@@ -74,7 +74,7 @@ class RotaTemplateController extends Controller
                             $html.= '<form method="post" class="float-left delete-form" action="'.  route('admin.rota_template.destroy', ['rota_template' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="delete"><button type="submit" class="btn btn-danger btn-sm"><span tooltip="Delete" flow="up"><i class="fas fa-trash"></i></span></button></form>';
                         }
 
-                        $html.= '<form method="post" class="float-left ml-3 replicate-form" action="'.  route('admin.rota_template.replicate', ['rota_template' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="get"><button type="submit" class="btn btn-info btn-sm"><span tooltip="Replicate" flow="up"><i class="fas fa-clone"></i></span></button></form>';
+                        $html.= '<form method="post" class="float-left ml-3 replicate-form" action="'. route('admin.rota_template.replicate', ['rota_template' => $data->id ]) .'"><input type="hidden" name="_token" value="'. Session::token() .'"><input type="hidden" name="_method" value="get"><button type="submit" class="btn btn-info btn-sm"><span tooltip="Replicate" flow="up"><i class="fas fa-clone"></i></span></button></form>';
 
                         return $html; 
                     })

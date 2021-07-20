@@ -72,8 +72,9 @@ Route::group([
     // Rota Template Routes
     Route::get('rota_template/ajax/data', 'RotaTemplateController@datatables'); // For Datatables
     Route::get('rota_template/ajax/get_rota_template', 'RotaTemplateController@get_rota_template')->name('rota_template.ajax.get_rota_template');
-    Route::get('rota_template/replicate/{rota_template}', 'RotaTemplateController@replicate')->name('rota_template.replicate');
     Route::resource('rota_template', 'RotaTemplateController');
+    
+    Route::get('rota_template/replicate/{rota_template}', 'RotaTemplateController@replicate')->name('rota_template.replicate');
 
     Route::get('rota/create_bulk', 'RotaController@create_bulk')->name('rota.create_bulk');
     Route::put('rota/store_bulk', 'RotaController@store_bulk')->name('rota.store_bulk');

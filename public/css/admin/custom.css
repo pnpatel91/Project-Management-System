@@ -598,3 +598,7 @@ ul.notification-list > li a {
     min-width: 40px;
     padding: 4px;
 }
+
+.swal2-title {
+    margin: 15px 0 0 .4em !important;
+}
