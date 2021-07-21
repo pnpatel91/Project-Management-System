@@ -567,8 +567,14 @@ class RotaController extends Controller
     public function calendarRota(Request $request)
     {
         if($request->ajax()) {  
+            if(isset($request->user_id) && $request->user_id!=null){
+                $user_id = $request->user_id;
+            }else{
+                $user_id = auth()->user()->id;
+            }
+            
             $data = Rota::with('branch')->whereDate('start_date', '>=', $request->start)
-                ->whereDate('end_date',   '<=', $request->end)->where('user_id',auth()->user()->id)
+                ->whereDate('end_date',   '<=', $request->end)->where('user_id',$user_id)
                 ->get(['id', 'start_date AS start', 'end_date AS end', 'end_date', 'start_time', 'end_time', 'break_time', 'break_start_time', 'branch_id', 'remotely_work']);
 
             return response()->json($data);

@@ -36,12 +36,15 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">All Rota List</h3>
+                    <div class="text-right">
+                        <button type="button  form-control" id="viewgrid" class="btn btn-primary active" onclick="changeview(1)"><i class="fa fa-bars"></i></button> 
+                        <button type="button  form-control" id="viewlist" class="btn btn-primary" onclick="changeview(0)"><i class="fa fa-th"></i></button>
+                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="list-view">
                         <div class="form-row pt-3" id="search"> 
-
                             <div class="form-group col-md-6">
                                 <span tooltip="search by default all employees" flow="right">Search by users <i class="fas fa-info-circle"></i></span>
                                 <select class="select2 form-control" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
@@ -58,21 +61,33 @@
                             </div>
 
                             <div class="mt-4 form-group col-md-1">
-                                <button type="button  form-control" id="search" class="btn btn-primary" onclick="load_table_data()">Search</button>
+                                <button type="button  form-control" id="search_btn" class="btn btn-primary" onclick="load_table_data()">Search</button>
                             </div>
                             <div class="mt-4 form-group col-md-1 text-right">
-                               <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(0)"><</button>
-                                <button type="button  form-control" id="search" class="btn btn-primary" onclick="date_range_change(1)">></button> 
+                               <button type="button  form-control" class="btn btn-primary" onclick="date_range_change(0)"><</button>
+                                <button type="button  form-control" class="btn btn-primary" onclick="date_range_change(1)">></button> 
                             </div>
-                            
-
                         </div>
                         <div class="table-responsive" id="ajax_table_data">
-
                         </div>
-
                     </div>
-                    
+
+                    <div class="col-md-12" id="calendar-view">
+                        <div class="form-row pt-3" id="search"> 
+                            <div class="form-group col-md-6">
+                                <span>Search by users</span>
+                                <select class="select2 form-control" id="user_id_calendar_view" name="user_id" required autocomplete="user_id">
+                                    @foreach ($users as $key => $user)
+                                        <option value="{{ $user->id }}" @if($user->id == auth()->user()->id) selected  @endif>{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mt-4 form-group col-md-1">
+                                <button type="button  form-control" id="search_btn" class="btn btn-primary" onclick="get_full_calendar_rota()">Search</button>
+                            </div>
+                        </div>
+                        <div id='full_calendar_events'></div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -259,6 +274,73 @@ $(document).ready(function () {
         });
     }); 
 });
+
+function get_full_calendar_rota() {
+    $('#full_calendar_events').fullCalendar('destroy');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var calendar = $('#full_calendar_events').fullCalendar({
+        events: {
+            url: "{{ url('admin/rota/ajax/calendarRota') }}",
+            cache: false,
+            type: 'GET',
+            data: {
+                user_id: $('#user_id_calendar_view').val()
+            },
+            error: function () {
+                alert('there was an error while fetching events!');
+            },               
+        },
+        displayEventTime: true,
+        dayClick: function(date, jsEvent, view, resourceObj) {
+
+            alert('Date: ' + date.format());
+            alert('Resource ID: ' + resourceObj.id);
+
+          },
+        eventRender: function (event, element, view) {
+            if (event.allDay === 'true') {
+                event.allDay = true;
+            } else {
+                event.allDay = false;
+            }
+
+            if(event.break_start_time!=''){
+                var break_time = moment.utc(event.break_start_time,'hh:mm').format('hh:mm')+' to '+moment.utc(event.break_start_time,'hh:mm').add(event.break_time,'minutes').format('hh:mm');
+            }else{
+                var break_time = event.break_time+' minutes';
+            }
+
+            if(event.remotely_work=='No'){
+                //var branch = event.branch.name +' - '+ event.branch.address +', '+ event.branch.city +', '+ event.branch.state +', '+ event.branch.postcode +', '+ event.branch.country;
+                var branch = event.branch.name;
+            }else{
+                var branch = 'Remotely Work';
+            }
+
+            return $('<div class="user-add-shedule-list"><h2><div class="anchertag" style="border:2px dashed #1eb53a;width: 120px;margin: 0 0 0 10px;""><span class="username-info">'+ moment( event.start, true).format("YYYY-MM-DD") +' '+ event.start_time +' To</span><span class="username-info m-b-10"></span><span class="username-info m-b-10">' + event.end_date +' '+ event.end_time +'</span><span class="username-info m-b-10">Brake Time : '+ break_time +'</span><span class="username-info m-b-10">'+branch+'</span> </div></h2></div>');
+        },
+    });
+}
+get_full_calendar_rota();
+
+function changeview(view) {
+    if(view==0){
+        $('#list-view').hide();
+        $('#calendar-view').show();
+        $("#viewlist").addClass("active");
+        $("#viewgrid").removeClass("active")
+    }else{
+        $('#list-view').show();
+        $('#calendar-view').hide();
+        $("#viewgrid").addClass("active");
+        $("#viewlist").removeClass("active")
+    }
+}
+changeview(1);
 </script>
 @endsection
 
