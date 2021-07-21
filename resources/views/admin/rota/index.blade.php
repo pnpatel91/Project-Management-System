@@ -149,6 +149,7 @@ $(document).ready(function () {
                     data: data,
                     success: function(message){
                         setTimeout(function() {   //calls click event after a certain time
+                            get_full_calendar_rota();
                             load_table_data();
                             //$("#pageloader").hide();
                             alert_message(message);
@@ -239,11 +240,13 @@ $(document).ready(function () {
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: $(this).serialize(),
             success: function(message){
+                $("#popup-modal").modal('hide');
                 if(typeof(message.success) != "undefined" && message.success !== null) {
                     $("#popup-modal").modal('hide');
                     var messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success: </strong> '+ message.success +' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
                     $('#message').html(messageHtml);
                     setTimeout(function() {   //calls click event after a certain time
+                        get_full_calendar_rota();
                         load_table_data();
                         Swal.fire({ icon: 'Success', title: 'Success!', text: message.success})
                         $("#pageloader").hide();
@@ -252,7 +255,9 @@ $(document).ready(function () {
                     var messageHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Error: </strong> '+message.error+' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
                     $('#error_message').html(messageHtml);
                     setTimeout(function() {   //calls click event after a certain time
+                        get_full_calendar_rota();
                         load_table_data();
+                        Swal.fire({ icon: 'error', title: 'Oops...', text: message.error})
                         $("#pageloader").hide();
                     }, 1000);
                 }
@@ -266,6 +271,7 @@ $(document).ready(function () {
                     });
                     
                     setTimeout(function() {   //calls click event after a certain time
+                        get_full_calendar_rota();
                         load_table_data();
                         $("#pageloader").hide();
                     }, 1000);
@@ -277,6 +283,7 @@ $(document).ready(function () {
 
 function get_full_calendar_rota() {
     $('#full_calendar_events').fullCalendar('destroy');
+    var user_id = $('#user_id_calendar_view').val();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -288,19 +295,17 @@ function get_full_calendar_rota() {
             cache: false,
             type: 'GET',
             data: {
-                user_id: $('#user_id_calendar_view').val()
+                user_id: user_id
             },
             error: function () {
                 alert('there was an error while fetching events!');
             },               
         },
-        displayEventTime: true,
-        dayClick: function(date, jsEvent, view, resourceObj) {
-
-            alert('Date: ' + date.format());
-            alert('Resource ID: ' + resourceObj.id);
-
-          },
+        dayRender: function (date,cell) {
+            var url = '{{ url("admin/rota/create_single_rota") }}';
+            url= url+'/'+user_id+'/'+moment(date).format('YYYY-MM-DD');
+            cell.prepend('<div id="eventHide'+moment(date).format('YYYY-MM-DD')+'"><a href="'+url+'" class="anchertag anchertag-calander" id="popup-modal-button-rota"><span tooltip="create new rota." flow="up"><i class="fas fa-plus"></i></span></a></div>');
+        },
         eventRender: function (event, element, view) {
             if (event.allDay === 'true') {
                 event.allDay = true;
@@ -321,7 +326,22 @@ function get_full_calendar_rota() {
                 var branch = 'Remotely Work';
             }
 
-            return $('<div class="user-add-shedule-list"><h2><div class="anchertag" style="border:2px dashed #1eb53a;width: 120px;margin: 0 0 0 10px;""><span class="username-info">'+ moment( event.start, true).format("YYYY-MM-DD") +' '+ event.start_time +' To</span><span class="username-info m-b-10"></span><span class="username-info m-b-10">' + event.end_date +' '+ event.end_time +'</span><span class="username-info m-b-10">Brake Time : '+ break_time +'</span><span class="username-info m-b-10">'+branch+'</span> </div></h2></div>');
+            var edit = '';
+            //if (auth()->user()->can('edit rota')){
+                var edit_url = "{{ route('admin.rota.edit', ":id") }}";
+                edit_url = edit_url.replace(':id', event.id);
+                edit +="<a href='"+edit_url+"' class='float-left ml-2 mt-2'  id='popup-modal-button'><span tooltip='Edit' flow='right'><i class='fas fa-edit'></i></span></a>";
+            //}
+            
+            var delete_rota = '';
+            //if (auth()->user()->can('delete rota')){
+                var delete_url = "{{ route('admin.rota.destroy', ":id") }}";
+                delete_url = delete_url.replace(':id', event.id);
+                delete_rota +='<form method="post" class="float-left delete-form-rota" action="'+delete_url+'"><input type="hidden" name="_token" value="{{Session::token()}}"><input type="hidden" name="_method" value="delete"><button type="submit" class="close"  tooltip="Delete" flow="left"><i class="fas fa-trash"></i></button></form>';
+            //}
+
+            $('#eventHide'+moment( event.start, true).format("YYYY-MM-DD")).html('');
+            return $('<div class="user-add-shedule-list" style="margin: -35px 0 15px 0px;"><h2>'+delete_rota+edit+'<div class="anchertag" style="border:2px dashed #1eb53a;width: 120px;margin: 0 0 0 10px;""><span class="username-info">'+ moment( event.start, true).format("YYYY-MM-DD") +' '+ event.start_time +' To</span><span class="username-info m-b-10"></span><span class="username-info m-b-10">' + event.end_date +' '+ event.end_time +'</span><span class="username-info m-b-10">Brake Time : '+ break_time +'</span><span class="username-info m-b-10">'+branch+'</span> </div></h2></div>');
         },
     });
 }

@@ -513,7 +513,7 @@ ul.notification-list > li a {
 }
 
 .user-add-shedule-list{
-    width: 200px;
+    width: 185px;
 }
 
 .user-add-shedule-list h2 a.anchertag {
@@ -601,4 +601,30 @@ ul.notification-list > li a {
 
 .swal2-title {
     margin: 15px 0 0 .4em !important;
+}
+
+.anchertag-calander{
+    top: 50%;
+    margin: 0 0 0 65px;
+    position: absolute;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.fc-row .fc-bg {
+    z-index: unset !important;
+}
+
+.fc-row .fc-content-skeleton {
+    position: unset !important;
+    z-index: unset !important;
+    padding-bottom: 2px;
+}
+
+.fc-unthemed td.fc-today {
+    background: none !important;
+}
+
+.fc-basic-view .fc-body .fc-row {
+    min-height: 120px !important;
 }
