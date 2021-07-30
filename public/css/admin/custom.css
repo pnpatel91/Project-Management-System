@@ -628,3 +628,21 @@ ul.notification-list > li a {
 .fc-basic-view .fc-body .fc-row {
     min-height: 120px !important;
 }
+
+/* At the top level of your code */
+@media screen and (max-width: 900px) {
+  #full_calendar_events {
+    width: 100%;
+    overflow: auto;
+  }
+
+  .fc-view-container {
+    overflow-x: scroll !important;
+    width: 1200px;
+  }
+
+  .fc-right {
+    float: left !important;
+    padding: 20px 0 0 0 !important;
+  }
+}

@@ -327,18 +327,20 @@ function get_full_calendar_rota() {
             }
 
             var edit = '';
-            //if (auth()->user()->can('edit rota')){
+            var edit_permission = "{{auth()->user()->can('edit rota')}}";
+            if (edit_permission==true){
                 var edit_url = "{{ route('admin.rota.edit', ":id") }}";
                 edit_url = edit_url.replace(':id', event.id);
                 edit +="<a href='"+edit_url+"' class='float-left ml-2 mt-2'  id='popup-modal-button'><span tooltip='Edit' flow='right'><i class='fas fa-edit'></i></span></a>";
-            //}
+            }
             
             var delete_rota = '';
-            //if (auth()->user()->can('delete rota')){
+            var delete_permission = "{{auth()->user()->can('delete rota')}}";
+            if (delete_permission==true){
                 var delete_url = "{{ route('admin.rota.destroy', ":id") }}";
                 delete_url = delete_url.replace(':id', event.id);
                 delete_rota +='<form method="post" class="float-left delete-form-rota" action="'+delete_url+'"><input type="hidden" name="_token" value="{{Session::token()}}"><input type="hidden" name="_method" value="delete"><button type="submit" class="close"  tooltip="Delete" flow="left"><i class="fas fa-trash"></i></button></form>';
-            //}
+            }
 
             $('#eventHide'+moment( event.start, true).format("YYYY-MM-DD")).html('');
             return $('<div class="user-add-shedule-list" style="margin: -35px 0 15px 0px;"><h2>'+delete_rota+edit+'<div class="anchertag" style="border:2px dashed #1eb53a;width: 120px;margin: 0 0 0 10px;""><span class="username-info">'+ moment( event.start, true).format("YYYY-MM-DD") +' '+ event.start_time +' To</span><span class="username-info m-b-10"></span><span class="username-info m-b-10">' + event.end_date +' '+ event.end_time +'</span><span class="username-info m-b-10">Brake Time : '+ break_time +'</span><span class="username-info m-b-10">'+branch+'</span> </div></h2></div>');
