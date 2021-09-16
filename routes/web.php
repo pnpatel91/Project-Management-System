@@ -89,6 +89,20 @@ Route::group([
     Route::get('rota/ajax/calendarRota', 'RotaController@calendarRota')->name('rota.ajax.calendarRota');
     Route::resource('rota', 'RotaController')->parameters(['rota' => 'rota']);
 
+    // Wiki Category Routes
+    Route::resource('wikiCategory', 'WikiCategoriesController')->parameters(['wikiCategory' => 'wikiCategory']);
+    Route::get('wikiCategory/ajax/change_status', 'WikiCategoriesController@change_status')->name('wikiCategory.ajax.change_status'); // For change status
+
+    // Wiki Blog Routes
+    Route::resource('wikiBlog', 'WikiBlogsController')->parameters(['wikiBlog' => 'wikiBlog']);
+    Route::get('wikiBlog/ajax/data', 'WikiBlogsController@datatables'); // For Datatables
+    Route::post( 'wikiBlog/ajax/get_blog_by_category', 'WikiBlogsController@get_blog_by_category' )->name('wikiBlog.ajax.get_blog_by_category'); // Get user option by branch in ajax
+    Route::get('wikiBlog/ajax/change_status', 'WikiBlogsController@change_status')->name('wikiBlog.ajax.change_status'); // For change status
+    
+    Route::get('wikiBlogView', 'WikiBlogsViewController@index')->name('wikiBlogView'); // For View
+    Route::post( 'wikiBlogView/ajax/get_blog_details', 'WikiBlogsViewController@get_blog_details' )->name('wikiBlogView.ajax.get_blog_details'); 
+
+    Route::post( 'wikiBlogView/ajax/search', 'WikiBlogsViewController@search' )->name('wikiBlogView.ajax.search'); 
 
 
 });

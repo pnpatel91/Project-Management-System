@@ -629,6 +629,10 @@ ul.notification-list > li a {
     min-height: 120px !important;
 }
 
+.list-group-item {
+    background-color: black;
+}
+
 /* At the top level of your code */
 @media screen and (max-width: 900px) {
   #full_calendar_events {

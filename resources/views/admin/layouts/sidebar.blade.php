@@ -36,7 +36,7 @@
 
                         <li class="nav-item has-treeview {{ (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee'))  ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
-                                (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee')) ? 'active' : '' }}">
+                                (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || Route::is('admin.wikiCategory.*') || Route::is('admin.wikiBlog.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-cog"></i>
                                 <p>
                                     Admin Panel
@@ -68,6 +68,33 @@
                                     <a href="{{ url('admin/rota') }}" class="nav-link {{ Route::is('admin.rota.*') && !Route::is('admin.rota.employee')  ? 'active' : '' }}">
                                         <i class="fas fa-calendar-alt nav-icon"></i>
                                         <p>Rota</p>
+                                    </a>
+                                </li>
+                                @endcan  
+
+                                @can('view Wiki Category')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/wikiCategory') }}" class="nav-link {{ Route::is('admin.wikiCategory.*')  ? 'active' : '' }}">
+                                        <i class="fas fa-calendar-alt nav-icon"></i>
+                                        <p>Wiki Category</p>
+                                    </a>
+                                </li>
+                                @endcan  
+
+                                @can('view Wiki Blog')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/wikiBlog') }}" class="nav-link {{ Route::is('admin.wikiBlog.*')  ? 'active' : '' }}">
+                                        <i class="fas fa-calendar-alt nav-icon"></i>
+                                        <p>Wiki Blog</p>
+                                    </a>
+                                </li>
+                                @endcan  
+
+                                @can('view Wiki Blog')
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/wikiBlogView') }}" class="nav-link {{ Route::is('admin.wikiBlogView.*')  ? 'active' : '' }}">
+                                        <i class="fas fa-calendar-alt nav-icon"></i>
+                                        <p>Wiki Blog View</p>
                                     </a>
                                 </li>
                                 @endcan  

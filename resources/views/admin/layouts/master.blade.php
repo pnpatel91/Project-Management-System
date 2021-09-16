@@ -145,9 +145,12 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
         <!-- Navbar -->
         @include('admin.layouts.navbar')
         <!-- /.navbar -->
-
         <!-- Main Sidebar Container -->
-        @include('admin.layouts.sidebar')
+        @if(Route::is('admin.wikiBlogView'))
+            @include('admin.layouts.wikisidebar')
+        @else
+            @include('admin.layouts.sidebar')
+        @endif
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">

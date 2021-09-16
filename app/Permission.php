@@ -64,6 +64,11 @@ class Permission extends ModelsPermission
             'create rota_template',
             'edit rota_template',
             'delete rota_template',
+
+            'view Wiki Category',
+            'create Wiki Category',
+            'edit Wiki Category',
+            'delete Wiki Category',
         ];
     }
 
