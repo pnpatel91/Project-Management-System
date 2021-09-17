@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\wikiCategories;
+use App\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WikiCategoryStoreRequest;
 use App\Http\Requests\WikiCategoryUpdateRequest;
@@ -34,7 +35,7 @@ class WikiCategoriesController extends Controller
      */
     public function index()
     {
-        $wikiCategories = wikiCategories::select('*')->get();
+        $wikiCategories = wikiCategories::select('*')->with('users')->get();
         return view('admin.wikiCategory.index',compact('wikiCategories'));
     }
 
@@ -45,7 +46,14 @@ class WikiCategoriesController extends Controller
      */
     public function create()
     {
-        return view('admin.wikiCategory.create');
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
+        }else{
+            $users = User::all('id', 'name');
+        }
+
+        return view('admin.wikiCategory.create',compact("users"));
     }
 
     /**
@@ -65,6 +73,7 @@ class WikiCategoriesController extends Controller
             $wikiCategories->updated_by = auth()->user()->id;
             $wikiCategories->save();
 
+            $wikiCategories->users()->attach($request->user_id);
             //Session::flash('success', 'wiki Categories was created successfully.');
             //return redirect()->route('wikiCategories.index');
 
@@ -104,7 +113,15 @@ class WikiCategoriesController extends Controller
      */
     public function edit(wikiCategories $wikiCategory)
     {
-        return view('admin.wikiCategory.edit', compact('wikiCategory'));
+        if(!auth()->user()->hasRole('superadmin')){
+            $branch_id = auth()->user()->getBranchIdsAttribute();
+            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
+        }else{
+            $users = User::all('id', 'name');
+        }
+        $wikiCategoryUsers = $wikiCategory->users->pluck('id')->toArray();
+
+        return view('admin.wikiCategory.edit', compact('wikiCategory','users','wikiCategoryUsers'));
     }
 
     /**
@@ -127,10 +144,11 @@ class WikiCategoriesController extends Controller
             }
 
             $wikiCategory->name = $request->name;
-            $wikiCategories->status = 'Active';
+            $wikiCategory->status = $request->status;
             $wikiCategory->updated_by = auth()->user()->id;
             $wikiCategory->save();
 
+            $wikiCategory->users()->sync($request->user_id);
             //Session::flash('success', 'A Wiki Category updated successfully.');
             //return redirect('admin/wikiCategory');
 

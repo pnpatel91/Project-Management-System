@@ -11,7 +11,7 @@
     <div class="sidebar">
         <div class="mt-2">
             <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" id="search" onkeyup="fun_sidebar_search(this);">
+                <input class="form-control form-control-sidebar" placeholder="Search" aria-label="Search" id="search" onkeyup="fun_sidebar_search(this);">
             </div>
             <div class="sidebar-search-results" style="display:none;">
                 
@@ -37,7 +37,7 @@
                         @if(count($category->wikiBlogs)>0)
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-user-cog"></i>
+                                <i class="nav-icon fas fa-angle-right"></i>
                                 <p>
                                     {{$category->name}}
                                     <i class="right fas fa-angle-left"></i>

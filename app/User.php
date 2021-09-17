@@ -155,4 +155,12 @@ class User extends Authenticatable
         return $this->belongsTo(Rota::class,'user_id');
     }
 
+    /**
+     * The wikiCategories that belong to the user.
+     */
+    public function wikiCategories()
+    {
+        return $this->belongsToMany(wikiCategories::class, 'user_has_wiki_categories', 'user_id', 'wiki_category_id');
+    }
+
 }

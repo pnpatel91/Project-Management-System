@@ -25,6 +25,7 @@ class WikiBlogUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|max:200|string',
+            'description' => 'required'
         ];
     }
 }

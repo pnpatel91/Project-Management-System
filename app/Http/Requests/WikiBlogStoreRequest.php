@@ -24,7 +24,8 @@ class WikiBlogStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:200|string'
+            'title' => 'required|max:200|string',
+            'description' => 'required'
         ];
     }
 }

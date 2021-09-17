@@ -22,6 +22,24 @@
                             <label>Name</label>
                             <input type="text" name="name" value="{{ $wikiCategory->name }}" class="form-control" required autocomplete="name" autofocus maxlength="60">
                         </div>
+                        <div class="form-group">
+                            <label>Users</label>
+                            <select class="form-control select2" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" @if(in_array($user->id, $wikiCategoryUsers)) selected="selected" @endif >{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control select2" id="status" name="status" required autocomplete="status">
+                                <option value="Active" @if($user->status=='Active') selected="selected" @endif >Active</option>
+                                <option value="Inactive" @if($user->status=='Inactive') selected="selected" @endif >Inactive</option>
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>
@@ -41,5 +59,15 @@
             }
         }); //valdate end
     }); //function end
+
+    $("#user_id").select2({
+      placeholder: "Select users",
+      allowClear: true
+    });
+
+    $("#status").select2({
+      placeholder: "Select statu",
+      allowClear: true
+    });
 </script>
 @endsection

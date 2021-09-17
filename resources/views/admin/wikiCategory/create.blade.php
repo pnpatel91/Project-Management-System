@@ -21,6 +21,15 @@
                             <label>Name</label>
                             <input type="text" name="name" class="form-control" required autocomplete="name" autofocus maxlength="60">
                         </div>
+                        <div class="form-group">
+                            <label>Users</label>
+                            <select class="form-control select2" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>
@@ -40,6 +49,11 @@
             }
         }); //valdate end
     }); //function end
+
+    $("#user_id").select2({
+      placeholder: "Select users",
+      allowClear: true
+    });
 </script>
 
 @endsection

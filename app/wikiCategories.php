@@ -42,4 +42,12 @@ class wikiCategories extends Model
     public function editor(){
         return $this->belongsTo(User::class,'updated_by');
     }
+
+    /**
+     * The users that belong to the branch.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_has_wiki_categories', 'wiki_category_id','user_id');
+    }
 }

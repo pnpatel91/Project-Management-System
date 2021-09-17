@@ -34,9 +34,10 @@ class WikiBlogsViewController extends Controller
      */
     public function index()
     {
+        $user_id = auth()->user()->id;
         $categories = wikiCategories::with(['wikiBlogs' => function ($query) {
                                                             $query->where('parent_id', null)->where('status', 'Active');
-                                                },'wikiBlogs.allChildren'])->where('status', 'Active')->get();
+                                                },'wikiBlogs.allChildren'])->where('status', 'Active')->whereHas('users', function($q) use ($user_id) { $q->where('user_id', $user_id); })->get();
         //dd($categories);
         return view('admin.wikiBlogView.index',compact('categories'));
     }
@@ -68,12 +69,16 @@ class WikiBlogsViewController extends Controller
           $wikiBlog = wikiBlogs::where('title', 'like', "%{$request->search}%")->get();
 
           $html = '<div class="list-group">';
-
-          foreach ($wikiBlog as $value) {
-            $title = $value->title;
-            $title = str_replace($request->search,'<strong class="text-light">'.$request->search.'</strong>',$title);
-              $html .= '<a href="#" onclick="linkclickable('.$value->id.')" class="list-group-item" ><div class="search-title">'.$title.'</div></a>';
+          if(count($wikiBlog)>0){
+            foreach ($wikiBlog as $value) {
+                $title = $value->title;
+                $title = str_replace($request->search,'<strong class="text-light">'.$request->search.'</strong>',$title);
+                  $html .= '<a href="#" onclick="linkclickable('.$value->id.')" class="list-group-item" ><div class="search-title">'.$title.'</div></a>';
+            }
+          }else{
+            $html .= '<a href="#" class="list-group-item" ><div class="search-title">No Result Found!!</div></a>';
           }
+          
 
           $html .= '</div>';
           return $html;

@@ -15,11 +15,11 @@
                 </div>
             </div>
             <div class="col-lg-7 align-self-center list-pages-crumbs text-right" id="breadcrumbs">
-                <h3 class="text-themecolor">Wiki Blogs</h3>
+                <h3 class="text-themecolor">Documentation</h3>
                 <!--crumbs-->
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item">App</li>    
-                    <li class="breadcrumb-item  active active-bread-crumb ">Wiki Blogs</li>
+                    <li class="breadcrumb-item  active active-bread-crumb ">Documentation</li>
                 </ol>
                 <!--crumbs-->
             </div>
@@ -65,22 +65,23 @@
 
     function fun_sidebar_search() {
         var search = $('#search').val();
-
-        $.ajax({
-          url : '{{ route('admin.wikiBlogView.ajax.search') }}',
-          data: {
-            "_token": "{{ csrf_token() }}",
-            "search": search
-            },
-          type: 'post',
-          dataType: 'html',
-          success: function( result )
-          {
-            console.log(result);
-            $('.sidebar-search-results').html(result);
-            $(".sidebar-search-results").fadeIn();
-          }
-        });
+        if(search!=''){
+            $.ajax({
+              url : '{{ route('admin.wikiBlogView.ajax.search') }}',
+              data: {
+                "_token": "{{ csrf_token() }}",
+                "search": search
+                },
+              type: 'post',
+              dataType: 'html',
+              success: function( result )
+              {
+                console.log(result);
+                $('.sidebar-search-results').html(result);
+                $(".sidebar-search-results").fadeIn();
+              }
+            });  
+        }
     }
 </script>
 

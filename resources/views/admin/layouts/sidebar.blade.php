@@ -75,7 +75,7 @@
                                 @can('view Wiki Category')
                                 <li class="nav-item">
                                     <a href="{{ url('admin/wikiCategory') }}" class="nav-link {{ Route::is('admin.wikiCategory.*')  ? 'active' : '' }}">
-                                        <i class="fas fa-calendar-alt nav-icon"></i>
+                                        <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
                                         <p>Wiki Category</p>
                                     </a>
                                 </li>
@@ -84,7 +84,7 @@
                                 @can('view Wiki Blog')
                                 <li class="nav-item">
                                     <a href="{{ url('admin/wikiBlog') }}" class="nav-link {{ Route::is('admin.wikiBlog.*')  ? 'active' : '' }}">
-                                        <i class="fas fa-calendar-alt nav-icon"></i>
+                                        <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
                                         <p>Wiki Blog</p>
                                     </a>
                                 </li>
@@ -93,8 +93,8 @@
                                 @can('view Wiki Blog')
                                 <li class="nav-item">
                                     <a href="{{ url('admin/wikiBlogView') }}" class="nav-link {{ Route::is('admin.wikiBlogView.*')  ? 'active' : '' }}">
-                                        <i class="fas fa-calendar-alt nav-icon"></i>
-                                        <p>Wiki Blog View</p>
+                                        <i class="fa fa-book nav-icon" aria-hidden="true"></i>
+                                        <p>Documentation</p>
                                     </a>
                                 </li>
                                 @endcan  
