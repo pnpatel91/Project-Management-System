@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'biography', 'dateOfBirth', 'email', 'password',
+        'name', 'biography', 'dateOfBirth', 'email', 'password', 'parent_id', 'position'
     ];
 
     /**
@@ -161,6 +161,28 @@ class User extends Authenticatable
     public function wikiCategories()
     {
         return $this->belongsToMany(wikiCategories::class, 'user_has_wiki_categories', 'user_id', 'wiki_category_id');
+    }
+
+
+    /**
+     * Get the parent wikiBlog of this wikiBlog.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    /**
+     * Get the children wikiBlog of this wikiBlog.
+    */
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
+
+    public function allChildren()
+    {
+        return $this->children()->with('allChildren');
     }
 
 }

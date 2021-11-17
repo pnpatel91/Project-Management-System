@@ -88,7 +88,7 @@ function datatables() {
         },
         columns       : [
             {data: 'id', name: 'id', visible: false},
-            {data: 'title', name: 'tile'},
+            {data: 'title', name: 'title'},
             {data: 'category', name: 'category'},
             {data: 'status', name: 'status'},
             {data: 'created_at', name: 'created_at', visible: false},

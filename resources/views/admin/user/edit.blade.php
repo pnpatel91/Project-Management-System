@@ -41,6 +41,10 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label>Job Title</label>
+                            <input type="text" name="position" class="form-control" value="{{ $user->position }}" required autocomplete="position" autofocus maxlength="200">
+                        </div>
+                        <div class="form-group">
                             <label>Company-Branch</label>
                             <select class="form-control select2" id="select2" name="branch_id[]" required autocomplete="branch_id" multiple>
                                 @foreach ($branches as $branch)
@@ -55,6 +59,16 @@
                             <select class="form-control select2" id="department_id" name="department_id[]" required autocomplete="department_id" multiple>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department->id }}" @if(in_array($department->id, $userDepartments)) selected="selected" @endif >{{$department->name}}</option>
+                                @endforeach
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Parent User</label>
+                            <select class="form-control select2" id="parent_id" name="parent_id" required autocomplete="parent_id">
+                                @foreach ($parents as $parent)
+                                    <option value="{{ $parent->id }}" @if($parent->id==$user->parent_id) selected="selected" @endif >{{$parent->name}}</option>
                                 @endforeach
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
@@ -86,6 +100,11 @@
 
     $("#department_id").select2({
       placeholder: "Select a department",
+      allowClear: true
+    });
+
+    $("#parent_id").select2({
+      placeholder: "Select a parent user",
       allowClear: true
     });
 </script>

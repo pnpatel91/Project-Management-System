@@ -32,6 +32,13 @@
                                 <p>Employee</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/user-treeview') }}" class="nav-link {{ Route::is('admin.user-treeview')  ? 'active' : '' }}">
+                                <i class="fas fa-users nav-icon" aria-hidden="true"></i>
+                                <p>Employee - Tree View</p>
+                            </a>
+                        </li>
                         @endcan
 
                         <li class="nav-item has-treeview {{ (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee'))  ? 'menu-open' : '' }}">
@@ -90,14 +97,7 @@
                                 </li>
                                 @endcan  
 
-                                @can('view Wiki Blog')
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/wikiBlogView') }}" class="nav-link {{ Route::is('admin.wikiBlogView.*')  ? 'active' : '' }}">
-                                        <i class="fa fa-book nav-icon" aria-hidden="true"></i>
-                                        <p>Documentation</p>
-                                    </a>
-                                </li>
-                                @endcan  
+                                  
                             </ul>
                         </li>
 
@@ -204,6 +204,13 @@
                                 </li>
                                 @endif
                             </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/wikiBlogView') }}" class="nav-link {{ Route::is('admin.wikiBlogView.*')  ? 'active' : '' }}">
+                                <i class="fa fa-book nav-icon" aria-hidden="true"></i>
+                                <p>Documentation</p>
+                            </a>
                         </li>
 
                     </ul>

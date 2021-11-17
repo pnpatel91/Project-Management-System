@@ -72,13 +72,16 @@ class UserController extends Controller
         }else{
             $branches = Branch::all();
         }
+
         $departments = Department::all();
-        return view('admin.user.create', compact('roles', 'branches', 'departments'));
+
+        $parents = User::all();
+        return view('admin.user.create', compact('roles', 'branches', 'departments', 'parents'));
     }
 
     public function store(UserStoreRequest $request)
     {
-        $input = $request->only('name', 'email', 'password');
+        $input = $request->only('name', 'email', 'password', 'parent_id', 'position');
         $input['password'] = bcrypt($request->password);
         $user = User::create($input);
         $user->assignRole($request->role);
@@ -109,12 +112,14 @@ class UserController extends Controller
         $departments = Department::all();
         $userBranches = $user->branches->pluck('id')->toArray();
         $userDepartments = $user->departments->pluck('id')->toArray();
-        return view('admin.user.edit', compact('user', 'roles', 'userRole', 'branches', 'userBranches', 'departments', 'userDepartments'));
+
+        $parents = User::where('id', '!=' , $user->id)->get();
+        return view('admin.user.edit', compact('user', 'roles', 'userRole', 'branches', 'userBranches', 'departments', 'userDepartments', 'parents'));
     }
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        $input = $request->only('name', 'email');
+        $input = $request->only('name', 'email', 'parent_id', 'position');
         if($request->filled('password')) {
             $input['password'] = bcrypt($request->password);
         }
@@ -136,14 +141,14 @@ class UserController extends Controller
                 'errors' => 'You cannot delete current logged in user.' // for status 200
             ]);
         }
-        $user->branches()->detach();
-        $user->departments()->detach();
+        //$user->branches()->detach();
+        //$user->departments()->detach();
 
         // delete related attendances 
-        $attendance = Attendance::where('created_by',$user->id)->orWhere('updated_by',$user->id)->delete();
+        //$attendance = Attendance::where('created_by',$user->id)->orWhere('updated_by',$user->id)->delete();
 
         // delete related leaves
-        $leave = Leave::where('employee_id',$user->id)->orWhere('approved_by',$user->id)->delete();
+        //$leave = Leave::where('employee_id',$user->id)->orWhere('approved_by',$user->id)->delete();
 
         $user->rota()->delete();
         $user->delete();
@@ -182,4 +187,18 @@ class UserController extends Controller
           }
           return $output;
     }
+
+    /**
+     * Display user tree.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function tree()
+    {
+          $users = User::with('allChildren')->where('parent_id',null)->get();
+          return view('admin.user.tree', compact('users'));
+    }
+
+    
 }

@@ -92,8 +92,9 @@ class WikiBlogsController extends Controller
      */
     public function create()
     {
+        $status = ['Active', 'Inactive'];
         $wikiCategories = wikiCategories::all();
-        return view('admin.wikiBlog.create', compact("wikiCategories"));
+        return view('admin.wikiBlog.create', compact("wikiCategories","status"));
     }
 
     /**
@@ -155,8 +156,9 @@ class WikiBlogsController extends Controller
      */
     public function edit(wikiBlogs $wikiBlog)
     {
+        $status = ['Active', 'Inactive'];
         $wikiCategories = wikiCategories::all();
-        return view('admin.wikiBlog.edit', compact('wikiBlog', 'wikiCategories'));
+        return view('admin.wikiBlog.edit', compact('wikiBlog', 'wikiCategories', 'status'));
     }
 
     /**

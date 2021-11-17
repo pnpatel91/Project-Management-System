@@ -135,6 +135,7 @@ if (!(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' ||
 </head>
 
 <body class="hold-transition sidebar-mini">
+    
     <div class="wrapper">
 
         <!-- PAGE LOADER -->
