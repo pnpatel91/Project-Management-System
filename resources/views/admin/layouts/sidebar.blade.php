@@ -41,6 +41,7 @@
                         </li>
                         @endcan
 
+                        @can('view attendance' || 'view leave - admin' || 'view rota' || 'view Wiki Category' || 'view Wiki Blog')
                         <li class="nav-item has-treeview {{ (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee'))  ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
                                 (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || Route::is('admin.wikiCategory.*') || Route::is('admin.wikiBlog.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee')) ? 'active' : '' }}">
@@ -92,15 +93,13 @@
                                 <li class="nav-item">
                                     <a href="{{ url('admin/wikiBlog') }}" class="nav-link {{ Route::is('admin.wikiBlog.*')  ? 'active' : '' }}">
                                         <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
-                                        <p>Wiki Blog</p>
+                                        <p>Wiki Edit</p>
                                     </a>
                                 </li>
                                 @endcan  
-
-                                  
                             </ul>
                         </li>
-
+                        @endcan 
                         
                         <li class="nav-item">
                             <a href="{{ url('admin/attendance/employee') }}" class="nav-link {{ Route::is('admin.attendance.employee')  ? 'active' : '' }}">
@@ -129,10 +128,10 @@
                             </a>
                         </li>
 
-                        <li class="nav-item has-treeview {{ Route::is('admin.role.*') || Route::is('admin.holiday.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'menu-open' : '' }}">
+                        @can('view role' || 'view company' || 'view branch' || 'view department' || 'view rota_template' || 'view company')
+                        <li class="nav-item has-treeview {{ Route::is('admin.role.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
-                                Route::is('admin.role.*') ||
-                                Route::is('admin.holiday.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'active' : '' }}">
+                                Route::is('admin.role.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>
                                     Settings
@@ -177,15 +176,6 @@
                                 </li>
                                 @endcan
 
-                                @can('view holiday')
-                                <li class="nav-item">
-                                    <a href="{{ url('admin/holiday') }}" class="nav-link {{ Route::is('admin.holiday.*')  ? 'active' : '' }}">
-                                        <i class="fas fa-glass-cheers nav-icon"></i>
-                                        <p>Public Holiday</p>
-                                    </a>
-                                </li>
-                                @endcan 
-
                                 @can('view rota_template')
                                 <li class="nav-item">
                                     <a href="{{ url('admin/rota_template') }}" class="nav-link {{ Route::is('admin.rota_template.*') ? 'active' : '' }}">
@@ -193,18 +183,19 @@
                                         <p>Rota Template</p>
                                     </a>
                                 </li>
-                                @endcan  
-
-                                @if(auth()->user()->hasRole('superadmin'))
-                                <li class="nav-item">
-                                    <a href="{{ url('maileclipse') }}" class="nav-link" target="_blank">
-                                        <i class="fas fa-envelope-open-text nav-icon" aria-hidden="true"></i>
-                                        <p>Email Templates</p>
-                                    </a>
-                                </li>
-                                @endif
+                                @endcan 
                             </ul>
                         </li>
+                        @endcan 
+
+                        @can('view holiday')
+                        <li class="nav-item">
+                            <a href="{{ url('admin/holiday') }}" class="nav-link {{ Route::is('admin.holiday.*')  ? 'active' : '' }}">
+                                <i class="fas fa-glass-cheers nav-icon"></i>
+                                <p>Public Holiday</p>
+                            </a>
+                        </li>
+                        @endcan 
 
                         <li class="nav-item">
                             <a href="{{ url('admin/wikiBlogView') }}" class="nav-link {{ Route::is('admin.wikiBlogView.*')  ? 'active' : '' }}">
@@ -213,6 +204,14 @@
                             </a>
                         </li>
 
+                        @if(auth()->user()->hasRole('developer'))
+                        <li class="nav-item">
+                            <a href="{{ url('maileclipse') }}" class="nav-link" target="_blank">
+                                <i class="fas fa-envelope-open-text nav-icon" aria-hidden="true"></i>
+                                <p>Email Templates</p>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </li>
                 
