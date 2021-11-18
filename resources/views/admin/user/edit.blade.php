@@ -53,7 +53,6 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
-
                         <div class="form-group">
                             <label>Department</label>
                             <select class="form-control select2" id="department_id" name="department_id[]" required autocomplete="department_id" multiple>
@@ -63,7 +62,7 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
-
+                        @if($userRole!='superadmin')
                         <div class="form-group">
                             <label>Parent User</label>
                             <select class="form-control select2" id="parent_id" name="parent_id" required autocomplete="parent_id">
@@ -73,6 +72,9 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
+                        @else
+                            <input type="hidden" name="parent_id" class="form-control" value="" required autocomplete="parent_id" autofocus maxlength="200">
+                        @endif
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>

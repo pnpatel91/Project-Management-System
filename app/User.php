@@ -165,7 +165,7 @@ class User extends Authenticatable
 
 
     /**
-     * Get the parent wikiBlog of this wikiBlog.
+     * Get the parent user of this user.
      */
     public function parent()
     {
@@ -173,7 +173,15 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the children wikiBlog of this wikiBlog.
+     * Get the parent user of this user.
+     */
+    public function allparent()
+    {
+        return $this->parent()->with('allparent');
+    }
+
+    /**
+     * Get the children user of this user.
     */
     public function children()
     {

@@ -32,6 +32,7 @@
                                 <p>Employee</p>
                             </a>
                         </li>
+                        @endcan
 
                         <li class="nav-item">
                             <a href="{{ url('admin/user-treeview') }}" class="nav-link {{ Route::is('admin.user-treeview')  ? 'active' : '' }}">
@@ -39,9 +40,8 @@
                                 <p>Employee - Tree View</p>
                             </a>
                         </li>
-                        @endcan
 
-                        @can('view attendance' || 'view leave - admin' || 'view rota' || 'view Wiki Category' || 'view Wiki Blog')
+                        @if(auth()->user()->hasRole('superadmin'))
                         <li class="nav-item has-treeview {{ (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee'))  ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
                                 (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || Route::is('admin.wikiCategory.*') || Route::is('admin.wikiBlog.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee')) ? 'active' : '' }}">
@@ -99,7 +99,7 @@
                                 @endcan  
                             </ul>
                         </li>
-                        @endcan 
+                        @endif
                         
                         <li class="nav-item">
                             <a href="{{ url('admin/attendance/employee') }}" class="nav-link {{ Route::is('admin.attendance.employee')  ? 'active' : '' }}">
@@ -128,7 +128,7 @@
                             </a>
                         </li>
 
-                        @can('view role' || 'view company' || 'view branch' || 'view department' || 'view rota_template' || 'view company')
+                        @if(auth()->user()->hasRole('superadmin'))
                         <li class="nav-item has-treeview {{ Route::is('admin.role.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
                                 Route::is('admin.role.*') || Route::is('admin.company.*') || Route::is('admin.branch.*') || Route::is('admin.department.*') || Route::is('admin.rota_template.*') ? 'active' : '' }}">
@@ -186,7 +186,7 @@
                                 @endcan 
                             </ul>
                         </li>
-                        @endcan 
+                        @endif
 
                         @can('view holiday')
                         <li class="nav-item">

@@ -100,10 +100,10 @@ class LeaveEmployeeController extends Controller
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $branches = Branch::whereIn('id',$branch_id)->get();
-            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "admin"); })->get();
+            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "developer"); })->orWhere("id", auth()->user()->parent_id)->get();
         }else{
             $branches = Branch::all();
-            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "admin"); })->get();
+            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "developer"); })->orWhere("id", auth()->user()->parent_id)->get();
         }
 
         $leave_types = ['Annual', 'Sick', 'Hospitalisation', 'Maternity', 'Paternity', 'LOP'];
@@ -201,10 +201,10 @@ class LeaveEmployeeController extends Controller
         if(!auth()->user()->hasRole('superadmin')){
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $branches = Branch::whereIn('id',$branch_id)->get();
-            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "admin"); })->get();
+            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "developer"); })->orWhere("id", auth()->user()->parent_id)->get();
         }else{
             $branches = Branch::all();
-            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "admin"); })->get();
+            $approvers = User::whereHas("roles", function($q){ $q->where("name", "superadmin")->orWhere("name", "developer"); })->orWhere("id", auth()->user()->parent_id)->get();
         }
 
         $leave_types = ['Annual', 'Sick', 'Hospitalisation', 'Maternity', 'Paternity', 'LOP'];

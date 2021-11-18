@@ -63,6 +63,7 @@
                         <div class="form-group">
                             <label>Parent User</label>
                             <select class="form-control select2" id="parent_id" name="parent_id" required autocomplete="parent_id">
+                                <option value=""></option>
                                 @foreach ($parents as $parent)
                                     <option value="{{ $parent->id }}">{{$parent->name}}</option>
                                 @endforeach
