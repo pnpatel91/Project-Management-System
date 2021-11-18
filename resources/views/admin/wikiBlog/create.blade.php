@@ -66,17 +66,17 @@
 
     //CKEDITOR for description
     CKEDITOR.replace('description', {
-      extraPlugins: 'uploadimage,image2',
+      extraPlugins: 'uploadimage,image',
       height: 300,
 
       // Upload images to a CKFinder connector (note that the response type is set to JSON).
-      uploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+      uploadUrl: '{{ asset('/') }}/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
 
       // Configure your file manager integration. This example uses CKFinder 3 for PHP.
-      filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
-      filebrowserImageBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
-      filebrowserUploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
-      filebrowserImageUploadUrl: '/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Images',
+      filebrowserBrowseUrl: '{{ asset('/') }}plugins/ckfinder/ckfinder.html',
+      filebrowserImageBrowseUrl: '{{ asset('/') }}plugins/ckfinder/ckfinder.html?type=Images',
+      filebrowserUploadUrl: '{{ asset('/') }}/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+      filebrowserImageUploadUrl: '{{ asset('/') }}/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
 
       // The following options are not necessary and are used here for presentation purposes only.
       // They configure the Styles drop-down list and widgets to use classes.

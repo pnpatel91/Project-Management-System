@@ -141,14 +141,24 @@ class UserController extends Controller
                 'errors' => 'You cannot delete current logged in user.' // for status 200
             ]);
         }
-        //$user->branches()->detach();
-        //$user->departments()->detach();
+        $user->branches()->detach();
+        $user->departments()->detach();
 
         // delete related attendances 
-        //$attendance = Attendance::where('created_by',$user->id)->orWhere('updated_by',$user->id)->delete();
+        $attendances = Attendance::where('created_by',$user->id)->orWhere('updated_by',$user->id)->get();
+        foreach ($attendances as $attendance) {
+            if(isset($attendance->punch_in->id)){
+               $attendance->find($attendance->punch_in->id)->delete(); 
+            }
+            if(isset($attendance->punch_out->id)){
+               $attendance->find($attendance->punch_out->id)->delete(); 
+            }
+            $attendance->delete();
+        }
+        
 
         // delete related leaves
-        //$leave = Leave::where('employee_id',$user->id)->orWhere('approved_by',$user->id)->delete();
+        $leave = Leave::where('employee_id',$user->id)->orWhere('approved_by',$user->id)->delete();
 
         $user->rota()->delete();
         $user->delete();

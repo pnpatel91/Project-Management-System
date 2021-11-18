@@ -25,7 +25,7 @@ class CreateWikiBlogsTable extends Migration
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('wiki_categories');
-            $table->foreign('parent_id')->references('id')->on('wiki_blogs');
+            $table->foreign('parent_id')->references('id')->on('wiki_blogs')->onDelete('cascade');;
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
         });

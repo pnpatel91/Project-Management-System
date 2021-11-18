@@ -177,9 +177,6 @@ class WikiCategoriesController extends Controller
      */
     public function destroy(wikiCategories $wikiCategory)
     {
-        // delete related children blog   
-        $wikiCategory->wikiBlogs()->children()->delete();
-
         // delete related blog   
         $wikiCategory->wikiBlogs()->delete();
 

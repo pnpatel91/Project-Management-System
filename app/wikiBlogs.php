@@ -40,6 +40,11 @@ class wikiBlogs extends Model
     {
         return $this->children()->with('allChildren')->where('status', 'Active');
     }
+
+    public function fullChildren()
+    {
+        return $this->children()->with('fullChildren');
+    }
     
     /**
      * Get the category of this wikiBlog.
