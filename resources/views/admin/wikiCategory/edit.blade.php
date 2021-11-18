@@ -23,7 +23,7 @@
                             <input type="text" name="name" value="{{ $wikiCategory->name }}" class="form-control" required autocomplete="name" autofocus maxlength="60">
                         </div>
                         <div class="form-group">
-                            <label>Users</label>
+                            <label>Users &nbsp;</label><input type="checkbox" id="checkbox_user" > &nbsp;Select All
                             <select class="form-control select2" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}" @if(in_array($user->id, $wikiCategoryUsers)) selected="selected" @endif >{{ $user->name }}</option>
@@ -65,6 +65,14 @@
       allowClear: true
     });
 
+     $("#checkbox_user").click(function(){
+        if($("#checkbox_user").is(':checked') ){
+            $('#user_id').select2('destroy').find('option').prop('selected', 'selected').end().select2({placeholder: "Select users",allowClear: true});
+        }else{
+            $('#user_id').select2('destroy').find('option').prop('selected', false).end().select2({placeholder: "Select users",allowClear: true});
+        }
+    });
+     
     $("#status").select2({
       placeholder: "Select statu",
       allowClear: true

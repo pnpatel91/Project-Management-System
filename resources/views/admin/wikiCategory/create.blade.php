@@ -54,6 +54,15 @@
       placeholder: "Select users",
       allowClear: true
     });
+
+    $("#checkbox_user").click(function(){
+        if($("#checkbox_user").is(':checked') ){
+            $('#user_id').select2('destroy').find('option').prop('selected', 'selected').end().select2({placeholder: "Select users",allowClear: true});
+        }else{
+            $('#user_id').select2('destroy').find('option').prop('selected', false).end().select2({placeholder: "Select users",allowClear: true});
+        }
+    });
+     
 </script>
 
 @endsection
