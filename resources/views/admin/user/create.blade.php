@@ -70,6 +70,14 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
+                        <div class="form-group">
+                            <label>Remote Employee</label>
+                            <select class="form-control select2" id="remote_employee" name="remote_employee" required autocomplete="remote_employee">
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected="selected">No</option>
+                            </select>
+                            <label id="select2-error" class="error" for="select2"></label>
+                        </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>
@@ -102,6 +110,11 @@
 
     $("#parent_id").select2({
       placeholder: "Select a parent user",
+      allowClear: true
+    });
+
+    $("#remote_employee").select2({
+      placeholder: "Select a remote employee",
       allowClear: true
     });
 </script>

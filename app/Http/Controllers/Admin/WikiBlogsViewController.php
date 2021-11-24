@@ -66,7 +66,7 @@ class WikiBlogsViewController extends Controller
     function search( Request $request )
     {
           $this->validate( $request, [ 'search' => 'required' ] );
-          $wikiBlog = wikiBlogs::where('title', 'like', "%{$request->search}%")->get();
+          $wikiBlog = wikiBlogs::where('title', 'like', "%{$request->search}%")->orWhere('description', 'like', "%{$request->search}%")->get();
 
           $html = '<div class="list-group">';
           if(count($wikiBlog)>0){

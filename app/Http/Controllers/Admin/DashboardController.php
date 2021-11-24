@@ -30,13 +30,13 @@ class DashboardController extends Controller
             $today_attendances = Attendance::with('branch','creator','editor')
                                             ->whereHas('branch', function($q) use ($branch_id) { 
                                                 $q->whereIn('branch_id', $branch_id); 
-                                            })->whereDate('attendance_at', Carbon::today())->get();
+                                            })->whereDate('attendance_at', Carbon::today())->orderBy('status')->get();
 
         }else{
            $users_count = User::all()->count(); 
            $companies_count = Company::all()->count();
            $branches_count = Branch::all()->count();
-           $today_attendances = Attendance::with('branch','creator','editor')->whereDate('attendance_at', Carbon::today())->get();
+           $today_attendances = Attendance::with('branch','creator','editor')->whereDate('attendance_at', Carbon::today())->orderBy('status','DESC')->get();
         }
 
 

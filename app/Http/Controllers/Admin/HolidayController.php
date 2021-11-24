@@ -47,7 +47,7 @@ class HolidayController extends Controller
             ])->with(['branches' => function($query) use ($branch_id) {
                                     $query->whereIn('branch_id', $branch_id);
                                 }])
-                            ->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
+                            ->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->orderBy('holiday_date', 'ASC')->get();
         return view('admin.holiday.index',compact('holidays'));
     }
 

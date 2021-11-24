@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 use JeroenDesloovere\Distance\Distance;
 use Carbon\Carbon;
 
-class AttendanceController extends Controller
+class ReportController extends Controller
 {
     use UploadTrait;
 
@@ -47,7 +47,7 @@ class AttendanceController extends Controller
             $branches = Branch::all();
             $users = User::all();
         }
-        return view('admin.attendance.index', compact("users","branches"));
+        return view('admin.report.employee_daily_summary', compact("users","branches"));
     }
 
     /**

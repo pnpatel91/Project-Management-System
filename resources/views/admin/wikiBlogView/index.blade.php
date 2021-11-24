@@ -59,6 +59,7 @@
             $('#wiki-title').html(result.title);
             $('#wiki-body').html(result.description);
             $(".card").fadeIn();
+            $(".sidebar-search-results").fadeOut();
           }
         });
     }

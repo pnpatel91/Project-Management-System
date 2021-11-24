@@ -179,8 +179,8 @@ class RotaController extends Controller
                     'text' => 'You received a rota.',
                 ];
 
-                Notification::send($receiver, new rotasNotification($rotaData));
-                Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
+                //Notification::send($receiver, new rotasNotification($rotaData));
+                //Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
                 /*NOTIFICATION CREATE [END]*/
 
             }
@@ -287,8 +287,8 @@ class RotaController extends Controller
                 'text' => 'Your rota updated.',
             ];
 
-            Notification::send($receiver, new rotasNotification($rotaData));
-            Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
+            //Notification::send($receiver, new rotasNotification($rotaData));
+            //Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
             /*NOTIFICATION CREATE [END]*/ 
 
             //Session::flash('success', 'A rota updated successfully.');
@@ -424,8 +424,8 @@ class RotaController extends Controller
                     'text' => 'added new rota'
                 ];
 
-                Notification::send($receiver, new rotasNotification($rotaData));
-                Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
+                //Notification::send($receiver, new rotasNotification($rotaData));
+                //Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
                 /*NOTIFICATION CREATE [END]*/ 
 
             }
@@ -526,8 +526,8 @@ class RotaController extends Controller
                 'text' => 'The rotas notes have been changed from '.$sender->name.', please check the date of '.$rota->start_date.' rota employee notes',
             ];
 
-            Notification::send($receiver, new rotasNotification($rotaData));
-            Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
+            //Notification::send($receiver, new rotasNotification($rotaData));
+            //Mail::to($receiver->email)->send(new RotasNotificationMail($rotaData));
             /*NOTIFICATION CREATE [END]*/ 
 
             //Session::flash('success', 'A rota updated successfully.');

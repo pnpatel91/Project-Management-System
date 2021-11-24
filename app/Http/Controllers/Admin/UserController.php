@@ -81,7 +81,7 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $input = $request->only('name', 'email', 'password', 'parent_id', 'position');
+        $input = $request->only('name', 'email', 'password', 'parent_id', 'position', 'remote_employee');
         $input['password'] = bcrypt($request->password);
         $user = User::create($input);
         $user->assignRole($request->role);
@@ -119,7 +119,7 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        $input = $request->only('name', 'email', 'parent_id', 'position');
+        $input = $request->only('name', 'email', 'parent_id', 'position', 'remote_employee');
         if($request->filled('password')) {
             $input['password'] = bcrypt($request->password);
         }

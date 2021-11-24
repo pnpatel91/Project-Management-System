@@ -108,6 +108,7 @@
 <script>
 function datatables() {
     $("#table").load(location.href + " #table");
+    window.location.reload();
 }
 
 function datatables_firstcall() {
