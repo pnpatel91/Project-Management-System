@@ -63,9 +63,10 @@ class ReportController extends Controller
             $daterange = $request->daterange;
             if($daterange!=null || $daterange!='' ){
                 $dates = explode(" - ", $daterange);
+                $startDate = Carbon::createFromFormat('d/m/Y', Carbon::parse($dates[0])->format('d/m/Y'));
+                $endDate = Carbon::createFromFormat('d/m/Y', Carbon::parse($dates[1])->format('d/m/Y'));
                 
-                $startDate = Carbon::createFromFormat('d/m/Y', $dates[0]);
-                $endDate = Carbon::createFromFormat('d/m/Y', $dates[1]);
+                //dd($endDate);
                 if(auth()->user()->hasRole('superadmin')){
                     $model = User::with(['attendance_creator' => function($query) use ($startDate,$endDate) {
                                         $query->where('status', 'punch_in')->whereBetween('attendance_at', [$startDate, $endDate]);
@@ -75,6 +76,7 @@ class ReportController extends Controller
                     $model = User::whereIn('id',$child_id)->with(['attendance_creator' => function($query) use ($startDate,$endDate)  {
                                                             $query->where('status', 'punch_in')->whereBetween('attendance_at', [$startDate, $endDate]);
                                                         },'branches','attendance_editor']);
+                    //dd($model[0]->attendance_creator);
                 }else{
                     $branch_id = auth()->user()->getBranchIdsAttribute();
                     $model = User::whereIn('id',$child_id)

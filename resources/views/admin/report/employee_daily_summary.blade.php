@@ -191,8 +191,4 @@ $("#branch").select2({
 
 </script>
 
-
-
-    
-
 @endsection
