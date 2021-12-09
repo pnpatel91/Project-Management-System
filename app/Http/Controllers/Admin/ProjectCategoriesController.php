@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\project_categories;
 use App\User;
@@ -34,7 +34,7 @@ class ProjectCategoriesController extends Controller
     public function index()
     {
         $projectCategories = project_categories::select('*')->with('users')->get();
-        return view('admin.projectCategory.index',compact('wikiCategories'));
+        return view('admin.projectCategory.index',compact('projectCategories'));
     }
 
     /**
@@ -44,12 +44,12 @@ class ProjectCategoriesController extends Controller
      */
     public function create()
     {
-        if(!auth()->user()->hasRole('superadmin')){
+        if(auth()->user()->hasRole('superadmin')){
+            $users = User::all('id', 'name');
+        }else{
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
-        }else{
-            $users = User::all('id', 'name');
-        }
+        } 
 
         return view('admin.projectCategory.create',compact("users"));
     }
@@ -111,11 +111,11 @@ class ProjectCategoriesController extends Controller
      */
     public function edit(project_categories $project_categories)
     {
-        if(!auth()->user()->hasRole('superadmin')){
+        if(auth()->user()->hasRole('superadmin')){
+            $users = User::all('id', 'name');
+        }else{
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
-        }else{
-            $users = User::all('id', 'name');
         }
         $projectCategoryUsers = $project_categories->users->pluck('id')->toArray();
 
@@ -176,7 +176,7 @@ class ProjectCategoriesController extends Controller
     public function destroy(project_categories $project_categories)
     {
         // delete related blog   
-        $project_categories->wikiBlogs()->delete();
+        $project_categories->projects()->delete();
 
         // delete Project Category
         $project_categories->delete();
@@ -202,7 +202,7 @@ class ProjectCategoriesController extends Controller
                 //Session::flash('failed', 'Project Category Update Denied');
                 //return redirect()->back();
                 return response()->json([
-                    'error' => 'Project Category update denied.' // for status 200
+                    'error' => 'Project category update denied.' // for status 200
                 ]);   
             }
 
@@ -218,7 +218,7 @@ class ProjectCategoriesController extends Controller
             //return redirect('admin/project_category');
 
             return response()->json([
-                'success' => 'Project Category update successfully.' // for status 200
+                'success' => 'Project category update successfully.' // for status 200
             ]);
 
         } catch (\Exception $exception) {
