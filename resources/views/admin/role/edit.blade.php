@@ -26,23 +26,143 @@
                         <div class="form-group">
                             <label>Permission: </label> &nbsp; &nbsp;<input type="checkbox" id="checkbox_permission" > &nbsp;Select All
                         </div>
-                        <div class="row">
-                            @foreach ($permissions as $permission)
-                            <div class="col-md-3">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
-                                        id="{{ Str::slug($permission->name) }}"
-                                        {{ $role->isDisabled() }}
-                                        {{ $role->isChecked($permission) }}
-                                        class="form-check-input">
-                                    <label class="form-check-label {{ $permission->isDeleteLabel() }}"
-                                        for="{{ Str::slug($permission->name) }}">
-                                        {{ Str::title($permission->display_name) }}
-                                    </label>
-                                </div>
+                        <div class="form-group">
+                            <label>Employee: </label>
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    @if($permission->group_name=='Employee')
+                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                id="{{ Str::slug($permission->name) }}"
+                                                {{ $role->isDisabled() }}
+                                                {{ $role->isChecked($permission) }}
+                                                class="form-check-input">
+                                            <label class="form-check-label {{ $permission->isDeleteLabel() }}"
+                                                for="{{ Str::slug($permission->name) }}">
+                                                {{ Str::title($permission->display_name) }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
+
+                        <div class="form-group">
+                            <label>Admin Panel: </label>
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    @if($permission->group_name=='Admin Panel')
+                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                id="{{ Str::slug($permission->name) }}"
+                                                {{ $role->isDisabled() }}
+                                                {{ $role->isChecked($permission) }}
+                                                class="form-check-input">
+                                            <label class="form-check-label {{ $permission->isDeleteLabel() }}"
+                                                for="{{ Str::slug($permission->name) }}">
+                                                {{ Str::title($permission->display_name) }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Leave: </label>
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    @if($permission->group_name=='Leave')
+                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                id="{{ Str::slug($permission->name) }}"
+                                                {{ $role->isDisabled() }}
+                                                {{ $role->isChecked($permission) }}
+                                                class="form-check-input">
+                                            <label class="form-check-label {{ $permission->isDeleteLabel() }}"
+                                                for="{{ Str::slug($permission->name) }}">
+                                                {{ Str::title($permission->display_name) }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Settings: </label>
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    @if($permission->group_name=='Settings')
+                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                id="{{ Str::slug($permission->name) }}"
+                                                {{ $role->isDisabled() }}
+                                                {{ $role->isChecked($permission) }}
+                                                class="form-check-input">
+                                            <label class="form-check-label {{ $permission->isDeleteLabel() }}"
+                                                for="{{ Str::slug($permission->name) }}">
+                                                {{ Str::title($permission->display_name) }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Public Holiday: </label>
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    @if($permission->group_name=='Public Holiday')
+                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                id="{{ Str::slug($permission->name) }}"
+                                                {{ $role->isDisabled() }}
+                                                {{ $role->isChecked($permission) }}
+                                                class="form-check-input">
+                                            <label class="form-check-label {{ $permission->isDeleteLabel() }}"
+                                                for="{{ Str::slug($permission->name) }}">
+                                                {{ Str::title($permission->display_name) }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    @if($permission->group_name=='')
+                                    <div class="col-md-3">
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                id="{{ Str::slug($permission->name) }}"
+                                                {{ $role->isDisabled() }}
+                                                {{ $role->isChecked($permission) }}
+                                                class="form-check-input">
+                                            <label class="form-check-label {{ $permission->isDeleteLabel() }}"
+                                                for="{{ Str::slug($permission->name) }}">
+                                                {{ Str::title($permission->display_name) }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        
                         @unless ($role->isSuperAdmin())
                         <button type="submit" class="btn btn-primary">Update</button>
                         @endunless
