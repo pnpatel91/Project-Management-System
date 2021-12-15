@@ -235,4 +235,52 @@ class WikiCategoriesController extends Controller
             ]);
         }
     }
+
+    /**
+     * Datatables Ajax Data
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function change_order(Request $request)
+    {
+        try {
+
+            dd($request->ids);
+            $wikiCategory = wikiCategories::find($request->id);
+            if (empty($wikiCategory)) {
+                //Session::flash('failed', 'Wiki Category Update Denied');
+                //return redirect()->back();
+                return response()->json([
+                    'error' => 'Wiki Category update denied.' // for status 200
+                ]);   
+            }
+
+            if($request->status==0){
+                $status='Inactive';
+            }else{
+                $status='Active';
+            }
+            $wikiCategory->status = $status;
+            $wikiCategory->save();
+
+            //Session::flash('success', 'A Wiki Category updated successfully.');
+            //return redirect('admin/wikiCategory');
+
+            return response()->json([
+                'success' => 'Wiki Category update successfully.' // for status 200
+            ]);
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            //Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
+            /*return redirect()->back()->withInput($request->all());*/
+
+            return response()->json([
+                'error' => $exception->getMessage() . ' ' . $exception->getLine() // for status 200
+            ]);
+        }
+    }
 }
