@@ -115,7 +115,7 @@ function datatables_firstcall() {
     var table = $('#table').DataTable({
         dom: 'RBfrtip',
         buttons: [],
-        aaSorting     : [[1, 'asc']],
+        "ordering": false,
         "bDestroy": true
     });
 }
@@ -152,7 +152,7 @@ datatables_firstcall();
                 wikiCategory_order_ids.push($(this).data("id"));
             });
             $.ajax({
-                type:   'POST',
+                type:   'GET',
                 url:    '{{ route('admin.wikiCategory.ajax.change_order') }}',
                 data: {
                     "_token": "{{ csrf_token() }}",

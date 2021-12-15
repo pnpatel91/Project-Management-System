@@ -35,7 +35,7 @@ class WikiCategoriesController extends Controller
      */
     public function index()
     {
-        $wikiCategories = wikiCategories::select('*')->with('users')->get();
+        $wikiCategories = wikiCategories::select('*')->orderBy('order_by', 'asc')->with('users')->get();
         return view('admin.wikiCategory.index',compact('wikiCategories'));
     }
 
@@ -246,26 +246,18 @@ class WikiCategoriesController extends Controller
     {
         try {
 
-            dd($request->ids);
-            $wikiCategory = wikiCategories::find($request->id);
-            if (empty($wikiCategory)) {
-                //Session::flash('failed', 'Wiki Category Update Denied');
-                //return redirect()->back();
-                return response()->json([
-                    'error' => 'Wiki Category update denied.' // for status 200
-                ]);   
+            $order_by=1;
+            foreach ($request->ids as $id) {
+                $wikiCategory = wikiCategories::find($id);
+                if (empty($wikiCategory)) {
+                    return response()->json([
+                        'error' => 'Wiki Category update denied.' // for status 200
+                    ]);   
+                }
+                $wikiCategory->order_by = $order_by;
+                $wikiCategory->save();
+                $order_by++;
             }
-
-            if($request->status==0){
-                $status='Inactive';
-            }else{
-                $status='Active';
-            }
-            $wikiCategory->status = $status;
-            $wikiCategory->save();
-
-            //Session::flash('success', 'A Wiki Category updated successfully.');
-            //return redirect('admin/wikiCategory');
 
             return response()->json([
                 'success' => 'Wiki Category update successfully.' // for status 200

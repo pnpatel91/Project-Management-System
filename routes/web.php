@@ -134,6 +134,7 @@ Route::group([
     // Wiki Category Routes
     Route::resource('wikiCategory', 'WikiCategoriesController')->parameters(['wikiCategory' => 'wikiCategory']);
     Route::get('wikiCategory/ajax/change_status', 'WikiCategoriesController@change_status')->name('wikiCategory.ajax.change_status'); // For change status
+    Route::get('wikiCategory/ajax/change_order', 'WikiCategoriesController@change_order')->name('wikiCategory.ajax.change_order'); // For change order
 
     // Wiki Blog Routes
     Route::resource('wikiBlog', 'WikiBlogsController')->parameters(['wikiBlog' => 'wikiBlog']);
