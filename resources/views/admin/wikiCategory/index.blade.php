@@ -147,19 +147,21 @@ datatables_firstcall();
         cursor: 'move',
         axis:   'y',
         update: function(e, ui) {
-            var post_order_ids = new Array();
+            var wikiCategory_order_ids = new Array();
             $('.sort tr').each(function(){
-                post_order_ids.push($(this).data("id"));
+                wikiCategory_order_ids.push($(this).data("id"));
             });
-            alert(post_order_ids);
-            /*$.ajax({
+            $.ajax({
                 type:   'POST',
-                url:    href,
-                data:   sorted,
+                url:    '{{ route('admin.wikiCategory.ajax.change_order') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "ids": wikiCategory_order_ids,
+                },
                 success: function(msg) {
                     //do something with the sorted data
                 }
-            });*/
+            });
         }
     });
 </script>
