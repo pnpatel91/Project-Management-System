@@ -51,9 +51,9 @@
                                 @endif
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="sort">
                                 @forelse ($wikiCategories as $wikiCategory)
-                                <tr>
+                                <tr data-id="{{ $wikiCategory->id }}">
                                     <td class="col-2">{{ $wikiCategory->name }}</td>
                                     <td class="col-2"><img src="{{$wikiCategory->creator->getImageUrlAttribute($wikiCategory->creator->id)}}" alt="user_id_{{$wikiCategory->creator->name}}" class="profile-user-img-small img-circle"> {{$wikiCategory->creator->name}}</td>
                                     <td>
@@ -141,6 +141,27 @@ datatables_firstcall();
           }
         });
     }
+
+
+    $('.sort').sortable({
+        cursor: 'move',
+        axis:   'y',
+        update: function(e, ui) {
+            var post_order_ids = new Array();
+            $('.sort tr').each(function(){
+                post_order_ids.push($(this).data("id"));
+            });
+            alert(post_order_ids);
+            /*$.ajax({
+                type:   'POST',
+                url:    href,
+                data:   sorted,
+                success: function(msg) {
+                    //do something with the sorted data
+                }
+            });*/
+        }
+    });
 </script>
 
 @endsection
