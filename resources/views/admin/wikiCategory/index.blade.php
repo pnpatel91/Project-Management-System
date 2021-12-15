@@ -117,7 +117,7 @@ function datatables_firstcall() {
         buttons: [],
         "ordering": false,
         "bDestroy": true,
-        pageLength: -1,
+        pageLength: -1, // for all rows
     });
 }
 
