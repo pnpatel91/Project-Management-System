@@ -37,7 +37,7 @@ class WikiBlogsViewController extends Controller
         $user_id = auth()->user()->id;
         $categories = wikiCategories::with(['wikiBlogs' => function ($query) {
                                                             $query->where('parent_id', null)->where('status', 'Active');
-                                                },'wikiBlogs.allChildren'])->where('status', 'Active')->whereHas('users', function($q) use ($user_id) { $q->where('user_id', $user_id); })->get();
+                                                },'wikiBlogs.allChildren'])->where('status', 'Active')->whereHas('users', function($q) use ($user_id) { $q->where('user_id', $user_id); })->orderBy('order_by', 'asc')->get();
         //dd($categories);
         return view('admin.wikiBlogView.index',compact('categories'));
     }
