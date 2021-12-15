@@ -116,7 +116,8 @@ function datatables_firstcall() {
         dom: 'RBfrtip',
         buttons: [],
         "ordering": false,
-        "bDestroy": true
+        "bDestroy": true,
+        pageLength: -1,
     });
 }
 
