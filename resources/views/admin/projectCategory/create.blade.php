@@ -15,7 +15,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('admin.wikiCategory.store') }}" method="post" id="popup-form" >
+                    <form action="{{ route('admin.projectCategory.store') }}" method="post" id="popup-form" >
                         @csrf
                         <div class="form-group">
                             <label>Name</label>

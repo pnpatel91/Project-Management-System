@@ -71,7 +71,7 @@ class ProjectCategoriesController extends Controller
             $project_categories->updated_by = auth()->user()->id;
             $project_categories->save();
 
-            $project_categories->users()->attach($request->user_id);
+            //$project_categories->users()->attach($request->user_id);
             //Session::flash('success', 'Project Categories was created successfully.');
             //return redirect()->route('project_categories.index');
 

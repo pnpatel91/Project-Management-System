@@ -11,16 +11,16 @@
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="card-title">Edit Wiki Category</h3>
+                    <h3 class="card-title">Edit Project Category</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('admin.wikiCategory.update', ['wikiCategory' => $wikiCategory->id]) }}" method="put"  id="popup-form" >
+                    <form action="{{ route('admin.projectCategory.update', ['projectCategory' => $projectCategory->id]) }}" method="put"  id="popup-form" >
                         @csrf
                         @method('PUT')
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" name="name" value="{{ $wikiCategory->name }}" class="form-control" required autocomplete="name" autofocus maxlength="60">
+                            <input type="text" name="name" value="{{ $projectCategory->name }}" class="form-control" required autocomplete="name" autofocus maxlength="60">
                         </div>
                         <div class="form-group">
                             <label>Users &nbsp;</label><input type="checkbox" id="checkbox_user" > &nbsp;Select All
