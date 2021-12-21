@@ -15,7 +15,17 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('description');
+            $table->unsignedBigInteger('category_id')->unsigned()->index();
+            $table->unsignedBigInteger('created_by')->index();
+            $table->unsignedBigInteger('updated_by')->index();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('project_categories');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
         });
     }
 
@@ -26,6 +36,11 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropForeign(['category_id']);
+            $table->dropForeign(['created_by']);
+            $table->dropForeign(['updated_by']);
+        });
         Schema::dropIfExists('projects');
     }
 }
