@@ -109,7 +109,7 @@ class ProjectCategoriesController extends Controller
      * @param  \App\project_categories  $project_categories
      * @return \Illuminate\Http\Response
      */
-    public function edit(project_categories $project_categories)
+    public function edit(project_categories $projectCategory)
     {
         if(auth()->user()->hasRole('superadmin')){
             $users = User::all('id', 'name');
@@ -117,9 +117,9 @@ class ProjectCategoriesController extends Controller
             $branch_id = auth()->user()->getBranchIdsAttribute();
             $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
         }
-        $projectCategoryUsers = $project_categories->users->pluck('id')->toArray();
+        $projectCategoryUsers = $projectCategory->users->pluck('id')->toArray();
 
-        return view('admin.projectCategory.edit', compact('project_categories','users','projectCategoryUsers'));
+        return view('admin.projectCategory.edit', compact('projectCategory','users','projectCategoryUsers'));
     }
 
     /**
