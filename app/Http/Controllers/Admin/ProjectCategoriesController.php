@@ -129,11 +129,11 @@ class ProjectCategoriesController extends Controller
      * @param  \App\project_categories  $project_categories
      * @return \Illuminate\Http\Response
      */
-    public function update(ProjectCategoryUpdateRequest $request, project_categories $project_categories)
+    public function update(ProjectCategoryUpdateRequest $request, project_categories $projectCategory)
     {
         try {
 
-            if (empty($project_categories)) {
+            if (empty($projectCategory)) {
                 //Session::flash('failed', 'Project Category Update Denied');
                 //return redirect()->back();
                 return response()->json([
@@ -141,14 +141,13 @@ class ProjectCategoriesController extends Controller
                 ]);   
             }
 
-            $project_categories->name = $request->name;
-            $project_categories->status = $request->status;
-            $project_categories->updated_by = auth()->user()->id;
-            $project_categories->save();
-
-            $project_categories->users()->sync($request->user_id);
+            $projectCategory->name = $request->name;
+            $projectCategory->status = $request->status;
+            $projectCategory->updated_by = auth()->user()->id;
+            $projectCategory->save();
+            $projectCategory->users()->sync($request->user_id);
             //Session::flash('success', 'A Project Category updated successfully.');
-            //return redirect('admin/project_categories');
+            //return redirect('admin/projectCategory');
 
             return response()->json([
                 'success' => 'Project Category update successfully.' // for status 200
