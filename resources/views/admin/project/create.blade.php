@@ -11,11 +11,11 @@
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="card-title">Create Project Category</h3>
+                    <h3 class="card-title">Create Project</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('admin.projectCategory.store') }}" method="post" id="popup-form" >
+                    <form action="{{ route('admin.project.store') }}" method="post" id="popup-form" >
                         @csrf
                         <div class="form-group">
                             <label>Name</label>

@@ -19,6 +19,8 @@ class CreateProjectsTable extends Migration
             $table->text('description');
             $table->unsignedBigInteger('category_id')->unsigned()->index();
             $table->unsignedBigInteger('created_by')->index();
+            $table->date('start_date')->comment('project start date')->useCurrent = true;
+            $table->date('end_date')->comment('project end date')->useCurrent = true;
             $table->unsignedBigInteger('updated_by')->index();
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
