@@ -22,10 +22,10 @@
                             <input type="text" name="name" class="form-control" required autocomplete="name" autofocus maxlength="60">
                         </div>
                         <div class="form-group">
-                            <label>Users</label>
-                            <select class="form-control select2" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <label>Project Category &nbsp;</label><input type="checkbox" id="checkbox_user" > &nbsp;Select All
+                            <select class="form-control select2" id="category_id" name="category_id" required autocomplete="category_id">
+                                @foreach ($project_categories as $project_category)
+                                    <option value="{{ $project_category->id }}">{{ $project_category->name }}</option>
                                 @endforeach
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
