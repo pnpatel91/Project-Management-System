@@ -30,6 +30,11 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
+
+                        <div class="form-group">
+                            <label>Deadline</label>
+                            <input class="form-control" type="date" name="deadline" id="deadline" value="" required />  
+                        </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                         <a href="" class="btn btn-secondary"  data-dismiss="modal">Close</a>
                     </form>

@@ -31,7 +31,10 @@
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>
-
+                        <div class="form-group">
+                            <label>Deadline</label>
+                            <input class="form-control" type="date" name="deadline" id="deadline" value="{{ $project->deadline }}" required />  
+                        </div>
                         <div class="form-group">
                             <label>Status</label>
                             <select class="form-control select2" id="status" name="status" required autocomplete="status">
