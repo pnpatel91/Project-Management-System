@@ -22,15 +22,6 @@
                             <label>Name</label>
                             <input type="text" name="name" value="{{ $projectCategory->name }}" class="form-control" required autocomplete="name" autofocus maxlength="60">
                         </div>
-                        <div class="form-group">
-                            <label>Users &nbsp;</label><input type="checkbox" id="checkbox_user" > &nbsp;Select All
-                            <select class="form-control select2" id="user_id" name="user_id[]" required autocomplete="user_id" multiple>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" @if(in_array($user->id, $projectCategoryUsers)) selected="selected" @endif >{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                            <label id="select2-error" class="error" for="select2"></label>
-                        </div>
 
                         <div class="form-group">
                             <label>Status</label>

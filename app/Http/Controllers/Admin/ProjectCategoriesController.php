@@ -43,15 +43,8 @@ class ProjectCategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        if(auth()->user()->hasRole('superadmin')){
-            $users = User::all('id', 'name');
-        }else{
-            $branch_id = auth()->user()->getBranchIdsAttribute();
-            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
-        } 
-
-        return view('admin.projectCategory.create',compact("users"));
+    { 
+        return view('admin.projectCategory.create');
     }
 
     /**
@@ -111,15 +104,7 @@ class ProjectCategoriesController extends Controller
      */
     public function edit(project_categories $projectCategory)
     {
-        if(auth()->user()->hasRole('superadmin')){
-            $users = User::all('id', 'name');
-        }else{
-            $branch_id = auth()->user()->getBranchIdsAttribute();
-            $users = User::select('id', 'name')->whereHas('branches', function($q) use ($branch_id) { $q->whereIn('branch_id', $branch_id); })->get();
-        }
-        $projectCategoryUsers = $projectCategory->users->pluck('id')->toArray();
-
-        return view('admin.projectCategory.edit', compact('projectCategory','users','projectCategoryUsers'));
+        return view('admin.projectCategory.edit', compact('projectCategory'));
     }
 
     /**
@@ -145,7 +130,6 @@ class ProjectCategoriesController extends Controller
             $projectCategory->status = $request->status;
             $projectCategory->updated_by = auth()->user()->id;
             $projectCategory->save();
-            $projectCategory->users()->sync($request->user_id);
             //Session::flash('success', 'A Project Category updated successfully.');
             //return redirect('admin/projectCategory');
 

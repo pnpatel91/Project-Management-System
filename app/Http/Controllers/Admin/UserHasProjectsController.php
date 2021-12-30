@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User_has_projectCategories;
+use App\User_has_projects;
 use Illuminate\Http\Request;
 
-class UserHasProjectCategoriesController extends Controller
+class UserHasProjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class UserHasProjectCategoriesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User_has_projectCategories  $user_has_projectCategories
+     * @param  \App\User_has_projects  $user_has_projects
      * @return \Illuminate\Http\Response
      */
-    public function show(User_has_projectCategories $user_has_projectCategories)
+    public function show(User_has_projects $user_has_projects)
     {
         //
     }
@@ -52,10 +52,10 @@ class UserHasProjectCategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User_has_projectCategories  $user_has_projectCategories
+     * @param  \App\User_has_projects  $user_has_projects
      * @return \Illuminate\Http\Response
      */
-    public function edit(User_has_projectCategories $user_has_projectCategories)
+    public function edit(User_has_projects $user_has_projects)
     {
         //
     }
@@ -64,10 +64,10 @@ class UserHasProjectCategoriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User_has_projectCategories  $user_has_projectCategories
+     * @param  \App\User_has_projects  $user_has_projects
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User_has_projectCategories $user_has_projectCategories)
+    public function update(Request $request, User_has_projects $user_has_projects)
     {
         //
     }
@@ -75,10 +75,10 @@ class UserHasProjectCategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User_has_projectCategories  $user_has_projectCategories
+     * @param  \App\User_has_projects  $user_has_projects
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User_has_projectCategories $user_has_projectCategories)
+    public function destroy(User_has_projects $user_has_projects)
     {
         //
     }
