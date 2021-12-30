@@ -22,6 +22,7 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('created_by')->index();
             $table->unsignedBigInteger('updated_by')->index();
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('priority', ['High', 'Medium', 'Low'])->default('High');
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('project_categories');
