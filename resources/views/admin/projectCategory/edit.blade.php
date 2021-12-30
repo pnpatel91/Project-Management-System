@@ -26,8 +26,8 @@
                         <div class="form-group">
                             <label>Status</label>
                             <select class="form-control select2" id="status" name="status" required autocomplete="status">
-                                <option value="Active" @if($user->status=='Active') selected="selected" @endif >Active</option>
-                                <option value="Inactive" @if($user->status=='Inactive') selected="selected" @endif >Inactive</option>
+                                <option value="Active" @if($projectCategory->status=='Active') selected="selected" @endif >Active</option>
+                                <option value="Inactive" @if($projectCategory->status=='Inactive') selected="selected" @endif >Inactive</option>
                             </select>
                             <label id="select2-error" class="error" for="select2"></label>
                         </div>

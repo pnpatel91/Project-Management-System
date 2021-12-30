@@ -33,7 +33,7 @@ class ProjectCategoriesController extends Controller
      */
     public function index()
     {
-        $projectCategories = project_categories::select('*')->with('users')->get();
+        $projectCategories = project_categories::select('*')->get();
         return view('admin.projectCategory.index',compact('projectCategories'));
     }
 
@@ -156,13 +156,13 @@ class ProjectCategoriesController extends Controller
      * @param  \App\project_categories  $project_categories
      * @return \Illuminate\Http\Response
      */
-    public function destroy(project_categories $project_categories)
+    public function destroy(project_categories $projectCategory)
     {
         // delete related blog   
-        $project_categories->projects()->delete();
+        $projectCategory->projects()->delete();
 
         // delete Project Category
-        $project_categories->delete();
+        $projectCategory->delete();
 
         //return redirect('admin/project_categories')->with('delete', 'Project Category deleted successfully.');
         return response()->json([
