@@ -72,7 +72,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $request = request();
+       /* $request = request();
 
         $user = User::create([
             'name' => $data['name'],
@@ -107,6 +107,6 @@ class RegisterController extends Controller
 
         $user->assignRole('user');
 
-        return $user;
+        return $user;*/
     }
 }
