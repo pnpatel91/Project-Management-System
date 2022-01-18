@@ -41,7 +41,7 @@
                             </a>
                         </li>
 
-                        @if(auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('Team Leader')  || auth()->user()->hasRole('Developer') )
+                        @if(auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('Team Leader')|| auth()->user()->hasRole('Branch Manager')  || auth()->user()->hasRole('Developer') )
                         <li class="nav-item has-treeview {{ (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee'))  ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ 
                                 (Route::is('admin.attendance.*') && !Route::is('admin.attendance.employee')) || Route::is('admin.leave.*') || Route::is('admin.wikiCategory.*') || Route::is('admin.wikiBlog.*') || (Route::is('admin.rota.*') && !Route::is('admin.rota.employee')) ? 'active' : '' }}">
